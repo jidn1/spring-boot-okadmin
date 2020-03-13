@@ -1,0 +1,14 @@
+<config>
+    <input>
+        <jar in="../target/spring-boot-core-0.0.1-SNAPSHOT.jar" out="../target/spring-boot-core-0.0.1-SNAPSHOT.jar"/>
+    </input>
+    <keep-names>
+        <class access="protected+">
+            <field access="protected+"/>
+            <method access="protected+"/>
+        </class>
+    </keep-names>
+    <property name="log-file" value="../target/log.xml"/>
+
+    <expiry date="2020/08/27" string="License Expired!"/>
+</config>
