@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="spring-boot-admin" />
+        <module name="spring-boot-core" />
+        <module name="spring-boot-plugin" />
+        <module name="spring-boot-utils" />
+        <module name="spring-boot-video" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8">
+      <module name="spring-boot-admin" target="1.8" />
+      <module name="spring-boot-core" target="1.8" />
+      <module name="spring-boot-pagehelper" target="1.8" />
+      <module name="spring-boot-plugin" target="1.5" />
+      <module name="spring-boot-utils" target="1.8" />
+      <module name="spring-boot-video" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

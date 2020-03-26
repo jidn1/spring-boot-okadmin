@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="footer">
+
+<body>
+<!--底部信息-->
+<div class="layui-footer okadmin-text-center" th:text="${okCache.copyrightInformation}">
+    <!--Copyright ©2018-©2019 ok-admin v2.0 All Rights Reserved-->
+    <button class="layui-btn layui-btn-danger layui-btn-xs donate">捐赠作者</button>
+    <button class="layui-btn layui-btn-danger layui-btn-xs communication">QQ群交流</button>
+</div>
+<script th:src="@{/js/okadmin.js}"></script>
+</body>
+</html>

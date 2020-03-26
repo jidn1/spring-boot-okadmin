@@ -1,0 +1,417 @@
+.firstLayout {
+  width: 80%;
+  height: 600px;
+  padding: 30px 10px;
+  overflow: auto;
+}
+/*滚动条样式*/
+.firstLayout::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 5px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 10px;
+}
+.firstLayout::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 5px;
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);*/
+  background: #ddd;
+}
+.firstLayout::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  /*-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);*/
+  border-radius: 0;
+  background: whitesmoke;
+}
+/*.firstLayout .el-message-box__content{*/
+  /*overflow: auto;*/
+/*}*/
+.el-slider__bar {
+  background-color: #ee1a15;
+  z-index:100;
+}
+.el-slider__button{
+  border: 2px solid #ee1a15;
+  z-index:100;
+}
+.showout .el-slider__bar{
+  background:#49b670 !important;
+  z-index:100 !important;
+}
+.showout .el-slider__button{
+  border: 2px solid #49b670 !important;
+  z-index:100 !important;
+}
+.el-select {
+  width:33.3%;
+}
+.td .el-select{
+  width:80%;
+  color: #666666;
+}
+.tds .el-select{
+  width:54%;
+  color: #666666;
+}
+.td, .el-select .el-input,.tds .el-select .el-input{
+  width:87%;
+  color: #666666;
+}
+.td .el-select .el-input .el-input__inner,.tds .el-select .el-input .el-input__inner{
+  border:none;
+  font-size: 14px;
+  color: #999999;
+  width: 100%;
+  padding: 0;
+}
+.td, .el-input__inner::-webkit-input-placeholder,.tds .el-input__inner::-webkit-input-placeholder{
+  color: #999999;
+}
+.td, .el-input__inner::-moz-placeholder,.tds .el-input__inner::-moz-placeholder{
+color: #999999;
+}
+.td .el-input__inner:-ms-input-placeholder,.tds .el-input__inner:-ms-input-placeholder{
+color: #999999;
+}
+.right_secect .el-select{
+  width:100%;
+}
+.el-slider__button-wrapper{
+  z-index:100 !important;
+}
+.bankType .el-select{
+  width:60%;
+}
+.bankType .el-select .el-input{
+  width: 100%;
+}
+.addressSelect .el-select{
+  width:49%;
+}
+.addressSelect .el-select .el-input{
+  width:100%;
+}
+.wraps .el-select{
+  width:70%;
+}
+.vl-notify .vl-notify-content{
+  overflow: inherit !important;
+}
+.mention_select .el-select{
+  padding: 5px 0px;
+  width:100%;
+}
+.mention_select .el-select .el-input--suffix .el-input__inner{
+  border:none;
+  width:100%;
+}
+.el-dialog{
+  width:23%;
+}
+.el-input {
+  width: 42%;
+}
+.mention_select .el-input{
+  width:100%;
+}
+.el-dialog__body>.el-button{
+  display: block;
+  margin-left: 31%;
+  margin-top: 22px;
+}
+.right_secect .el-input{
+  width: 94%;
+}
+.right_secect  .el-input--mini .el-input__inner{
+  color: #aeafb9;
+  background: transparent;
+  border-radius: 30px;
+}
+.right_secectss .el-input{
+  width:173%;
+}
+.wraps .el-input{
+  width:100%;
+}
+.rights_secects .el-select{
+  width:50%;
+}
+.rights_secects .el-input{
+  width:100%;
+}
+.buydeal .el-slider__bar{
+  background:#7a98f7;
+}
+.whitebuydeal .el-slider__bar{
+  background:#7a98f7;
+}
+.buydeal .el-slider__runway{
+  background:#262a42;
+}
+.buydeal .el-slider__button{
+  border: 2px solid #fff !important;
+  background:#7a98f7;
+}
+.whitebuydeal .el-slider__button{
+  border: 2px solid #fff !important;
+  background:#7a98f7;
+}
+
+.buydealred .el-slider__bar{
+  background:#ae4e54;
+}
+.buydealred .el-slider__button{
+  background:#e88289;
+}
+
+.infoContent>p{
+  font-size: 18px;
+  color: #666666;
+  line-height:50px;
+}
+.charts>iframe{
+  width: 100%;
+}
+.adverInput .el-input__inner{
+  width:564px;
+}
+.adverInput .el-input,.adverInput .el-select{
+  width:564px;
+}
+.countInput .el-input,.adverInput .el-select{
+  width:50%;
+}
+.adverInputSelect .el-select{
+  width: 500px;
+}
+.adverInputSelect .el-select .el-input{
+  width: 96%;
+}
+.textarea .el-textarea{
+  height:80px;
+}
+.textarea .el-textarea textarea{
+  height:100%;
+}
+.el-dialog--center{
+width:61% !important;
+}
+.queding{
+  width:80%;
+}
+.box .el-message-box__btns{
+  text-align:center;
+}
+.box .el-input{
+  width: 75%;
+  margin-left: 11%;
+}
+.box{
+  width: 491px;
+  padding-bottom: 42px;
+}
+.child .el-input{
+  width:100% !important;
+}
+.child .el-range-separator{
+  width:24px;
+}
+.td .el-input__inner{
+  padding:0px;
+}
+.rights_secects .el-select {
+  width: 150px;
+  float:right;
+}
+
+/*合约大厅委托*/
+.entrust .nows .el-tabs .el-tabs__header{
+  background: #202646;
+  padding-top: 10px;
+}
+.entrust .nows .el-tabs .el-tabs__content{
+  overflow: visible;
+  clear: both;
+}
+.entrust .nows .el-tabs .el-tabs__header .el-tabs__nav{
+  padding: 0 20px;
+}
+.entrust .nows .el-tabs .el-tabs__item{
+  font-size: 16px;
+  font-weight: normal;
+  font-stretch: normal;
+  color: #c7cce6;
+  text-align: center;
+  line-height: 30px;
+}
+.entrust .nows .el-tabs--top .el-tabs__item.is-top:nth-child(2){
+  padding-left: 20px;
+}
+.entrust .nows .el-tabs--top .el-tabs__item.is-top:last-child{
+  padding-right: 20px;
+}
+.entrust .nows .el-tabs .el-tabs__item.is-active{
+  color: #7a98f7;
+  border-bottom: 2px solid #7a98f7;
+}
+.entrust .nows .el-tabs .el-tabs__active-bar{
+  display: none;
+}
+/*加减*/
+.entrust .nows .noweituoPane .panenowbox .panenowr .Input  span[role="button"]{
+  border: 1px solid #4e5b85;
+  border-radius: 3px;
+  background: transparent;
+  color: #3b4268;
+  font-weight: bold;
+  font-size: 30px;
+}
+.entrust .nows .noweituoPane .panenowbox .panenowr .Input .el-input-number__decrease:hover,.entrust .nows .noweituoPane .panenowbox .panenowr .Input  .el-input-number__increase:hover{
+  border-color: #5a98f7;
+  color: #5a98f7;
+}
+.entrust .nows .noweituoPane .panenowbox .panenowr .Input .el-input-number .el-input{
+  flex: auto;
+  margin-left: 50px;
+  margin-right: 50px;
+
+}
+.entrust .nows .noweituoPane .panenowbox .panenowr .Input .el-input-number .el-input input{
+  border: 1px solid #4e5b85;
+  border-radius: 3px;
+  background: transparent;
+  padding: 0 10px;
+  height: 42px;
+  color: #c7cce6;
+  font-size: 16px;
+}
+.detailWrap .right .el-input__inner{
+  border-radius: 10px;
+  height: 47px;
+}
+.historyWrap .el-date-editor .el-range-separator{
+  width: 13%;
+}
+.warnWrap .tableBox .el-table__header-wrapper table{
+  width:100%;
+  border-color:#e2e7eb;
+  margin-top:18px;
+}
+.warnWrap .tableBox .el-table__header-wrapper table tr:nth-of-type(1){
+  background:rgb(240, 243, 245) !important;
+  padding: 10px 10px;
+}
+.warnWrap .tableBox .el-table__header-wrapper table tr:nth-of-type(1) th{
+  background:rgb(240, 243, 245) !important;
+  padding: 5px 0;
+  color:#242a30;
+}
+.partnerWrap .el-input{
+  width:145px;
+  height:32px;
+}
+.partnerWrap .el-input input{
+  width:145px;
+  height:32px;
+  border:1px solid #363b52;
+  background:none;
+  color:#fefeff;
+}
+.partnerWrap .el-input-number__decrease,.partnerWrap .el-input-number__increase{
+  right:0px !important;
+  line-height:13px !important;
+  background:#363b52;
+  border:none !important;
+}
+.partnerWrap .el-input-number__decrease{
+  bottom:0 !important;
+}
+.partnerWrap .el-input-number__increase{
+  top:5px !important;
+}
+.el-input-number{
+  width: 145px !important;
+}
+.coinSe .el-input{
+  width:100%;
+}
+.contractBtn .el-form-item__content{
+    margin-left: 13px !important;
+}
+/*otc Chat*/
+.otcChatDialog.el-dialog__wrapper{
+  right: 0;
+  left: auto;
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+  box-shadow: -2px 2px 10px rgba(0,0,0,.3);
+  overflow: visible;
+  top:80px;
+  bottom:50px;
+  width: 390px;
+}
+.otcChatDialog.el-dialog__wrapper.hideclisebbtn .el-dialog__headerbtn {
+  display: none;
+}
+.otcChatDialog.el-dialog__wrapper .el-dialog{
+  height: 100%;
+  margin-top: 0px !important;
+}
+.xw-chat-tool-item .btn-tool-item{
+  position: relative;
+  margin-top: -30px;
+}
+.xw-footer-content .el-textarea__inner{
+  height: 42px;
+}
+
+.otcChatDialog .el-dialog__header{
+  padding:0;
+  position: relative;
+  z-index: 4;
+}
+.otcChatDialog .el-dialog__body{
+  padding:0 0 10px;
+  height: 100%;
+}
+.otcChatDialog  .el-dialog__headerbtn .el-dialog__close{
+  color: #fff;
+}
+.el-message {
+  z-index: 99999!important;
+}
+.TypeInset .el-dialog{
+  width: 30%;
+}
+.TypeInset .el-input{
+  width: 100%;
+}
+.TypeInset .el-form-item__content{
+  width: 80%;
+  float: left;
+}
+.TypeInset .el-form-item__label{
+  margin-left:20px;
+}
+.TypeInset .el-button{
+  width:150px;
+  letter-spacing: 5px;
+}
+.TypeInset .el-dialog__footer{
+  text-align:center;
+}
+.xieyiInset .el-dialog{
+  width:800px;
+}
+.xieyiInset .el-dialog__footer{
+  text-align:center;
+}
+
+
+/*otc订单下拉框*/
+.ordernowBox .nowitem .el-badge__content.is-fixed{
+  top: 12px;
+  right: -18px;
+}
+.ordernowBox .norItem_menu_item .el-badge__content.is-fixed{
+  top: 8px;
+  right: 16px;
+}

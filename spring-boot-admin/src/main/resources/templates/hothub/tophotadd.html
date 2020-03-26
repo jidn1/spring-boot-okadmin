@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <link rel="stylesheet" href="../../lib/css/layui.css" >
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+</head>
+<body>
+<div class="ok-body">
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form">
+
+
+                        <div class="layui-form-item">
+                    <label class="layui-form-label">热榜标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">热榜外链</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="url" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">原始链接</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="originalUrl" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">热榜类型 1博客园 ...</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="type" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js"></script>
+<script>
+    layui.config({base:'/js/modules/'}).use(['topHot'],function () {
+        let topHot = layui.topHot;
+        topHot.add();
+    });
+</script>
+</body>
+</html>

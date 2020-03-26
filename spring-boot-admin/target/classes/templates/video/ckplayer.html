@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta charset="UTF-8">
+<title>电影播放</title>
+<link rel="stylesheet" href="../../css/oksub.css">
+<link rel="stylesheet" href="../../lib/layui/css/layui.css" >
+</head>
+<body>
+<div class="ok-body layui-container" >
+    <iframe scrolling="yes" frameborder="0"
+            style="width: 100%; min-height: 700px; overflow: visible; "
+            src="" name="main" id="main">
+    </iframe>
+</div>
+<script src="../../lib/layui/layui.js"></script>
+<script src="../lib/jquery/jquery.min.js"></script>
+<script >
+    let initData;
+    function initForm(data) {
+        let jsonString = JSON.stringify(data);
+        initData = JSON.parse(jsonString);
+        $("#main").attr("src","https://jx.618g.com/?url="+initData.movicePlayerUrl);
+    }
+   $(function () {
+
+
+   })
+</script>
+</body>
+
+</html>
