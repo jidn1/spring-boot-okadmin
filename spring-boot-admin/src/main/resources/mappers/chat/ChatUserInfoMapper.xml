@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chatroom.dao.ChatUserInfoDao">
+
+    <select id="findPageBySql" resultType="com.chatroom.model.ChatUserInfo" parameterType="java.util.HashMap">
+        SELECT
+            cui.id,
+            cui.userid,
+            cui.avatarImg,
+            cui.nickName,
+            cui.signature,
+            cui.expirationTime,
+            cui.ifdelete,
+            cui.gender,
+            cui.created,
+            cu.username,
+            cu.password
+        FROM
+            fh_chat_user_info cui
+            LEFT JOIN fh_chat_user cu ON cui.userid = cu.userId
+            <where>
+                <if test="ifdelete != null and ifdelete != ''">
+                    and cui.ifdelete = #{ifdelete}
+                </if>
+                <if test="username != null and username != ''">
+                    and cu.username like #{username}
+                </if>
+            </where>
+    </select>
+</mapper>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>添加</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../css/oksub.css">
+    <link rel="stylesheet" href="../../lib/css/layui.css" >
+    <script type="text/javascript" src="../../lib/loading/okLoading.js"></script>
+</head>
+<body>
+<div class="ok-body">
+    <!--form表单-->
+    <form class="layui-form layui-form-pane ok-form">
+
+
+                        <div class="layui-form-item">
+                    <label class="layui-form-label">发送人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="fromUserId" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">接收人</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="toUserId" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">内容 如果是图片 语音 保存的就是 连接</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sendtext" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">消息类型</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="msgType" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">消息状态 0 未读 1 已读</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="msgStatus" autocomplete="off" class="layui-input" lay-verify="required">
+                    </div>
+                </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="add">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js"></script>
+<script>
+    layui.config({base:'/js/modules/'}).use(['chatMessage'],function () {
+        let chatMessage = layui.chatMessage;
+        chatMessage.add();
+    });
+</script>
+</body>
+</html>

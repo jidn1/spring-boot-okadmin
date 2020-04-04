@@ -71,6 +71,22 @@
     }
   ]
 },
+
+  {
+    "title": "chatRoom管理",
+    "href": "",
+    "icon": "&#xe66f;",
+    "spread": false,
+    "children": [
+      {
+        "title": "用户列表",
+        "href": "/chat/chatuserinfolist.html",
+        "fontFamily": "layui-icon",
+        "icon": "&#xe62e;",
+        "spread": false
+      }
+    ]
+  },
   {
     "title": "系统管理",
     "href": "",
