@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:include="common/header::header"></div>
+</head>
+
+<body>
+<div class="dowebok">
+    <div class="form sign-in" style="margin-top:80px">
+        <h2>Web在线聊天</h2>
+        <label>
+            <span>账号</span>
+            <input type="text" placeholder="请输入账号" id="username" onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
+        </label>
+        <label style="margin-top:40px">
+            <span>密码</span>
+            <input type="password" placeholder="请输入密码" id="password" onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
+        </label>
+        <button type="button" class="submit" id="submitlg" style="margin-top:40px" onclick="submitlogin()">登 录</button>
+    </div>
+    <div class="sub-cont">
+        <div class="img">
+            <div class="img__text m--up">
+                <h2>Web在线聊天</h2>
+                <p>主动一点，世界会更大。</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/static/lib/jquery/jquery.min.js}"></script>
+<script th:src="@{/static/lib/layui/layui.js}"></script>
+<script th:src="@{/static/js/login.js}"></script>
+</html>
