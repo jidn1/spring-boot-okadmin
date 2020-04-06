@@ -1,4 +1,4 @@
-package com.chat.common.utils;
+package com.common.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;

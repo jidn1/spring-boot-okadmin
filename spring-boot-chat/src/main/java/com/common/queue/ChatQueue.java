@@ -1,4 +1,4 @@
-package com.chat.common.queue;
+package com.common.queue;
 
 import com.chat.vo.ChatMsgVo;
 

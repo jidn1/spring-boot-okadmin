@@ -1,4 +1,4 @@
-package com.chat.common.interceptor;
+package com.common.interceptor;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -19,7 +19,8 @@ public class BaseInterceptor implements HandlerInterceptor {
             if(user!=null){
                 return true;
             }
-            response.sendRedirect(request.getContextPath()+"/");
+            System.out.println();
+            response.sendRedirect(request.getContextPath()+"/index");
         } catch (IOException e) {
             e.printStackTrace();
         }

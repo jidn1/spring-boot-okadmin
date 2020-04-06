@@ -1,4 +1,4 @@
-package com.chat.common.utils;
+package com.common.utils;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

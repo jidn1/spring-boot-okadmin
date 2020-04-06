@@ -1,4 +1,4 @@
-layui.use('form', function () {
+layui.use(['form',"okMd5"], function () {
     var form = layui.form
         ,layer = layui.layer;
 });

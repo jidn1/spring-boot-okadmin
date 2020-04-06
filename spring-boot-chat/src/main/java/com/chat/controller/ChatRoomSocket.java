@@ -1,8 +1,8 @@
 package com.chat.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.chat.common.queue.ChatQueue;
-import com.chat.common.utils.EmojiFilter;
+import com.common.queue.ChatQueue;
+import com.common.utils.EmojiFilter;
 import com.chat.vo.ChatMsgVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

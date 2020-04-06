@@ -1,4 +1,4 @@
-package com.chat.common.constants;
+package com.common.constants;
 
 /**
  * @Copyright: 正经吉

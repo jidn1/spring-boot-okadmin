@@ -1,8 +1,9 @@
 package com.chat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.chat.common.constants.ConstantsRedisKey;
-import com.chat.common.utils.JsonResult;
+import com.common.constants.ConstantsRedisKey;
+import com.common.utils.JsonResult;
+import com.common.utils.PasswordHelper;
 import com.chat.model.ChatUser;
 import com.chat.service.ChatUserService;
 import com.db.Criteria;
@@ -30,16 +31,16 @@ public class ChatUserServiceImpl implements ChatUserService {
     public JsonResult login(String username, String password) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
 
-            String user = jedis.hget(ConstantsRedisKey.CHAT_USER, username);
-            ChatUser chatUser = JSONObject.parseObject(user, ChatUser.class);
+            PasswordHelper passwordHelper = new PasswordHelper();
 
-            String pass = Md5Encrypt.md5(chatUser.getPassword() + chatUser.getSalt());
-            if(!pass.equals(password)){
-                return new JsonResult().setMsg("login_password_error");
-            }
+            //String user = jedis.hget(ConstantsRedisKey.CHAT_USER, username);
+            //ChatUser chatUser = JSONObject.parseObject(user, ChatUser.class);
+            //String pass = passwordHelper.encryString(chatUser.getPassword(),chatUser.getSalt());
+//            if(!pass.equals(password)){
+//                return new JsonResult().setMsg("login_password_error");
+//            }
 
-
-
+            return new JsonResult().setSuccess(true).setMsg("success");
         } catch (Exception e) {
             e.printStackTrace();
         }

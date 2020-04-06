@@ -2,7 +2,7 @@ package com.chat.service;
 
 
 
-import com.chat.common.utils.JsonResult;
+import com.common.utils.JsonResult;
 
 import java.util.Map;
 

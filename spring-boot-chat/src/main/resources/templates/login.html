@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:include="common/header::header"></div>
 </head>
@@ -16,7 +16,8 @@
             <span>密码</span>
             <input type="password" placeholder="请输入密码" id="password" onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
         </label>
-        <button type="button" class="submit" id="submitlg" style="margin-top:40px" onclick="submitlogin()">登 录</button>
+<!--        <button type="button" class="submit" id="submitlg" style="margin-top:40px" onclick="submitlogin()">登 录</button>-->
+        <button class="submit" lay-filter="login" lay-submit="">登录</button>
     </div>
     <div class="sub-cont">
         <div class="img">
@@ -27,8 +28,44 @@
         </div>
     </div>
 </div>
+
+
+<script>
+        layui.use(["form", "okGVerify", "okUtils", "okLayer","okMd5","okMock"], function () {
+            let form = layui.form;
+            let $ = layui.jquery;
+            let okUtils = layui.okUtils;
+            let okLayer = layui.okLayer;
+            let md5 = layui.okMd5;
+            let okMock = layui.okMock;
+
+            /**
+             * 表单提交
+             */
+            form.on("submit(login)", function (data) {
+                data.field.password = md5(data.field.password);
+                okUtils.ajax(okMock.api.baseUrl + "loginService", "post", data.field, true).done(function (response) {
+                    okLayer.greenTickMsg(response.msg, function () {
+                        window.location = "/chat/chats.html";
+                    })
+                }).fail(function (error) {
+                    console.log(error)
+                });
+                return false;
+            });
+
+
+
+            /**
+             * 表单input组件单击时
+             */
+            $("#login .input-item .layui-input").click(function (e) {
+                e.stopPropagation();
+                $(this).addClass("layui-input-focus").find(".layui-input").focus();
+            });
+
+
+        });
+</script>
 </body>
-<script th:src="@{/static/lib/jquery/jquery.min.js}"></script>
-<script th:src="@{/static/lib/layui/layui.js}"></script>
-<script th:src="@{/static/js/login.js}"></script>
 </html>

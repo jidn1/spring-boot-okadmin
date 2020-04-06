@@ -1,6 +1,6 @@
 package com.chat.controller;
 
-import com.chat.common.utils.JsonResult;
+import com.common.utils.JsonResult;
 import com.chat.service.ChatUserService;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Controller;
@@ -21,15 +21,30 @@ public class LoginController {
     @Resource
     private ChatUserService chatUserService;
 
-    @RequestMapping("index")
+    @RequestMapping("/index")
     public String index(HttpServletRequest request) {
         return "login";
     }
 
 
-    @PostMapping("/login")
+    @PostMapping("/loginService")
     @ResponseBody
-    public JsonResult login(HttpServletRequest request, HttpSession session){
+    public JsonResult loginService(HttpServletRequest request, HttpSession session){
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+
+        JsonResult login = chatUserService.login(username, password);
+        if(!login.getSuccess()){
+            return new JsonResult().setMsg("账号或者密码错误");
+        }
+        //session.setAttribute("userid",userid);
+        return new JsonResult().setSuccess(true).setMsg("success");
+    }
+
+    @PostMapping("/register")
+    @ResponseBody
+    public JsonResult register(HttpServletRequest request, HttpSession session){
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -41,4 +56,5 @@ public class LoginController {
         //session.setAttribute("userid",userid);
         return new JsonResult().setSuccess(true).setMsg("success");
     }
+
 }
