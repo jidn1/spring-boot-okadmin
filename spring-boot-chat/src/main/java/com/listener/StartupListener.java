@@ -1,5 +1,6 @@
 package com.listener;
 
+import com.chat.service.ChatUserService;
 import com.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,10 @@ public class StartupListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         app = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         SpringUtil.setApplication(app);
+
+        ChatUserService chatUserService = (ChatUserService)app.getBean("chatUserService");
+        chatUserService.initChatUserRedis();
+
 
 
         logger.info("=======================【StartupListener Loaded Complete】==================================");

@@ -45,10 +45,10 @@ public class ConsumeChatMsgQueue {
         public void run() {
             while (true) {
                 try {
-                    ChatMsgVo mail = ChatQueue.getMailQueue().consume();
-                    if (mail != null) {
+                    ChatMsgVo chatMsgVo = ChatQueue.getMailQueue().consume();
+                    if (chatMsgVo != null) {
                         logger.info("聊天消息队列剩余数量:{}",ChatQueue.getMailQueue().size());
-                        chatMessageService.save(mail);
+                        chatMessageService.save(chatMsgVo);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

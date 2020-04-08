@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -15,18 +16,18 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ChatMsgVo {
-    private String fromUser;
+public class ChatMsgVo implements Serializable {
+    private String fromUserId;
 
-    private String toUserid;
-
-    private String msgtype;
+    private String toUserId;
 
     private String sendtext;
 
+    private Integer msgType;
+
     private Integer msgStatus;
 
-    private Date created;
+    private Date created = new Date();
 
-    private Date modified;
+    private Date modified = new Date();
 }
