@@ -29,6 +29,9 @@
                         <li>
                             <i class="layui-icon layui-icon-friends" style="font-size: 20px;"></i>&nbsp;加好友
                         </li>
+                        <li>
+                            <i class="layui-icon layui-icon-delete" style="font-size: 20px;" onclick="logout()"></i>&nbsp;销毁账号并退出
+                        </li>
                     </ul>
                     <div class="layui-tab-content" style="padding:0px;">
 
@@ -176,6 +179,9 @@
         }
     }
 
+    function logout(){
+        window.location = "/logout";
+    }
 </script>
 </body>
 </html>

@@ -17,6 +17,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Data
 public class ChatMsgVo implements Serializable {
+
+    private String cmd;
+
+    private String token;
+
     private String fromUserId;
 
     private String toUserId;

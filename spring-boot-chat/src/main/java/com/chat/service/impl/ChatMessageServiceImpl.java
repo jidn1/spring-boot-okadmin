@@ -38,7 +38,6 @@ public class ChatMessageServiceImpl implements ChatMessageService {
             Criteria<ChatMessage,Integer> criteria = new Criteria<>(ChatMessage.class);
             criteria.save(chatMessage);
 
-            System.out.println("chatMessage==="+JSONObject.toJSONString(chatMessage));
             List<ChatMessage> chatHistory = new ArrayList<>();
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatMsgVo.getFromUserId(), chatMsgVo.getToUserId());
             if(!StringUtils.isEmpty(str)){

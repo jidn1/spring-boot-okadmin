@@ -16,6 +16,8 @@ public class ConstantsRedisKey {
 
     public static final String CHAT_USER_HISTORY = "chat:user:history";
 
+    public static final String TOKEN = "chat:token";
+
 
     public static final String DEFAULT_AVATAR = "okadmin/d68a4f9c26724e35b45601167e753d88.jpg";
 

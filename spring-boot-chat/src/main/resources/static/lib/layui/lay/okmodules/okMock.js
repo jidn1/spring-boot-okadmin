@@ -5,7 +5,7 @@ layui.define([], function (exprots) {
             //172.16.10.245
             baseUrl : "http://localhost:6002/",
             fileUrl : "http://hry-exchange-public.oss-cn-beijing.aliyuncs.com/",
-            socketUrl : "ws://localhost:6002/websocket/",
+            socketUrl : "ws://localhost:6002/chatSocket",
         }
     };
     exprots("okMock", okMock);

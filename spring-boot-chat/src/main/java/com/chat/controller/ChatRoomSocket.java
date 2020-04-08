@@ -24,8 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @ServerEndpoint 可以把当前类变成websocket服务类
  */
 
-@Controller
-@ServerEndpoint(value = "/websocket/{userno}")
+//@Controller
+//@ServerEndpoint(value = "/websocket/{userno}")
 public class ChatRoomSocket {
 
     /**

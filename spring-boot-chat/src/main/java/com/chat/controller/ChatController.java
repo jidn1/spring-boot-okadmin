@@ -110,9 +110,6 @@ public class ChatController {
     }
 
 
-    /**
-     * 上传聊天图片
-     * **/
     @ApiOperation(value = "聊天大厅-上传聊天图片", httpMethod = "POST", notes = "个人中心-上传聊天图片")
     @PostMapping("/chatImg")
     @ResponseBody
@@ -121,7 +118,7 @@ public class ChatController {
         JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
         String filename = UUID.randomUUID().toString().replaceAll("-", "");
-        String ext = FilenameUtils.getExtension(file.getOriginalFilename());//获得文件扩展名
+        String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         String filenames = filename + "." + ext;
         file.transferTo(new File("D:/ifeng/" + filenames));
         resUrl.put("src", "/pic/" + filenames);

@@ -128,10 +128,19 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 friendUserId: '',
             }
         },
+        watch:{
+            //监听消息记录，有变动就滚动至底部
+            listmessage:function(){
+                var container = $("#msgcontent");
+                this.$nextTick(() => {
+                    container.scrollTop = container.scrollHeight;
+                })
+            }
+        },
         mounted: function () {
             this.getlistnickname();
             //连接WebSocket节点
-            this.ws = new WebSocket(okMock.api.socketUrl + this.userId);
+            this.ws = new WebSocket(okMock.api.socketUrl);
             this.ws.onopen = this.onopen;
             this.ws.onmessage = this.onmessage;
             this.ws.onclose = this.onclose;
@@ -144,16 +153,20 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             window.onbeforeunload = this.onbeforeunload;
         },
         methods: {
-            onopen: function () {
+            onopen: function (e) {
+                var msg = JSON.stringify({cmd: 'enter_chatting'});
+                this.ws.send(msg);
+            },
+            onmessage: function (e) {
+                var chatRecord = JSON.parse(e.data);
+                console.log("e.data=="+e.data)
+                that = this;
+                that.listmessage.push({msgType: chatRecord.msgType, fromUserId: chatRecord.fromUserId, toUserId: chatRecord.toUserId, sendtext: chatRecord.sendtext});
+            },
+            onclose: function (e) {
 
             },
-            onmessage: function () {
-
-            },
-            onclose: function () {
-
-            },
-            onerror: function () {
+            onerror: function (e) {
 
             },
             onbeforeunload: function () {
@@ -194,7 +207,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             /*添加聊天记录*/
             appendmsg(mstype, revive, send, text) {
                 var that = this;
-                that.listmessage.push({msgType: mstype, fromUserId: revive, toUserId: send, sendtext: text});
+                //that.listmessage.push({msgType: mstype, fromUserId: revive, toUserId: send, sendtext: text});
                 setTimeout(function () {
                     document.getElementById("msg_end").scrollIntoView();
                 }, 500)
@@ -271,6 +284,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 // 将内容设置为空
                 layedit.setContent(editIndex, "", false);
                 var object = new Object();
+                object["cmd"] = 'chatting';
                 object["toUserId"] = this.friendUserId;
                 object["fromUserId"] = this.userId;
                 object["msgType"] = 0;
@@ -292,6 +306,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     return;
                 }
                 var object = new Object();
+                object["cmd"] = 'chatting';
                 object["toUserId"] = this.friendUserId;
                 object["fromUserId"] = this.userId;
                 object["msgType"] = 1;
