@@ -332,6 +332,10 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     alertnote(msgs[0])
                 }
                 document.getElementById("msg_end").scrollIntoView();
+            },
+            logout:function(){
+                sessionStorage.removeItem("userId");
+                window.location = "/logout";
             }
 
 
