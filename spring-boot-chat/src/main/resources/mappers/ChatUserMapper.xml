@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.ChatUserDao">
+<mapper namespace="com.chat.dao.ChatUserDao">
 
+
+    <select id="findChatUserInfoList"  resultType="com.chat.vo.ChatUserInfoVo">
+        SELECT
+            cu.id,
+            cu.userId,
+            cu.username,
+            cu.`password`,
+            cu.salt,
+            cui.nickName,
+            cui.avatarImg,
+            cui.signature,
+            cui.gender,
+            cui.expirationTime,
+            cui.ifdelete
+        FROM
+            fh_chat_user cu
+            LEFT JOIN fh_chat_user_info cui ON cu.userId = cui.userid
+            WHERE
+            cui.ifdelete = 0
+    </select>
 </mapper>

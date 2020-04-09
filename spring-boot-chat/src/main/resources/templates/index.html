@@ -6,7 +6,7 @@
 <body>
 <div class="dowebok">
     <div class="form sign-in" style="margin-top:80px">
-        <h2>ChatRoom在线聊天</h2>
+        <h2>ChatRoom创建账号</h2>
         <form class="layui-form">
         <label>
             <span>账号</span>
@@ -14,22 +14,13 @@
         </label>
         <label style="margin-top:40px">
             <span>密码</span>
-            <input type="password" lay-verify="required" name="password" placeholder="请输入密码"  onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
+            <input type="password" lay-verify="required" name="password"  placeholder="请输入密码"  onkeyup="this.value=this.value.replace(/\s+/g,'')"/>
         </label>
-        <button class="submit"  style="margin-top:40px" lay-filter="login" lay-submit="">登录</button>
-        <p align="center"><a href="index">注册账号</a></p>
+        <button class="submit"  style="margin-top:40px" lay-filter="login" lay-submit="">确认</button>
+        <p align="center"><a href="login">已有账号,请登陆</a></p>
         </form>
     </div>
-    <div class="sub-cont">
-        <div class="img">
-            <div class="img__text m--up">
-                <h2>ChatRoom在线聊天</h2>
-                <p>主动一点,世界会更大。</p>
-            </div>
-        </div>
-    </div>
 </div>
-
 
 
 <script>
@@ -46,10 +37,10 @@
              */
             form.on("submit(login)", function (data) {
                 data.field.password = md5(data.field.password);
-                okUtils.ajax(okMock.api.baseUrl + "loginService", "post", data.field, true).done(function (response) {
+                data.field.username = data.field.username;
+                okUtils.ajax(okMock.api.baseUrl + "register", "post", data.field, true).done(function (response) {
                     okLayer.greenTickMsg(response.msg, function () {
-                        sessionStorage.setItem("userId", response.obj)
-                        window.location = "/chat/chats.html";
+                        window.location = "/login";
                     })
                 }).fail(function (error) {
                     console.log(error)

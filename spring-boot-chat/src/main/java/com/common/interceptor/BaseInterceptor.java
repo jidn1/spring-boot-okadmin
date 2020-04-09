@@ -14,17 +14,7 @@ public class BaseInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        try {
-            String user=(String) request.getSession().getAttribute("userid");
-            if(user!=null){
-                return true;
-            }
-            System.out.println();
-            response.sendRedirect(request.getContextPath()+"/index");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return true;
     }
 
     @Override

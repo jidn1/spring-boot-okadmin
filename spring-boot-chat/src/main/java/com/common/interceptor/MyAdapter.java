@@ -14,7 +14,7 @@ public class MyAdapter extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/index");
+        registry.addViewController("/").setViewName("forward:/login");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
     }
@@ -29,7 +29,7 @@ public class MyAdapter extends WebMvcConfigurerAdapter {
         WebMvcConfigurerAdapter adapter = new WebMvcConfigurerAdapter() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/pic/**").addResourceLocations("file:/soft/zjjfile/chat/");
+                registry.addResourceHandler("/pic/**").addResourceLocations("file:D:/ifeng/");
                 super.addResourceHandlers(registry);
             }
         };
@@ -38,7 +38,6 @@ public class MyAdapter extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册TestInterceptor拦截器
-        InterceptorRegistration registration = registry.addInterceptor(baseInterceptor);
-        registration.addPathPatterns("/chat/*");
+        registry.addInterceptor(baseInterceptor);
     }
 }
