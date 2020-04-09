@@ -49,7 +49,7 @@
                 okUtils.ajax(okMock.api.baseUrl + "loginService", "post", data.field, true).done(function (response) {
                     okLayer.greenTickMsg(response.msg, function () {
                         sessionStorage.setItem("userId", response.obj)
-                        window.location = "/chat/chats.html";
+                        window.location = "chats.html";
                     })
                 }).fail(function (error) {
                     console.log(error)
