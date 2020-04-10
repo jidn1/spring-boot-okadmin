@@ -58,6 +58,17 @@ public class ChatUtils {
         return chatFriendVo;
     }
 
+    public static ChatFriendVo convertRedisFriendVo(String userId, ChatUserInfoVo chatUserInfo){
+        ChatFriendVo chatFriendVo = new ChatFriendVo();
+        chatFriendVo.setUserId(chatUserInfo.getUserid());
+        chatFriendVo.setFriendUserId(userId);
+        chatFriendVo.setNickName(chatUserInfo.getNickName());
+        chatFriendVo.setAvatarImg(chatUserInfo.getAvatarImg());
+        chatFriendVo.setStatus(1);
+        chatFriendVo.setId(0L);
+        return chatFriendVo;
+    }
+
 
     public static void createSession(Jedis jedis, ChatUserInfoVo chatUser, HttpServletResponse response){
         jedis.hset(ConstantsRedisKey.TOKEN,chatUser.getUserid(), JSONObject.toJSONString(chatUser));

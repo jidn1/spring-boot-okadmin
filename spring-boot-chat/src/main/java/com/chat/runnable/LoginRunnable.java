@@ -8,6 +8,7 @@ import com.common.constants.ConstantsRedisKey;
 import com.common.utils.ChatUtils;
 import com.db.Criteria;
 import com.redis.BaseRedis;
+import com.util.PropertiesUtils;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
@@ -30,25 +31,26 @@ public class LoginRunnable implements Runnable {
 
     @Override
     public void run() {
-        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
-            //初始化好友列表
-            List<ChatFriendVo> list = new ArrayList<>();
-            List<ChatFriend> friendList = new ArrayList<>();
-            Criteria<ChatFriend, Long> friendCriteria = new Criteria<>(ChatFriend.class);
-            friendCriteria.addFilter("userId=",userId);
-            friendList = friendCriteria.findListByExample();
+        if("mysql".equals(PropertiesUtils.APP.getProperty("app.service"))){
+            try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+                //初始化好友列表
+                List<ChatFriendVo> list = new ArrayList<>();
+                List<ChatFriend> friendList = new ArrayList<>();
+                Criteria<ChatFriend, Long> friendCriteria = new Criteria<>(ChatFriend.class);
+                friendCriteria.addFilter("userId=",userId);
+                friendList = friendCriteria.findListByExample();
 
-            Criteria<ChatUserInfo, Long> userInfoCriteria = new Criteria<>(ChatUserInfo.class);
-            for(ChatFriend chatFriend : friendList){
-                userInfoCriteria.addFilter("userId=",chatFriend.getFriendUserId());
-                ChatUserInfo chatUserInfo = userInfoCriteria.findByExample();
-                ChatFriendVo chatFriendVo = ChatUtils.convertRedisFriendVo(userId, chatUserInfo);
-                list.add(chatFriendVo);
+                Criteria<ChatUserInfo, Long> userInfoCriteria = new Criteria<>(ChatUserInfo.class);
+                for(ChatFriend chatFriend : friendList){
+                    userInfoCriteria.addFilter("userId=",chatFriend.getFriendUserId());
+                    ChatUserInfo chatUserInfo = userInfoCriteria.findByExample();
+                    ChatFriendVo chatFriendVo = ChatUtils.convertRedisFriendVo(userId, chatUserInfo);
+                    list.add(chatFriendVo);
+                }
+                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId, JSONObject.toJSONString(list));
+            } catch (Exception e){
+                e.printStackTrace();
             }
-            jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId, JSONObject.toJSONString(list));
-        } catch (Exception e){
-            e.printStackTrace();
         }
-
     }
 }

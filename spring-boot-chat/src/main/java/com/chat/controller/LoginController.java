@@ -13,6 +13,8 @@ import com.chat.service.ChatUserService;
 import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.thread.ThreadPool;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -34,8 +36,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/")
 public class LoginController {
 
-    @Resource
-    private ChatUserService chatUserService;
+    private ChatUserService chatUserService = (ChatUserService)SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request) {

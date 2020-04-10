@@ -1,15 +1,14 @@
 package com.common.queue;
 
-import com.chat.service.ChatMessageService;
+import com.chat.service.ChatUserService;
 import com.chat.vo.ChatMsgVo;
-import org.nutz.dao.entity.annotation.Comment;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.annotation.Resource;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,21 +23,18 @@ public class ConsumeChatMsgQueue {
 
     private static final Logger logger = LoggerFactory.getLogger(ConsumeChatMsgQueue.class);
 
-    @Resource
-    ChatMessageService chatMessageService;
+
 
     @PostConstruct
     public void startThread() {
-        ExecutorService e = Executors.newFixedThreadPool(2);// 两个大小的固定线程池
-        e.submit(new PollChatMsg(chatMessageService));
-        e.submit(new PollChatMsg(chatMessageService));
+        ExecutorService e = Executors.newFixedThreadPool(1);// 两个大小的固定线程池
+        e.submit(new PollChatMsg());
     }
 
     class PollChatMsg implements Runnable {
-        ChatMessageService chatMessageService;
+        private ChatUserService chatUserService = (ChatUserService) SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
 
-        public PollChatMsg(ChatMessageService chatMessageService) {
-            this.chatMessageService = chatMessageService;
+        public PollChatMsg() {
         }
 
         @Override
@@ -48,7 +44,7 @@ public class ConsumeChatMsgQueue {
                     ChatMsgVo chatMsgVo = ChatQueue.getMailQueue().consume();
                     if (chatMsgVo != null) {
                         logger.info("聊天消息队列剩余数量:{}",ChatQueue.getMailQueue().size());
-                        chatMessageService.save(chatMsgVo);
+                        chatUserService.saveMsg(chatMsgVo);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

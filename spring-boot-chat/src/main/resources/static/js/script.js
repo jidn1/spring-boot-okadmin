@@ -2,7 +2,37 @@
 function startVideo(){
     $("#localVideo").attr("muted","muted");
 
+// Generate random room name if needed
+    if (!location.hash) {
+        location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
+    }
+    const roomHash = location.hash.substring(1);
 
+// TODO: Replace with your own channel ID
+    const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
+// Room name needs to be prefixed with 'observable-'
+    const roomName = 'observable-' + roomHash;
+
+
+    drone.on('open', error => {
+        if (error) {
+            return console.error(error);
+        }
+        room = drone.subscribe(roomName);
+        room.on('open', error => {
+            if (error) {
+                onError(error);
+            }
+        });
+        // We're connected to the room and received an array of 'members'
+        // connected to the room (including us). Signaling server is ready.
+        room.on('members', members => {
+            console.log('MEMBERS', members);
+            // If we are the second user to connect to the room we will be creating the offer
+            const isOfferer = members.length === 2;
+            startWebRTC(isOfferer);
+        });
+    });
 }
 
 const configuration = {
@@ -11,37 +41,7 @@ const configuration = {
     }]
 };
 
-// Generate random room name if needed
-if (!location.hash) {
-    location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-}
-const roomHash = location.hash.substring(1);
 
-// TODO: Replace with your own channel ID
-const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
-// Room name needs to be prefixed with 'observable-'
-const roomName = 'observable-' + roomHash;
-
-
-drone.on('open', error => {
-    if (error) {
-        return console.error(error);
-    }
-    room = drone.subscribe(roomName);
-    room.on('open', error => {
-        if (error) {
-            onError(error);
-        }
-    });
-    // We're connected to the room and received an array of 'members'
-    // connected to the room (including us). Signaling server is ready.
-    room.on('members', members => {
-        console.log('MEMBERS', members);
-        // If we are the second user to connect to the room we will be creating the offer
-        const isOfferer = members.length === 2;
-        startWebRTC(isOfferer);
-    });
-});
 let room;
 let pc;
 

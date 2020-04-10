@@ -18,8 +18,7 @@ public class ConstantsRedisKey {
 
     public static final String TOKEN = "chat:token";
 
-
-    public static final String DEFAULT_AVATAR = "okadmin/d68a4f9c26724e35b45601167e753d88.jpg";
+    public static final String DEFAULT_AVATAR = "/img/defaultImg.jpg";
 
     public static final String DEFAULT_SIGNATURE = "同一个世界,同一个梦想";
 

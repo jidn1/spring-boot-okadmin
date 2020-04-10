@@ -8,6 +8,8 @@ import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
 import com.common.utils.EmojiFilter;
 import com.common.utils.JsonResult;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,8 +38,7 @@ import java.util.UUID;
 @RequestMapping("/chat")
 public class ChatController {
 
-    @Resource
-    private ChatUserService chatUserService;
+    private ChatUserService chatUserService = (ChatUserService) SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
 
 
     @ApiOperation(value = "聊天大厅-好友列表", httpMethod = "POST", notes = "聊天大厅-好友列表")
@@ -91,7 +92,7 @@ public class ChatController {
         if(chatUser == null){
             return new JsonResult().setMsg("未查到此用户");
         }
-        chatUserService.addUserFriendRelation(chatUserInfoVo.getUserid(),chatUser.getUserid());
+        chatUserService.addUserFriendRelation(chatUserInfoVo.getUsername(),chatUser.getUsername(), chatUserInfoVo.getUserid(),chatUser.getUserid());
         return new JsonResult().setSuccess(true).setMsg("success");
     }
 
