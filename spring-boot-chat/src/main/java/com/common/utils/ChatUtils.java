@@ -14,8 +14,6 @@ import redis.clients.jedis.Jedis;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @Copyright © 北京互融时代软件有限公司

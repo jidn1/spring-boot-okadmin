@@ -17,21 +17,15 @@ import com.common.utils.PasswordHelper;
 import com.chat.model.ChatUser;
 import com.chat.service.ChatUserService;
 import com.db.Criteria;
-import com.github.pagehelper.Page;
 import com.redis.BaseRedis;
-import com.util.Md5Encrypt;
-import com.util.PageFactory;
 import com.util.uuid.UUIDUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
-
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p> ChatUserService </p>
@@ -39,7 +33,7 @@ import java.util.Map;
  * @author: jidn
  * @Date :   2020-04-03 16:10:39
  */
-//@Service("chatUserService")
+@Service("chatUserService")
 public class ChatUserServiceImpl implements ChatUserService {
 
     @Resource

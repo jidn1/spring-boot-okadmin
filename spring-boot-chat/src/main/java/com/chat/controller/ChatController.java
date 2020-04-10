@@ -42,7 +42,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-好友列表", httpMethod = "POST", notes = "聊天大厅-好友列表")
-    @PostMapping("/friends")
+    @RequestMapping("/friends")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult friends(HttpSession session){
@@ -56,7 +56,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-查找好友", httpMethod = "POST", notes = "个人中心-查找好友")
-    @PostMapping("/searchFriend")
+    @RequestMapping("/searchFriend")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult searchFriend(
@@ -77,7 +77,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-添加好友", httpMethod = "POST", notes = "个人中心-添加好友")
-    @PostMapping("/addFriend")
+    @RequestMapping("/addFriend")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult addFriend(
@@ -99,7 +99,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-查找好友聊天记录", httpMethod = "POST", notes = "个人中心-查找好友聊天记录")
-    @PostMapping("/findChatHistory")
+    @RequestMapping("/findChatHistory")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult findChatHistory(
@@ -112,7 +112,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-上传聊天图片", httpMethod = "POST", notes = "个人中心-上传聊天图片")
-    @PostMapping("/chatImg")
+    @RequestMapping("/chatImg")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult chatImg(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {

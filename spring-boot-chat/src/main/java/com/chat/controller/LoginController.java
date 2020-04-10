@@ -49,7 +49,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/loginService")
+    @RequestMapping("/loginService")
     @ResponseBody
     public JsonResult loginService(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
         String username = request.getParameter("username");
@@ -73,7 +73,7 @@ public class LoginController {
         return new JsonResult().setSuccess(false).setMsg("账号不存在");
     }
 
-    @PostMapping("/register")
+    @RequestMapping("/register")
     @ResponseBody
     public JsonResult register(HttpServletRequest request, HttpSession session) {
         String username = request.getParameter("username");
@@ -83,7 +83,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("logout")
+    @RequestMapping("logout")
     @ResponseBody
     public JsonResult logout(HttpServletRequest request, HttpServletResponse response) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {

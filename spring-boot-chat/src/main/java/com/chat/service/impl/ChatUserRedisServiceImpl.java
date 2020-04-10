@@ -1,7 +1,6 @@
 package com.chat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.chat.model.ChatFriend;
 import com.chat.model.ChatMessage;
 import com.chat.model.ChatUser;
 import com.chat.model.ChatUserInfo;
@@ -14,7 +13,6 @@ import com.common.utils.ChatUtils;
 import com.common.utils.DateUtils;
 import com.common.utils.JsonResult;
 import com.common.utils.PasswordHelper;
-import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.util.uuid.UUIDUtil;
 import org.springframework.beans.BeanUtils;
