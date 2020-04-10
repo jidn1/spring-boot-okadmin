@@ -1,3 +1,16 @@
+
+function startVideo(){
+    $("#localVideo").attr("muted","muted");
+
+
+}
+
+const configuration = {
+    iceServers: [{
+        urls: 'stun:stun.l.google.com:19302'
+    }]
+};
+
 // Generate random room name if needed
 if (!location.hash) {
     location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
@@ -8,19 +21,7 @@ const roomHash = location.hash.substring(1);
 const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
 // Room name needs to be prefixed with 'observable-'
 const roomName = 'observable-' + roomHash;
-const configuration = {
-    iceServers: [{
-        urls: 'stun:stun.l.google.com:19302'
-    }]
-};
-let room;
-let pc;
 
-
-function onSuccess() {};
-function onError(error) {
-    console.error(error);
-};
 
 drone.on('open', error => {
     if (error) {
@@ -41,6 +42,16 @@ drone.on('open', error => {
         startWebRTC(isOfferer);
     });
 });
+let room;
+let pc;
+
+
+function onSuccess() {};
+function onError(error) {
+    console.error(error);
+};
+
+
 
 // Send signaling data via Scaledrone
 function sendMessage(message) {

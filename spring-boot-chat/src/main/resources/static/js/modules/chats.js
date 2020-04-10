@@ -336,6 +336,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             logout:function(){
                 sessionStorage.removeItem("userId");
                 window.location = "/logout";
+
             }
 
 
