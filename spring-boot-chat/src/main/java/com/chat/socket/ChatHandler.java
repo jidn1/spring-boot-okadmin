@@ -70,7 +70,6 @@ public class ChatHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("afterConnectionEstablished");
     }
 
 
@@ -83,7 +82,6 @@ public class ChatHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        System.out.println("afterConnectionClosed");
     }
 
     @Override

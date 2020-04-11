@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html  >
+<html >
 <head>
     <meta charset="UTF-8">
     <title>聊天室</title>
@@ -9,7 +9,6 @@
     <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
 </head>
-
 <body>
 <div class="layui-container" style="margin-top:10px;">
     <div class="layui-row">
@@ -30,7 +29,7 @@
                             <i class="layui-icon layui-icon-friends" style="font-size: 20px;"></i>&nbsp;加好友
                         </li>
                         <li>
-                            <i class="layui-icon layui-icon-delete" style="font-size: 20px;" onclick="logout()"></i>&nbsp;销毁账号并退出
+                            <i class="layui-icon layui-icon-video" style="font-size: 20px;"></i>&nbsp;视频通话
                         </li>
                     </ul>
                     <div class="layui-tab-content" style="padding:0px;">
@@ -99,6 +98,10 @@
                                             <button class="layui-btn layui-btn-sm" data-type="reload"
                                                     style="float: right;position: relative;" @click="send">发送
                                             </button>
+
+                                            <button class="layui-btn layui-btn-sm" data-type="reload"
+                                                    style="float: right;position: relative;" @click="logout">销毁账号并退出
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -144,6 +147,11 @@
                         </div>
 
 
+                        <div class="layui-tab-item">
+                            <iframe src="video.html" frameborder="0" class="layadmin-iframe" style="height: 500px;width: 900px;"></iframe>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -179,9 +187,6 @@
         }
     }
 
-    function logout(){
-        window.location = "/logout";
-    }
 </script>
 </body>
 </html>
