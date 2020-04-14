@@ -85,7 +85,7 @@ public class ChatController {
     ){
         username= EmojiFilter.filterEmoji(username);
         ChatUserInfoVo chatUserInfoVo = (ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
-        if(chatUserInfoVo.getUserid().equals(username)){
+        if(chatUserInfoVo.getUsername().equals(username)){
             return new JsonResult().setSuccess(true).setMsg("不能添加自己");
         }
         ChatUserInfoVo chatUser = chatUserService.getChatUser(username);
@@ -121,8 +121,8 @@ public class ChatController {
         String filename = UUID.randomUUID().toString().replaceAll("-", "");
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         String filenames = filename + "." + ext;
-        file.transferTo(new File("D:/ifeng/" + filenames));
-        resUrl.put("src", "/pic/" + filenames);
+        file.transferTo(new File(PropertiesUtils.APP.getProperty("app.imgUrl") + filenames));
+        resUrl.put("src", PropertiesUtils.APP.getProperty("app.imgShowUrl") + filenames);
         return new JsonResult().setSuccess(true).setData(resUrl);
     }
 

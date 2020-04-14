@@ -159,7 +159,6 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             },
             onmessage: function (e) {
                 var chatRecord = JSON.parse(e.data);
-                console.log("e.data=="+e.data)
                 that = this;
                 that.listmessage.push({msgType: chatRecord.msgType, fromUserId: chatRecord.fromUserId, toUserId: chatRecord.toUserId, sendtext: chatRecord.sendtext});
             },
@@ -178,7 +177,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 var imgs = document.getElementById(id).getElementsByTagName("img");
                 var pho = "";
                 for (var i = 0; i < imgs.length; i++) {
-                    var img = '<img src="' + $(imgs[i]).attr("src") + '" style="width:100%;">'
+                    var img = '<img src="'+ $(imgs[i]).attr("src") + '" style="width:100%;">'
                     layer.open({
                         type: 1,
                         title: false, //不显示标题
@@ -194,7 +193,6 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             alertnote: function (msgtouid) {
                 var that = this;
                 for (var i = 0; i < that.listnickname.length; i++) {
-                    console.log(that.listnickname[i].userid);
                     if (that.listnickname[i].userid === msgtouid) {
                         layer.msg(that.listnickname[i].nickname + '发来一条信息', {
                             time: 1500,

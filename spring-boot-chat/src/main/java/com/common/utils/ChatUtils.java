@@ -7,7 +7,6 @@ import com.chat.model.ChatUserInfo;
 import com.chat.vo.ChatFriendVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
-import com.util.uuid.UUIDUtil;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
 

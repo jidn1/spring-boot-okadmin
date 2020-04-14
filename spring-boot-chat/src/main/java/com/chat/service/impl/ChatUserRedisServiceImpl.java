@@ -14,7 +14,7 @@ import com.common.utils.DateUtils;
 import com.common.utils.JsonResult;
 import com.common.utils.PasswordHelper;
 import com.redis.BaseRedis;
-import com.util.uuid.UUIDUtil;
+import com.common.utils.UUIDUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

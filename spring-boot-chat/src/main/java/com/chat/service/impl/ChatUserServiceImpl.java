@@ -18,7 +18,7 @@ import com.chat.model.ChatUser;
 import com.chat.service.ChatUserService;
 import com.db.Criteria;
 import com.redis.BaseRedis;
-import com.util.uuid.UUIDUtil;
+import com.common.utils.UUIDUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
