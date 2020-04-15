@@ -7,15 +7,15 @@ import com.chat.model.ChatUserInfo;
 import com.chat.vo.ChatFriendVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
-import com.util.uuid.UUIDUtil;
+import com.util.oss.OssUtil;
+import com.util.properties.PropertiesUtils;
 import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.io.InputStream;
 
 /**
  * @Copyright © 北京互融时代软件有限公司
@@ -58,6 +58,17 @@ public class ChatUtils {
         return chatFriendVo;
     }
 
+    public static ChatFriendVo convertRedisFriendVo(String userId, ChatUserInfoVo chatUserInfo){
+        ChatFriendVo chatFriendVo = new ChatFriendVo();
+        chatFriendVo.setUserId(chatUserInfo.getUserid());
+        chatFriendVo.setFriendUserId(userId);
+        chatFriendVo.setNickName(chatUserInfo.getNickName());
+        chatFriendVo.setAvatarImg(chatUserInfo.getAvatarImg());
+        chatFriendVo.setStatus(1);
+        chatFriendVo.setId(0L);
+        return chatFriendVo;
+    }
+
 
     public static void createSession(Jedis jedis, ChatUserInfoVo chatUser, HttpServletResponse response){
         jedis.hset(ConstantsRedisKey.TOKEN,chatUser.getUserid(), JSONObject.toJSONString(chatUser));
@@ -85,4 +96,23 @@ public class ChatUtils {
         return null;
     }
 
+
+
+    public static void findUploadUtil(InputStream ossStream, String[] fileSavePath) {
+        String img_server_type = PropertiesUtils.APP.getProperty("app.img.server.type");
+        switch (img_server_type) {
+            case "oss": // 阿里云oss
+                OssUtil.upload(ossStream, fileSavePath[0], false);
+                break;
+            case "aws": // 亚马逊aws
+                //  AWSUtil.uploadToS3(ossStream, fileSavePath[0]);
+                break;
+            case "azure": // 微软azure
+                // AzureUtil.upload(ossStream, fileSavePath[0]);
+                break;
+            default: // 默认阿里云oss
+                OssUtil.upload(ossStream, fileSavePath[0], false);
+                break;
+        }
+    }
 }

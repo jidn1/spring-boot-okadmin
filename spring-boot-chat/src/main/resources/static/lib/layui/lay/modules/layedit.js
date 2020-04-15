@@ -147,7 +147,18 @@
                         }
                     })
                 })
-            }, code: function (e) {
+            },
+            //自定义 录音上传
+            mike: function (a) {
+                layer.open({
+                    title: "录音",
+                    type: 1,
+                    area: ["410px", "140px"],
+                    content: document.getElementById("mikeDiv").innerHTML,
+                    zIndex: layer.zIndex,
+                });
+            }
+            , code: function (e) {
                 k.call(o, function (i) {
                     v.call(t, "pre", {text: i.code, "lay-lang": i.lang}, e)
                 })
@@ -261,7 +272,8 @@
         face: '<i class="layui-icon layedit-tool-face" title="表情" layedit-event="face"">&#xe650;</i>',
         image: '<i class="layui-icon layedit-tool-image" title="图片" layedit-event="image">&#xe64a;<input type="file" name="file"></i>',
         code: '<i class="layui-icon layedit-tool-code" title="插入代码" layedit-event="code">&#xe64e;</i>',
-        help: '<i class="layui-icon layedit-tool-help" title="帮助" layedit-event="help">&#xe607;</i>'
+        help: '<i class="layui-icon layedit-tool-help" title="帮助" layedit-event="help">&#xe607;</i>',
+        mike: '<i class="layui-icon layedit-tool-mike" title="录音" layedit-event="mike">&#xe6dc;</i>'
     }, w = new c;
     t(n, w)
 });

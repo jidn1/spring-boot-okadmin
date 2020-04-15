@@ -1,5 +1,6 @@
 package com.common.interceptor;
 
+import com.util.PropertiesUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,12 +30,35 @@ public class MyAdapter extends WebMvcConfigurerAdapter {
         WebMvcConfigurerAdapter adapter = new WebMvcConfigurerAdapter() {
             @Override
             public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/pic/**").addResourceLocations("file:D:/ifeng/");
+                registry.addResourceHandler(PropertiesUtils.APP.getProperty("app.imgShowUrl")+"**").addResourceLocations("file:"+ PropertiesUtils.APP.getProperty("app.imgUrl"));
                 super.addResourceHandlers(registry);
             }
         };
         return adapter;
     }
+
+    @Bean
+    public WebMvcConfigurerAdapter corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            //重写父类提供的跨域请求处理的接口
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                //添加映射路径
+                registry.addMapping("/**")
+                        //放行哪些原始域
+                        .allowedOrigins("*")
+                        //是否发送Cookie信息
+                        .allowCredentials(true)
+                        //放行哪些原始域(请求方式)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        //放行哪些原始域(头部信息)
+                        .allowedHeaders("*")
+                        //暴露哪些头部信息（因为跨域访问默认不能获取全部头部信息）
+                        .exposedHeaders("Header1", "Header2");
+            }
+        };
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册TestInterceptor拦截器

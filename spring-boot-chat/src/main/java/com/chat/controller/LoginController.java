@@ -1,13 +1,20 @@
 package com.chat.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.chat.model.ChatFriend;
+import com.chat.model.ChatUser;
+import com.chat.model.ChatUserInfo;
 import com.chat.runnable.LoginRunnable;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
 import com.common.utils.ChatUtils;
 import com.common.utils.JsonResult;
 import com.chat.service.ChatUserService;
+import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.thread.ThreadPool;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -29,8 +36,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/")
 public class LoginController {
 
-    @Resource
-    private ChatUserService chatUserService;
+    private ChatUserService chatUserService = (ChatUserService)SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
 
     @RequestMapping("/index")
     public String index(HttpServletRequest request) {
@@ -43,7 +49,7 @@ public class LoginController {
     }
 
 
-    @PostMapping("/loginService")
+    @RequestMapping("/loginService")
     @ResponseBody
     public JsonResult loginService(HttpServletRequest request, HttpSession session,HttpServletResponse response) {
         String username = request.getParameter("username");
@@ -67,7 +73,7 @@ public class LoginController {
         return new JsonResult().setSuccess(false).setMsg("账号不存在");
     }
 
-    @PostMapping("/register")
+    @RequestMapping("/register")
     @ResponseBody
     public JsonResult register(HttpServletRequest request, HttpSession session) {
         String username = request.getParameter("username");
@@ -78,8 +84,30 @@ public class LoginController {
 
 
     @RequestMapping("logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        return ;
+    @ResponseBody
+    public JsonResult logout(HttpServletRequest request, HttpServletResponse response) {
+        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+            ChatUserInfoVo chatUser =(ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
+            jedis.hdel(ConstantsRedisKey.CHAT_USER_LIST,chatUser.getUsername());
+            jedis.hdel(ConstantsRedisKey.CHAT_USER_FRIEND, chatUser.getUserid());
+
+            Criteria<ChatUserInfo, Long> criteria = new Criteria<>(ChatUserInfo.class);
+            criteria.addFilter("userId=", chatUser.getUserid());
+            criteria.deleteByExample();
+
+            Criteria<ChatUser, Long> criteria1 = new Criteria<>(ChatUser.class);
+            criteria1.addFilter("userId=", chatUser.getUserid());
+            criteria1.deleteByExample();
+
+            Criteria<ChatFriend, Long> userFriendCriteria = new Criteria<>(ChatFriend.class);
+            userFriendCriteria.addFilter("userId=", chatUser.getUserid());
+            userFriendCriteria.deleteByExample();
+            userFriendCriteria.addFilter("friendUserId=", chatUser.getUserid());
+            userFriendCriteria.deleteByExample();
+        } catch (Exception e){
+        }
+        return new JsonResult().setSuccess(true);
     }
+
 
 }

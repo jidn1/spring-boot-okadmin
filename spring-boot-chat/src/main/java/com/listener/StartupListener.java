@@ -5,6 +5,7 @@ import com.util.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;
@@ -29,8 +30,8 @@ public class StartupListener implements ServletContextListener {
         app = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         SpringUtil.setApplication(app);
 
-        ChatUserService chatUserService = (ChatUserService)app.getBean("chatUserService");
-        chatUserService.initChatUserRedis();
+//        ChatUserService chatUserService = (ChatUserService)app.getBean("chatUserService");
+//        chatUserService.initChatUserRedis();
 
 
 

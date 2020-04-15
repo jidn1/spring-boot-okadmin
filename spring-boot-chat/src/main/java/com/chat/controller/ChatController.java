@@ -6,8 +6,13 @@ import com.chat.service.ChatUserService;
 import com.chat.vo.ChatFriendVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
+import com.common.utils.ChatUtils;
 import com.common.utils.EmojiFilter;
 import com.common.utils.JsonResult;
+import com.common.utils.UUIDUtil;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
+import com.util.file.FileUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,12 +42,11 @@ import java.util.UUID;
 @RequestMapping("/chat")
 public class ChatController {
 
-    @Resource
-    private ChatUserService chatUserService;
+    private ChatUserService chatUserService = (ChatUserService) SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
 
 
     @ApiOperation(value = "聊天大厅-好友列表", httpMethod = "POST", notes = "聊天大厅-好友列表")
-    @PostMapping("/friends")
+    @RequestMapping("/friends")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult friends(HttpSession session){
@@ -55,7 +60,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-查找好友", httpMethod = "POST", notes = "个人中心-查找好友")
-    @PostMapping("/searchFriend")
+    @RequestMapping("/searchFriend")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult searchFriend(
@@ -76,7 +81,7 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-添加好友", httpMethod = "POST", notes = "个人中心-添加好友")
-    @PostMapping("/addFriend")
+    @RequestMapping("/addFriend")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult addFriend(
@@ -84,21 +89,21 @@ public class ChatController {
     ){
         username= EmojiFilter.filterEmoji(username);
         ChatUserInfoVo chatUserInfoVo = (ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
-        if(chatUserInfoVo.getUserid().equals(username)){
+        if(chatUserInfoVo.getUsername().equals(username)){
             return new JsonResult().setSuccess(true).setMsg("不能添加自己");
         }
         ChatUserInfoVo chatUser = chatUserService.getChatUser(username);
         if(chatUser == null){
             return new JsonResult().setMsg("未查到此用户");
         }
-        chatUserService.addUserFriendRelation(chatUserInfoVo.getUserid(),chatUser.getUserid());
+        chatUserService.addUserFriendRelation(chatUserInfoVo.getUsername(),chatUser.getUsername(), chatUserInfoVo.getUserid(),chatUser.getUserid());
         return new JsonResult().setSuccess(true).setMsg("success");
     }
 
 
 
     @ApiOperation(value = "聊天大厅-查找好友聊天记录", httpMethod = "POST", notes = "个人中心-查找好友聊天记录")
-    @PostMapping("/findChatHistory")
+    @RequestMapping("/findChatHistory")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult findChatHistory(
@@ -111,18 +116,40 @@ public class ChatController {
 
 
     @ApiOperation(value = "聊天大厅-上传聊天图片", httpMethod = "POST", notes = "个人中心-上传聊天图片")
-    @PostMapping("/chatImg")
+    @RequestMapping("/chatImg")
     @ResponseBody
     @RequiresAuthentication
     public JsonResult chatImg(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
         String filename = UUID.randomUUID().toString().replaceAll("-", "");
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
         String filenames = filename + "." + ext;
-        file.transferTo(new File("D:/ifeng/" + filenames));
-        resUrl.put("src", "/pic/" + filenames);
+        file.transferTo(new File(PropertiesUtils.APP.getProperty("app.imgUrl") + filenames));
+        resUrl.put("src", PropertiesUtils.APP.getProperty("app.imgShowUrl") + filenames);
         return new JsonResult().setSuccess(true).setData(resUrl);
     }
+
+
+    @ApiOperation(value = "聊天大厅-上传聊天语音", httpMethod = "POST", notes = "个人中心-上传聊天语音")
+    @RequestMapping("/chatMp3")
+    @ResponseBody
+    @RequiresAuthentication
+    public JsonResult chatMp3(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        JSONObject resUrl = new JSONObject();
+        String filename = UUID.randomUUID().toString().replaceAll("-", "");
+        String filenames = filename + ".mp3";
+        InputStream inputStream = file.getInputStream();
+        if (!file.isEmpty()) {
+            String fileSavePath[] = FileUtil.createFileSavePath(filenames);
+            try {
+                ChatUtils.findUploadUtil(inputStream, fileSavePath);
+                resUrl.put("src", fileSavePath[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new JsonResult().setSuccess(true).setData(resUrl);
+    }
+
 
 }

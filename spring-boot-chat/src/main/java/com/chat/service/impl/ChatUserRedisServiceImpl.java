@@ -1,11 +1,10 @@
 package com.chat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.chat.dao.ChatMessageDao;
-import com.chat.dao.ChatUserDao;
-import com.chat.model.ChatFriend;
 import com.chat.model.ChatMessage;
+import com.chat.model.ChatUser;
 import com.chat.model.ChatUserInfo;
+import com.chat.service.ChatUserService;
 import com.chat.vo.ChatFriendVo;
 import com.chat.vo.ChatMsgVo;
 import com.chat.vo.ChatUserInfoVo;
@@ -14,33 +13,24 @@ import com.common.utils.ChatUtils;
 import com.common.utils.DateUtils;
 import com.common.utils.JsonResult;
 import com.common.utils.PasswordHelper;
-import com.chat.model.ChatUser;
-import com.chat.service.ChatUserService;
-import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.common.utils.UUIDUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import redis.clients.jedis.Jedis;
-import javax.annotation.Resource;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p> ChatUserService </p>
- *
- * @author: jidn
- * @Date :   2020-04-03 16:10:39
+ * @Copyright © 北京互融时代软件有限公司
+ * @Author: Jidn
+ * @Date: 2020/4/10 15:40
+ * @Description:
  */
-@Service("chatUserService")
-public class ChatUserServiceImpl implements ChatUserService {
-
-    @Resource
-    private ChatUserDao chatUserDao;
-
-    @Resource
-    private ChatMessageDao chatMessageDao;
+@Service("chatUserRedisService")
+public class ChatUserRedisServiceImpl implements ChatUserService {
 
     @Override
     public ChatUserInfoVo getChatUser(String username) {
@@ -65,10 +55,8 @@ public class ChatUserServiceImpl implements ChatUserService {
 
             String s = passwordHelper.encryString(password, salt);
 
-            Criteria<ChatUser, Long> userCriteria = new Criteria<>(ChatUser.class);
-            userCriteria.addFilter("username=", username);
-            ChatUser chatUser1 = userCriteria.findByExample();
-            if (chatUser1 != null) {
+            String user = jedis.hget(ConstantsRedisKey.CHAT_USER_LIST, username);
+            if (!StringUtils.isEmpty(user)) {
               return  new JsonResult().setSuccess(false).setMsg("账号已存在,请重新创建");
             }
             ChatUser chatUser = new ChatUser();
@@ -76,9 +64,7 @@ public class ChatUserServiceImpl implements ChatUserService {
             chatUser.setPassword(s);
             chatUser.setSalt(salt);
             chatUser.setUserId(userId);
-            userCriteria.save(chatUser);
 
-            Criteria<ChatUserInfo, Long> userInfoCriteria = new Criteria<>(ChatUserInfo.class);
             ChatUserInfo chatUserInfo = new ChatUserInfo();
             chatUserInfo.setUserid(userId);
             chatUserInfo.setNickName(ChatUtils.getNickName());
@@ -87,7 +73,7 @@ public class ChatUserServiceImpl implements ChatUserService {
             chatUserInfo.setGender(2);
             chatUserInfo.setIfdelete(0);
             chatUserInfo.setSignature(ConstantsRedisKey.DEFAULT_SIGNATURE);
-            userInfoCriteria.save(chatUserInfo);
+
             ChatUserInfoVo userInfoVo = ChatUtils.convertRedisVo(chatUser, chatUserInfo);
             System.out.println("注册信息==" + JSONObject.toJSONString(userInfoVo));
             jedis.hset(ConstantsRedisKey.CHAT_USER_LIST, username, JSONObject.toJSONString(userInfoVo));
@@ -99,11 +85,7 @@ public class ChatUserServiceImpl implements ChatUserService {
 
     @Override
     public void initChatUserRedis() {
-        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
-            List<ChatUserInfoVo> chatUserInfoList = chatUserDao.findChatUserInfoList();
-            for (ChatUserInfoVo chatUserInfoVo : chatUserInfoList) {
-                jedis.hset(ConstantsRedisKey.CHAT_USER_LIST, chatUserInfoVo.getUsername(), JSONObject.toJSONString(chatUserInfoVo));
-            }
+        try  {
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -126,34 +108,40 @@ public class ChatUserServiceImpl implements ChatUserService {
     @Override
     public void addUserFriendRelation(String username,String friendusername,String userId, String friendId) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
-            Criteria<ChatFriend, Long> userFriendCriteria = new Criteria<>(ChatFriend.class);
-            userFriendCriteria.addFilter("userId=", userId);
-            userFriendCriteria.addFilter("friendUserId=", friendId);
-            ChatFriend chatFriend = userFriendCriteria.findByExample();
-            if (chatFriend == null) {
-                chatFriend = new ChatFriend();
-                chatFriend.setUserId(userId);
-                chatFriend.setFriendUserId(friendId);
-                chatFriend.setStatus(1);
-                userFriendCriteria.save(chatFriend);
-
-                ChatFriend chatFriend1 = new ChatFriend();
-                chatFriend1.setUserId(friendId);
-                chatFriend1.setFriendUserId(userId);
-                chatFriend1.setStatus(1);
-                userFriendCriteria.save(chatFriend1);
-            }
             List<ChatFriendVo> friendVoList = new ArrayList<>();
-            Criteria<ChatUserInfo, Long> userInfoCriteria = new Criteria<>(ChatUserInfo.class);
-            userInfoCriteria.addFilter("userid=",friendId);
-            ChatUserInfo chatUserInfo = userInfoCriteria.findByExample();
-            ChatFriendVo chatFriendVo = ChatUtils.convertRedisFriendVo(userId, chatUserInfo);
-            String str = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, userId);
-            if(!StringUtils.isEmpty(str)){
-                friendVoList = JSONObject.parseArray(str, ChatFriendVo.class);
+            List<ChatFriendVo> friendVoList1 = new ArrayList<>();
+            boolean flag = true;
+            String friendStr = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, userId);
+            String friendStr1 = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, friendId);
+            if(!StringUtils.isEmpty(friendStr)){
+                friendVoList = JSONObject.parseArray(friendStr, ChatFriendVo.class);
             }
-            friendVoList.add(chatFriendVo);
-            jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId,JSONObject.toJSONString(friendVoList));
+            if(!StringUtils.isEmpty(friendStr1)){
+                friendVoList1 = JSONObject.parseArray(friendStr1, ChatFriendVo.class);
+            }
+            for(ChatFriendVo f : friendVoList){
+                if(f.getFriendUserId().equals(friendId)){
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                String user = jedis.hget(ConstantsRedisKey.CHAT_USER_LIST, friendusername);
+                ChatUserInfoVo chatUser = JSONObject.parseObject(user, ChatUserInfoVo.class);
+                ChatFriendVo chatFriendVo = ChatUtils.convertRedisFriendVo(userId, chatUser);
+
+                friendVoList.add(chatFriendVo);
+                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId,JSONObject.toJSONString(friendVoList));
+
+                String friendUserStr = jedis.hget(ConstantsRedisKey.CHAT_USER_LIST, username);
+                ChatUserInfoVo friendUser = JSONObject.parseObject(friendUserStr, ChatUserInfoVo.class);
+                ChatFriendVo chatFriendVo1 = ChatUtils.convertRedisFriendVo(friendId, friendUser);
+
+                friendVoList1.add(chatFriendVo1);
+                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, friendId,JSONObject.toJSONString(friendVoList1));
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,14 +152,6 @@ public class ChatUserServiceImpl implements ChatUserService {
     public List<ChatMessage> findChatHistory(String userId, String friendId) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + userId, friendId);
-            if (!StringUtils.isEmpty(str)) {
-                List<ChatMessage> chatHistory = chatMessageDao.findChatHistory(userId, friendId);
-                if (chatHistory != null && chatHistory.size() > 0) {
-                    jedis.hset(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + userId, friendId, JSONObject.toJSONString(chatHistory));
-                    jedis.hset(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + friendId, userId, JSONObject.toJSONString(chatHistory));
-                    return chatHistory;
-                }
-            }
             List<ChatMessage> messageList = JSONObject.parseArray(str, ChatMessage.class);
             return messageList;
         } catch (Exception e) {
@@ -186,8 +166,6 @@ public class ChatUserServiceImpl implements ChatUserService {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
             ChatMessage chatMessage = new ChatMessage();
             BeanUtils.copyProperties(chatMsgVo, chatMessage);
-            Criteria<ChatMessage,Integer> criteria = new Criteria<>(ChatMessage.class);
-            criteria.save(chatMessage);
 
             List<ChatMessage> chatHistory = new ArrayList<>();
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatMsgVo.getFromUserId(), chatMsgVo.getToUserId());
@@ -202,5 +180,4 @@ public class ChatUserServiceImpl implements ChatUserService {
             e.printStackTrace();
         }
     }
-
 }

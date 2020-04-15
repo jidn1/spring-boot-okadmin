@@ -2,6 +2,8 @@ package com.shiro;
 
 import com.chat.service.ChatUserService;
 import com.chat.vo.ChatUserInfoVo;
+import com.util.PropertiesUtils;
+import com.util.SpringUtil;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -23,8 +25,8 @@ public class MyRealm extends AuthorizingRealm {
 
     private static Logger logger = Logger.getLogger(MyRealm.class);
 
-    @Resource
-    private ChatUserService chatUserService;
+
+
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -36,6 +38,7 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken)
             throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authToken;
+        ChatUserService chatUserService = (ChatUserService) SpringUtil.getBean(PropertiesUtils.APP.getProperty("app.service"));
         ChatUserInfoVo chatUser = chatUserService.getChatUser(token.getUsername());
 
         logger.info("-----"+token.getUsername()+"---------"+chatUser.getUsername());
