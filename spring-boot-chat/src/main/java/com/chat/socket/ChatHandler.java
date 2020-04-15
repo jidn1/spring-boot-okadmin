@@ -44,6 +44,11 @@ public class ChatHandler extends TextWebSocketHandler {
      */
     private static ConcurrentHashMap<String, WebSocketSession> webSocketSet = new ConcurrentHashMap<String, WebSocketSession>();
 
+    /**
+     * 群聊
+     */
+    private static ConcurrentHashMap<String, HashMap<String,WebSocketSession>> chatSocketGroup = new ConcurrentHashMap<String, HashMap<String,WebSocketSession>>();
+
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {

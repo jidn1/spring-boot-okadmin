@@ -6,10 +6,13 @@ import com.chat.service.ChatUserService;
 import com.chat.vo.ChatFriendVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
+import com.common.utils.ChatUtils;
 import com.common.utils.EmojiFilter;
 import com.common.utils.JsonResult;
+import com.common.utils.UUIDUtil;
 import com.util.PropertiesUtils;
 import com.util.SpringUtil;
+import com.util.file.FileUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,6 +27,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,7 +120,6 @@ public class ChatController {
     @ResponseBody
     @RequiresAuthentication
     public JsonResult chatImg(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
-        JSONObject res = new JSONObject();
         JSONObject resUrl = new JSONObject();
         String filename = UUID.randomUUID().toString().replaceAll("-", "");
         String ext = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -125,5 +128,28 @@ public class ChatController {
         resUrl.put("src", PropertiesUtils.APP.getProperty("app.imgShowUrl") + filenames);
         return new JsonResult().setSuccess(true).setData(resUrl);
     }
+
+
+    @ApiOperation(value = "聊天大厅-上传聊天语音", httpMethod = "POST", notes = "个人中心-上传聊天语音")
+    @RequestMapping("/chatMp3")
+    @ResponseBody
+    @RequiresAuthentication
+    public JsonResult chatMp3(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        JSONObject resUrl = new JSONObject();
+        String filename = UUID.randomUUID().toString().replaceAll("-", "");
+        String filenames = filename + ".mp3";
+        InputStream inputStream = file.getInputStream();
+        if (!file.isEmpty()) {
+            String fileSavePath[] = FileUtil.createFileSavePath(filenames);
+            try {
+                ChatUtils.findUploadUtil(inputStream, fileSavePath);
+                resUrl.put("src", fileSavePath[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return new JsonResult().setSuccess(true).setData(resUrl);
+    }
+
 
 }

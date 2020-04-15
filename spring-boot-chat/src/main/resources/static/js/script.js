@@ -1,47 +1,19 @@
-
-function startVideo(){
-    $("#localVideo").attr("muted","muted");
-
-// Generate random room name if needed
-    if (!location.hash) {
-        location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
-    }
-    const roomHash = location.hash.substring(1);
-
-// TODO: Replace with your own channel ID
-    const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
-// Room name needs to be prefixed with 'observable-'
-    const roomName = 'observable-' + roomHash;
-
-
-    drone.on('open', error => {
-        if (error) {
-            return console.error(error);
-        }
-        room = drone.subscribe(roomName);
-        room.on('open', error => {
-            if (error) {
-                onError(error);
-            }
-        });
-        // We're connected to the room and received an array of 'members'
-        // connected to the room (including us). Signaling server is ready.
-        room.on('members', members => {
-            console.log('MEMBERS', members);
-            // If we are the second user to connect to the room we will be creating the offer
-            const isOfferer = members.length === 2;
-            startWebRTC(isOfferer);
-        });
-    });
+// 如果需要，生成随机的房间名称
+if (!location.hash) {
+    location.hash = Math.floor(Math.random() * 0xFFFFFF).toString(16);
 }
+const roomHash = location.hash.substring(1);
 
+console.log(roomHash)
+// 用您自己的通道ID替换
+const drone = new ScaleDrone('yiS12Ts5RdNhebyM');
+//房间名称前须加上“可观察到的-”
+const roomName = 'observable-' + roomHash;
 const configuration = {
     iceServers: [{
         urls: 'stun:stun.l.google.com:19302'
     }]
 };
-
-
 let room;
 let pc;
 
@@ -51,9 +23,27 @@ function onError(error) {
     console.error(error);
 };
 
+drone.on('open', error => {
+    if (error) {
+        return console.error(error);
+    }
+    room = drone.subscribe(roomName);
+    room.on('open', error => {
+        if (error) {
+            onError(error);
+        }
+    });
+    // 我们连接到房间并接收到一组“成员”
+    // 连接到房间(包括我们)。信令服务器准备好了。
+    room.on('members', members => {
+        console.log('MEMBERS', members);
+        // 如果我们是第二个连接到房间的用户，我们将创建offer
+        const isOfferer = members.length === 2;
+        startWebRTC(isOfferer);
+    });
+});
 
-
-// Send signaling data via Scaledrone
+// 通过Scaledrone发送信号数据
 function sendMessage(message) {
     drone.publish({
         room: roomName,
@@ -64,8 +54,8 @@ function sendMessage(message) {
 function startWebRTC(isOfferer) {
     pc = new RTCPeerConnection(configuration);
 
-    // 'onicecandidate' notifies us whenever an ICE agent needs to deliver a
-    // message to the other peer through the signaling server
+    // “onicecandidate”在ICE代理需要交付a时通知我们
+    // 通过信令服务器向另一个对等点发送消息
     pc.onicecandidate = event => {
         if (event.candidate) {
             sendMessage({'candidate': event.candidate});
@@ -79,7 +69,7 @@ function startWebRTC(isOfferer) {
         }
     }
 
-    // When a remote stream arrives display it in the #remoteVideo element
+    // 当远程流到达时，将其显示在#remoteVideo元素中
     pc.ontrack = event => {
         const stream = event.streams[0];
         if (!remoteVideo.srcObject || remoteVideo.srcObject.id !== stream.id) {
@@ -91,29 +81,29 @@ function startWebRTC(isOfferer) {
         audio: true,
         video: true,
     }).then(stream => {
-        // Display your local video in #localVideo element
+        // 在#localVideo元素中显示本地视频
         localVideo.srcObject = stream;
-        // Add your stream to be sent to the conneting peer
+        // 添加要发送到conneting对等点的流
         stream.getTracks().forEach(track => pc.addTrack(track, stream));
     }, onError);
 
-    // Listen to signaling data from Scaledrone
+    // 听Scaledrone的信号数据
     room.on('data', (message, client) => {
-        // Message was sent by us
+        // 消息是由我们发出的
         if (client.id === drone.clientId) {
             return;
         }
 
         if (message.sdp) {
-            // This is called after receiving an offer or answer from another peer
+            // 这是在收到来自其他同事的提议或回答后调用的
             pc.setRemoteDescription(new RTCSessionDescription(message.sdp), () => {
-                // When receiving an offer lets answer it
+                // 当收到offer时，让我们答复
                 if (pc.remoteDescription.type === 'offer') {
                     pc.createAnswer().then(localDescCreated).catch(onError);
                 }
             }, onError);
         } else if (message.candidate) {
-            // Add the new ICE candidate to our connections remote description
+            // 将新的ICE候选项添加到我们的连接远程描述中
             pc.addIceCandidate(
                 new RTCIceCandidate(message.candidate), onSuccess, onError
             );
