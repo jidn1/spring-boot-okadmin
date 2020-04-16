@@ -1,23 +1,26 @@
 layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUpload", "layedit"], function (exprots) {
     let form = layui.form;
     let okMock = layui.okMock;
-    let layedit = layui.layedit;
+    let layeditGroup = layui.layedit;
     let $ = layui.jquery;
-    let editIndex;
+    let editIndexGroup;
     var chats = {
 
         init: function () {
 
+
             //设置上传图片接口
-            layedit.set({
+            layeditGroup.set({
                 uploadImage: {
                     url: okMock.api.baseUrl + '/chat/chatImg',
                     type: 'POST',
                     size: 1024 * 5
                 }
             });
+
+
             //创建一个编辑器
-            editIndex = layedit.build('LAY_demo_editor', {
+            editIndexGroup = layeditGroup.build('LAY_demo_editorGroup', {
                 tool: ['face', //删除线
                     '|', //分割线
                     'image',//图片
@@ -34,14 +37,12 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 height: 120 //设置编辑器高度
             });
 
-
             form.verify({
                 content: function () {
-                    layedit.sync(editIndex)
+                    layeditGroup.sync(editIndexGroup)
                 }
             });
             form.render();
-
 
 
             document.onkeydown = function (event) {
@@ -52,128 +53,84 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             };
 
 
-        }
-    };
-    exprots("chats", chats);
-
-    var info = new Vue({
-        el: '#userinfo',
-        data() {
-            return {
-                userinfo: Object
-            }
-        },
-        mounted: function () {
-            window.setUserInfo = this.setUserInfo;
-        },
-        methods: {
-            lookuser: function () {
-                var username = $("input[name='searchUserName']").val();
+            $("#createGroup").click(function(){
+                var groupName = $("input[name='groupName']").val();
                 $.ajax({
-                    url: okMock.api.baseUrl + "chat/searchFriend",
+                    url: okMock.api.baseUrl + "chat/createGroup",
                     type: "post",
-                    data: {username: username},
+                    data: {groupName: groupName},
                     dataType: "json", //回调
                     success: function (data) {
                         if (data.success) {
-                            setUserInfo(data.obj);
-                        } else {
-                            setUserInfo(null);
-                        }
-                    }
-                });
-                return false;
-            },
-            /**添加好友查询用户信息*/
-            setUserInfo: function (info) {
-                var that = this;
-                that.userinfo = info;
-                $("#info").show();
-            },
-            adduser: function (username) {
-                $.ajax({
-                    url: okMock.api.baseUrl + "chat/addFriend",
-                    data: {username: username},
-                    type: "post",
-                    dataType: "json", //回调
-                    success: function (data) {
-                        if (!data.success) {
-                            layer.msg(data.msg, {
+                            layer.msg('创建成功！', {
                                 time: 1500,
-                                icon: 2,
-                                offset: '350px'
-                            });
-                        } else {
-                            layer.msg(data.msg, {
-                                time: 1000,
-                                icon: 1,
-                                offset: '350px'
-                            }, function () {
-                                getlistnickname();//刷新好友列表
+                                icon: 0,
+                                offset: '50px'
                             });
                         }
                     }
                 });
-            }
-        }
-    })
 
-//好友一对一聊天
-    var app = new Vue({
-        el: '#vuechat',
+            })
+
+
+        }
+    };
+    exprots("group", group);
+
+
+    var vueChatGroup = new Vue({
+        el: '#VueGroupChat',
         data() {
             return {
-                listnickname: [],
-                listmessage: [],
+                groupList: [],
+                listGroupMessage: [],
                 userId: sessionStorage.getItem("userId"),
-                friendUserId: '',
+                groupName: "",
             }
         },
         watch: {
             //监听消息记录，有变动就滚动至底部
-            listmessage: function () {
-                var container = $("#msgcontent");
+            listGroupMessage: function () {
+                var container = $("#msgContentGroup");
                 this.$nextTick(() => {
                     container.scrollTop = container.scrollHeight;
                 })
             }
         },
         mounted: function () {
-            this.getlistnickname();
+            this.getGroupList();
+
             //连接WebSocket节点
-            this.ws = new WebSocket(okMock.api.socketUrl);
+            this.ws = new WebSocket(okMock.api.socketGroupUrl+"?group="+this.groupName);
             this.ws.onopen = this.onopen;
             this.ws.onmessage = this.onmessage;
             this.ws.onclose = this.onclose;
             this.ws.onerror = this.onerror;
 
-            window.alertnote = this.alertnote;
             window.activeuser = this.activeuser;
             window.appendmsg = this.appendmsg;
-            window.getlistnickname = this.getlistnickname;
             window.onbeforeunload = this.onbeforeunload;
-            window.sendaudio = this.sendaudio;
         },
         methods: {
+            socket:function(){
+
+            },
+
             onopen: function (e) {
-                var msg = JSON.stringify({cmd: 'enter_chatting'});
+                var msg = JSON.stringify({cmd: 'enter_group_chat'});
                 this.ws.send(msg);
             },
             onmessage: function (e) {
-                if (e.data != "当前用户不在线") {
-                    var chatRecord = JSON.parse(e.data);
-                    that = this;
-                    that.listmessage.push({
-                        msgType: chatRecord.msgType,
-                        fromUserId: chatRecord.fromUserId,
-                        toUserId: chatRecord.toUserId,
-                        sendtext: chatRecord.sendtext
-                    });
-                } else {
-                    that = this;
-                    that.setMessageInnerHTML(e.data)
-                }
-
+                console.log("e.data==" + e.data)
+                var chatRecord = JSON.parse(e.data);
+                that = this;
+                that.listGroupMessage.push({
+                    msgType: chatRecord.msgType,
+                    fromUserId: chatRecord.fromUserId,
+                    fromUserName: chatRecord.fromUserName,
+                    sendtext: chatRecord.sendtext
+                });
             },
             onclose: function (e) {
 
@@ -202,50 +159,40 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     });
                 }
             },
-            /*新信息提示*/
-            alertnote: function (msgtouid) {
-                var that = this;
-                for (var i = 0; i < that.listnickname.length; i++) {
-                    if (that.listnickname[i].userid === msgtouid) {
-                        layer.msg(that.listnickname[i].nickname + '发来一条信息', {
-                            time: 1500,
-                            icon: 0,
-                            offset: '50px'
-                        });
-                    }
-                }
-            },
+
             /*添加聊天记录*/
             appendmsg(mstype, revive, send, text) {
                 var that = this;
                 //that.listmessage.push({msgType: mstype, fromUserId: revive, toUserId: send, sendtext: text});
                 setTimeout(function () {
-                    document.getElementById("msg_end").scrollIntoView();
+                    document.getElementById("msg_endGroup").scrollIntoView();
                 }, 500)
             },
             /*设置点击左侧的列表的时候切换样式同时查找聊天记录*/
-            selectStyle: function (item, friendUserId) {
+            selectGroup: function (item, groupName) {
                 this.$nextTick(function () {
-                    this.listnickname.forEach(function (item) {
+                    this.groupList.forEach(function (item) {
                         Vue.set(item, 'active', false);
                     });
                     Vue.set(item, 'active', true);
                 });
-                this.getMessageList(friendUserId);
-                this.friendUserId = friendUserId;
+                this.getGroupMessageList(groupName);
+                this.groupName = groupName;
+                this.socket();
             },
-            /*获取左侧的聊天窗口*/
-            getlistnickname: function () {
+
+            /*获取群聊*/
+            getGroupList: function () {
                 var that = this;
                 $.ajax({
-                    url: okMock.api.baseUrl + "/chat/friends",
+                    url: okMock.api.baseUrl + "/chat/groups",
                     type: "post",
                     dataType: "json",
                     success: function (data) {
                         if (data.success) {
-                            that.listnickname = data.obj;
-                            document.getElementById('leftc').style.display = 'block';
-                            document.getElementById('appLoading').style.display = 'none';
+                            that.groupList = data.obj;
+                            document.getElementById('leftcGroup').style.display = 'block';
+                            document.getElementById('appLoadingGroup').style.display = 'none';
                         }
                     },
                     error: function (err) {
@@ -254,25 +201,25 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 });
             },
             /*获取聊天记录*/
-            getMessageList: function (userId) {
-                document.getElementById('waits').style.display = 'none';
-                document.getElementById('words').style.display = 'none';
-                document.getElementById('appLoading2').style.display = 'block';
+            getGroupMessageList: function (groupName) {
+                document.getElementById('waitsGroup').style.display = 'none';
+                document.getElementById('wordsGroup').style.display = 'none';
+                document.getElementById('appLoading2Group').style.display = 'block';
                 var that = this;
                 $.ajax({
                     type: 'post',
-                    url: okMock.api.baseUrl + '/chat/findChatHistory',
-                    data: {friendUserId: userId},
+                    url: okMock.api.baseUrl + '/chat/findGroupChatHistory',
+                    data: {groupName: groupName},
                     dataType: 'json',
                     success: function (data) {
                         if (data.success) {
-                            that.listmessage = data.obj;
-                            document.getElementById('words').style.display = 'block';
-                            document.getElementById('appLoading2').style.display = 'none';
-                            $('#msgcontent').ready(
+                            that.listGroupMessage = data.obj;
+                            document.getElementById('wordsGroup').style.display = 'block';
+                            document.getElementById('appLoading2Group').style.display = 'none';
+                            $('#msgcontentGroup').ready(
                                 function () {
                                     setTimeout(function () {
-                                        document.getElementById("msg_end").scrollIntoView();
+                                        document.getElementById("msg_endGroup").scrollIntoView();
                                     }, 500)
                                 }
                             );
@@ -281,9 +228,9 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 })
             },
 
-            send: function () {
-                var layedit = layui.layedit;
-                var message = layedit.getContent(editIndex);
+            sendGroup: function () {
+                var layeditGroup = layui.layedit;
+                var message = layeditGroup.getContent(editIndexGroup);
                 if (message.length == 0) {
                     layer.msg("请输入发送的内容", {
                         time: 2500,
@@ -293,32 +240,32 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     return;
                 }
                 // 将内容设置为空
-                layedit.setContent(editIndex, "", false);
+                layeditGroup.setContent(editIndexGroup, "", false);
                 var object = new Object();
-                object["cmd"] = 'chatting';
-                object["toUserId"] = this.friendUserId;
+                object["cmd"] = 'chat_group';
+                object["groupName"] = this.groupName;
                 object["fromUserId"] = this.userId;
                 object["msgType"] = 0;
                 object["sendtext"] = message;
                 var jsonData = JSON.stringify(object);
                 this.ws.send(jsonData);//websocket发送数据
                 appendmsg("0", this.userId, this.friendUserId, message);
-                document.getElementById("msg_end").scrollIntoView();
+                document.getElementById("msg_endGroup").scrollIntoView();
             },
 
             //发送语音消息
             sendaudio: function (mp3) {
                 if (mp3 != "" && mp3 != undefined) {
                     var object = new Object();
-                    object["cmd"] = 'chatting';
-                    object["toUserId"] = this.friendUserId;
+                    object["cmd"] = 'chat_group';
+                    object["groupName"] = this.groupName;
                     object["fromUserId"] = this.userId;
                     object["msgType"] = 1;
-                    object["sendtext"] = "<video controls class=\"audio-player\" style='height: 56px;width: 300px'><source src=\"" + okMock.api.fileUrl + mp3 + "\" type=\"audio/mp3\"></video>";
+                    object["sendtext"] = "<audio controls class=\"audio-player\"><source src=\"" + mp3 + "\" type=\"audio/mp3\"></audio>";
                     var jsonData = JSON.stringify(object);
                     this.ws.send(jsonData);
-                    appendmsg("1", this.userId, this.friendUserId, "<video controls class=\"audio-player\" style='height: 56px;width: 300px'><source src=\"" + okMock.api.fileUrl + mp3 + "\" type=\"audio/mp3\"></video>");
-                    document.getElementById("msg_end").scrollIntoView();
+                    appendmsg("1", this.userId, this.friendUserId, "<audio controls class=\"audio-player\"><source src=\"" + mp3 + "\" type=\"audio/mp3\"></audio>");
+                    document.getElementById("msg_endGroup").scrollIntoView();
                 }
             },
 
@@ -329,22 +276,12 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     icon: 0,
                     offset: '50px'
                 });
-                document.getElementById("msg_end").scrollIntoView();
+                document.getElementById("msg_endGroup").scrollIntoView();
             },
-
-
             logout: function () {
-                $.ajax({
-                    type: 'post',
-                    url: okMock.api.baseUrl + '/destroy',
-                    dataType: 'json',
-                    success: function (data) {
-                        if (data.success) {
-                            sessionStorage.removeItem("userId");
-                            window.location = "/logout";
-                        }
-                    }
-                })
+                sessionStorage.removeItem("userId");
+                window.location = "/logout";
+
             }
 
 

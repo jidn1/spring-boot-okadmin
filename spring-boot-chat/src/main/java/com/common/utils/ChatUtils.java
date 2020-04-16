@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.chat.model.ChatUser;
 import com.chat.model.ChatUserInfo;
 import com.chat.vo.ChatFriendVo;
+import com.chat.vo.ChatGroupVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
 import com.util.oss.OssUtil;
@@ -26,6 +27,8 @@ import java.io.InputStream;
 public class ChatUtils {
 
     public static final String TOKEN_NAME = "chatOneToken";
+
+    public static final String GROUP_NAME = "groupToken";
 
     public static String getNickName() {
         return "小吉_" + UUIDUtil.generateShortUuid();
@@ -69,6 +72,13 @@ public class ChatUtils {
         return chatFriendVo;
     }
 
+    public static ChatGroupVo convertRedisChatGroupVo(String userId,String groupName){
+        ChatGroupVo g = new ChatGroupVo();
+        g.setGroupCreateUserId(userId);
+        g.setGroupName(groupName);
+        g.setGroupHeadUrl(ConstantsRedisKey.DEFAULT_GROUP_AVATAR);
+        return g;
+    }
 
     public static void createSession(Jedis jedis, ChatUserInfoVo chatUser, HttpServletResponse response){
         jedis.hset(ConstantsRedisKey.TOKEN,chatUser.getUserid(), JSONObject.toJSONString(chatUser));
@@ -78,6 +88,7 @@ public class ChatUtils {
 
     public static ChatUserInfoVo getSession(Jedis jedis, HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+
         String token = null;
         if (null != cookies && cookies.length > 0) {
             for (Cookie cookie : cookies) {

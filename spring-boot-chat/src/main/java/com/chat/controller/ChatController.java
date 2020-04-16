@@ -1,9 +1,11 @@
 package com.chat.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chat.model.ChatGroupMessage;
 import com.chat.model.ChatMessage;
 import com.chat.service.ChatUserService;
 import com.chat.vo.ChatFriendVo;
+import com.chat.vo.ChatGroupVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
 import com.common.utils.ChatUtils;
@@ -151,5 +153,41 @@ public class ChatController {
         return new JsonResult().setSuccess(true).setData(resUrl);
     }
 
+
+    @ApiOperation(value = "聊天大厅-创建群聊", httpMethod = "POST", notes = "个人中心-创建群聊")
+    @RequestMapping("/createGroup")
+    @ResponseBody
+    @RequiresAuthentication
+    public JsonResult createGroup(
+            @ApiParam(name = "groupName", value = "群账号", required = true) @RequestParam("groupName") String groupName
+    ){
+        ChatUserInfoVo chatUserInfoVo = (ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
+
+        chatUserService.createGroup(chatUserInfoVo.getUserid(),chatUserInfoVo.getUsername(), groupName);
+        return new JsonResult().setSuccess(true).setMsg("success");
+    }
+
+
+    @ApiOperation(value = "聊天大厅-群聊", httpMethod = "POST", notes = "个人中心-群聊")
+    @RequestMapping("/groups")
+    @ResponseBody
+    @RequiresAuthentication
+    public JsonResult groups(){
+        ChatUserInfoVo chatUserInfoVo = (ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
+
+        List<ChatGroupVo> groups = chatUserService.findGroups(chatUserInfoVo.getUserid());
+        return new JsonResult().setSuccess(true).setMsg("success").setObj(groups);
+    }
+
+
+    @ApiOperation(value = "聊天大厅-查找群聊天记录", httpMethod = "POST", notes = "个人中心-查找群聊天记录")
+    @RequestMapping("/findGroupChatHistory")
+    @ResponseBody
+    @RequiresAuthentication
+    public JsonResult findGroupChatHistory(
+            @ApiParam(name = "groupName", value = "群账号", required = true) @RequestParam("groupName") String groupName){
+        List<ChatGroupMessage> history = chatUserService.findGroupChatMsgHistory(groupName);
+        return new JsonResult().setSuccess(true).setMsg("success").setObj(history);
+    }
 
 }

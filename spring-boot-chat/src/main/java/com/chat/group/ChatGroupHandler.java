@@ -1,7 +1,8 @@
-package com.chat.socket;
+package com.chat.group;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chat.enums.SocketCmd;
+import com.chat.socket.ChatHandler;
 import com.chat.vo.ChatGroupMsgVo;
 import com.chat.vo.ChatMsgVo;
 import com.common.queue.ChatQueue;
@@ -17,20 +18,18 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Copyright © 北京互融时代软件有限公司
  * @Author: Jidn
- * @Date: 2020/4/8 13:35
+ * @Date: 2020/4/16 9:53
  * @Description:
  */
 @Component
-@ServerEndpoint("/chatSocket")
-public class ChatHandler extends TextWebSocketHandler {
+@ServerEndpoint("/chatGroupSocket")
+public class ChatGroupHandler extends TextWebSocketHandler {
 
     private final static Logger logger = LoggerFactory.getLogger(ChatHandler.class);
 
@@ -42,10 +41,11 @@ public class ChatHandler extends TextWebSocketHandler {
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
      */
     private static int onlineCount = 0;
+
     /**
-     * concurrent包的线程安全Set，用来存放每个客户端对应的MyWebSocket对象。若要实现服务端与单一客户端通信的话，可以使用Map来存放，其中Key可以为用户标识
+     * 群聊
      */
-    private static ConcurrentHashMap<String, WebSocketSession> webSocketSet = new ConcurrentHashMap<String, WebSocketSession>();
+    private static ConcurrentHashMap<String, HashMap<String,WebSocketSession>> chatSocketGroup = new ConcurrentHashMap<String, HashMap<String,WebSocketSession>>();
 
 
     @Override
@@ -53,17 +53,20 @@ public class ChatHandler extends TextWebSocketHandler {
 
         String content = message.getPayload();
         if(!StringUtils.isEmpty(content)){
-            ChatMsgVo chatMsgVo = JSONObject.parseObject(content, ChatMsgVo.class);
+            ChatGroupMsgVo chatGroupMsgVo = JSONObject.parseObject(content, ChatGroupMsgVo.class);
             String userId = session.getAttributes().get(UID).toString();
 
-            if(SocketCmd.CHAT_ENTER.getKey().equals(chatMsgVo.getCmd())) {
-                webSocketSet.put(userId, session);
-                addOnlineCount();
-            }else if (SocketCmd.CHATTING.getKey().equals(chatMsgVo.getCmd())) {
+            if(SocketCmd.CHAT_GROUP_ENTER.getKey().equals(chatGroupMsgVo.getCmd())){
+                if(session.getAttributes().get(GROUP) != null){
+                    String groupName = session.getAttributes().get(GROUP).toString();
+                    HashMap<String,WebSocketSession> map = new HashMap<>();
+                    map.put(userId,session);
+                    chatSocketGroup.put(groupName,map);
+                }
+            }else if(SocketCmd.CHAT_GROUP.getKey().equals(chatGroupMsgVo.getCmd())){
+                ChatGroupMsgVo chatMsgVo = JSONObject.parseObject(content, ChatGroupMsgVo.class);
                 session.sendMessage(new TextMessage(JSONObject.toJSONString(chatMsgVo)));
-                sendToUser(chatMsgVo);
-            }else if(SocketCmd.OUT_CHAT.getKey().equals(chatMsgVo.getCmd())){
-                subOnlineCount();
+                sendGroup(chatMsgVo);
             }
 
         }
@@ -85,8 +88,6 @@ public class ChatHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        String userId = session.getAttributes().get(UID).toString();
-        webSocketSet.remove(userId);
         subOnlineCount();
     }
 
@@ -96,24 +97,24 @@ public class ChatHandler extends TextWebSocketHandler {
         subOnlineCount();
     }
 
-    public void sendToUser(ChatMsgVo chatMsg) {
-        String toUserId = chatMsg.getToUserId();
-        String fromUserId = chatMsg.getFromUserId();
+
+    public void sendGroup(ChatGroupMsgVo chatMsg) {
         String sendMessage = chatMsg.getSendtext();
+        String groupName = chatMsg.getGroupName();
         //过滤输入法输入的表情
         sendMessage= EmojiFilter.filterEmoji(sendMessage);
         chatMsg.setSendtext(sendMessage);
-        ChatQueue.produce(chatMsg);
+        //ChatQueue.produce(chatMsg);
         try {
-            if (webSocketSet.get(toUserId) != null) {
-                webSocketSet.get(toUserId).sendMessage(new TextMessage(JSONObject.toJSONString(chatMsg)));
-            }else{
-                webSocketSet.get(fromUserId).sendMessage(new TextMessage("当前用户不在线"));
+            HashMap<String, WebSocketSession> sessionHashMap = chatSocketGroup.get(groupName);
+            for (String userId : sessionHashMap.keySet()){
+                sessionHashMap.get(userId).sendMessage(new TextMessage(JSONObject.toJSONString(chatMsg)));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     public static synchronized int getOnlineCount() {
@@ -122,13 +123,14 @@ public class ChatHandler extends TextWebSocketHandler {
 
 
     public static synchronized void addOnlineCount() {
-        ChatHandler.onlineCount++;
-        logger.info("当前在线人数："+ChatHandler.onlineCount);
+        ChatGroupHandler.onlineCount++;
+        logger.info("当前在线人数："+ChatGroupHandler.onlineCount);
     }
 
 
     public static synchronized void subOnlineCount() {
-        ChatHandler.onlineCount--;
+        ChatGroupHandler.onlineCount--;
     }
+
 
 }

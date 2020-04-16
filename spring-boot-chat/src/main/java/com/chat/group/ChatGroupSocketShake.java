@@ -1,14 +1,15 @@
-package com.chat.socket;
+package com.chat.group;
 
+import com.chat.socket.ChatHandler;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.utils.ChatUtils;
 import com.redis.BaseRedis;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
-import org.springframework.util.StringUtils;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import redis.clients.jedis.Jedis;
@@ -19,12 +20,13 @@ import java.util.Map;
 /**
  * @Copyright © 北京互融时代软件有限公司
  * @Author: Jidn
- * @Date: 2020/4/8 13:34
+ * @Date: 2020/4/16 9:53
  * @Description:
  */
-public class ChatSocketShake implements HandshakeInterceptor {
+public class ChatGroupSocketShake implements HandshakeInterceptor {
 
-    public static final Logger log = LoggerFactory.getLogger(ChatSocketShake.class);
+
+    public static final Logger log = LoggerFactory.getLogger(ChatGroupSocketShake.class);
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,

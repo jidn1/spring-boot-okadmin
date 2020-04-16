@@ -1,20 +1,18 @@
 package com.chat.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.chat.model.ChatMessage;
-import com.chat.model.ChatUser;
-import com.chat.model.ChatUserInfo;
+import com.chat.model.*;
 import com.chat.service.ChatUserService;
-import com.chat.vo.ChatFriendVo;
-import com.chat.vo.ChatMsgVo;
-import com.chat.vo.ChatUserInfoVo;
+import com.chat.vo.*;
 import com.common.constants.ConstantsRedisKey;
 import com.common.utils.ChatUtils;
 import com.common.utils.DateUtils;
 import com.common.utils.JsonResult;
 import com.common.utils.PasswordHelper;
+import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.common.utils.UUIDUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -57,7 +55,7 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
 
             String user = jedis.hget(ConstantsRedisKey.CHAT_USER_LIST, username);
             if (!StringUtils.isEmpty(user)) {
-              return  new JsonResult().setSuccess(false).setMsg("账号已存在,请重新创建");
+                return new JsonResult().setSuccess(false).setMsg("账号已存在,请重新创建");
             }
             ChatUser chatUser = new ChatUser();
             chatUser.setUsername(username);
@@ -85,7 +83,7 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
 
     @Override
     public void initChatUserRedis() {
-        try  {
+        try {
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,7 +93,7 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
     public List<ChatFriendVo> findFriendListByUserId(String userId) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, userId);
-            if(!StringUtils.isEmpty(str)){
+            if (!StringUtils.isEmpty(str)) {
                 List<ChatFriendVo> friendVoList = JSONObject.parseArray(str, ChatFriendVo.class);
                 return friendVoList;
             }
@@ -106,21 +104,21 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
     }
 
     @Override
-    public void addUserFriendRelation(String username,String friendusername,String userId, String friendId) {
+    public void addUserFriendRelation(String username, String friendusername, String userId, String friendId) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
             List<ChatFriendVo> friendVoList = new ArrayList<>();
             List<ChatFriendVo> friendVoList1 = new ArrayList<>();
             boolean flag = true;
             String friendStr = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, userId);
             String friendStr1 = jedis.hget(ConstantsRedisKey.CHAT_USER_FRIEND, friendId);
-            if(!StringUtils.isEmpty(friendStr)){
+            if (!StringUtils.isEmpty(friendStr)) {
                 friendVoList = JSONObject.parseArray(friendStr, ChatFriendVo.class);
             }
-            if(!StringUtils.isEmpty(friendStr1)){
+            if (!StringUtils.isEmpty(friendStr1)) {
                 friendVoList1 = JSONObject.parseArray(friendStr1, ChatFriendVo.class);
             }
-            for(ChatFriendVo f : friendVoList){
-                if(f.getFriendUserId().equals(friendId)){
+            for (ChatFriendVo f : friendVoList) {
+                if (f.getFriendUserId().equals(friendId)) {
                     flag = false;
                     break;
                 }
@@ -132,14 +130,14 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
                 ChatFriendVo chatFriendVo = ChatUtils.convertRedisFriendVo(userId, chatUser);
 
                 friendVoList.add(chatFriendVo);
-                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId,JSONObject.toJSONString(friendVoList));
+                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, userId, JSONObject.toJSONString(friendVoList));
 
                 String friendUserStr = jedis.hget(ConstantsRedisKey.CHAT_USER_LIST, username);
                 ChatUserInfoVo friendUser = JSONObject.parseObject(friendUserStr, ChatUserInfoVo.class);
                 ChatFriendVo chatFriendVo1 = ChatUtils.convertRedisFriendVo(friendId, friendUser);
 
                 friendVoList1.add(chatFriendVo1);
-                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, friendId,JSONObject.toJSONString(friendVoList1));
+                jedis.hset(ConstantsRedisKey.CHAT_USER_FRIEND, friendId, JSONObject.toJSONString(friendVoList1));
 
             }
 
@@ -152,7 +150,10 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
     public List<ChatMessage> findChatHistory(String userId, String friendId) {
         try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + userId, friendId);
-            List<ChatMessage> messageList = JSONObject.parseArray(str, ChatMessage.class);
+            List<ChatMessage> messageList = new ArrayList<>();
+            if(!StringUtils.isEmpty(str)){
+                messageList = JSONObject.parseArray(str, ChatMessage.class);
+            }
             return messageList;
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,15 +170,91 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
 
             List<ChatMessage> chatHistory = new ArrayList<>();
             String str = jedis.hget(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatMsgVo.getFromUserId(), chatMsgVo.getToUserId());
-            if(!StringUtils.isEmpty(str)){
+            if (!StringUtils.isEmpty(str)) {
                 chatHistory = JSONObject.parseArray(str, ChatMessage.class);
             }
 
             chatHistory.add(chatMessage);
             jedis.hset(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatMsgVo.getFromUserId(), chatMsgVo.getToUserId(), JSONObject.toJSONString(chatHistory));
             jedis.hset(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatMsgVo.getToUserId(), chatMsgVo.getFromUserId(), JSONObject.toJSONString(chatHistory));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public void logout() {
+        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+            ChatUserInfoVo chatUser = (ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
+
+            jedis.hdel(ConstantsRedisKey.TOKEN, chatUser.getUserid());
+            jedis.hdel(ConstantsRedisKey.CHAT_USER_FRIEND, chatUser.getUserid());
+            jedis.del(ConstantsRedisKey.CHAT_USER_HISTORY + ":" + chatUser.getUserid());
+            jedis.hdel(ConstantsRedisKey.CHAT_USER_LIST, chatUser.getUsername());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public JsonResult createGroup(String userId,String userName, String groupName) {
+        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+            String group = jedis.get(ConstantsRedisKey.CHAT_GROUP + ":" + groupName);
+            if(!StringUtils.isEmpty(group)){
+                return new JsonResult().setMsg("群已存在");
+            }
+            jedis.set(ConstantsRedisKey.CHAT_GROUP + ":" + groupName,"1");
+
+            List<ChatGroupVo> list = new ArrayList<>();
+            String s = jedis.get(ConstantsRedisKey.CHAT_GROUP_USER_SCOPE + ":" + userId);
+            if(!StringUtils.isEmpty(s)){
+                list = JSONObject.parseArray(s, ChatGroupVo.class);
+            }
+            list.add(ChatUtils.convertRedisChatGroupVo(userId,groupName));
+            jedis.set(ConstantsRedisKey.CHAT_GROUP_USER_SCOPE + ":" + userId,JSONObject.toJSONString(list));
+
+            List<ChatGroupMemberVo> memberVoList = new ArrayList<>();
+            ChatGroupMemberVo memberVo = new ChatGroupMemberVo();
+            memberVo.setGroupName(groupName);
+            memberVo.setGroupMemberUserId(userId);
+            memberVo.setGroupMemberUserName(userName);
+            memberVoList.add(memberVo);
+            jedis.hset(ConstantsRedisKey.CHAT_GROUP+":"+userId,groupName,JSONObject.toJSONString(memberVoList));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new JsonResult().setSuccess(true).setMsg("创建成功");
+    }
+
+
+    @Override
+    public List<ChatGroupVo> findGroups(String userId){
+        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+            List<ChatGroupVo> list = new ArrayList<>();
+            String s = jedis.get(ConstantsRedisKey.CHAT_GROUP_USER_SCOPE + ":" + userId);
+            if(!StringUtils.isEmpty(s)){
+                list = JSONObject.parseArray(s, ChatGroupVo.class);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<ChatGroupMessage> findGroupChatMsgHistory(String groupName) {
+        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
+            List<ChatGroupMessage> list = new ArrayList<>();
+            String s = jedis.hget(ConstantsRedisKey.CHAT_GROUP_HISTORY , groupName);
+            if(!StringUtils.isEmpty(s)){
+                list = JSONObject.parseArray(s, ChatGroupMessage.class);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

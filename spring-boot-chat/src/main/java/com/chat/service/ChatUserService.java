@@ -2,9 +2,11 @@ package com.chat.service;
 
 
 
+import com.chat.model.ChatGroupMessage;
 import com.chat.model.ChatMessage;
 import com.chat.model.ChatUser;
 import com.chat.vo.ChatFriendVo;
+import com.chat.vo.ChatGroupVo;
 import com.chat.vo.ChatMsgVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.utils.JsonResult;
@@ -61,6 +63,28 @@ public interface ChatUserService {
     */
    List<ChatMessage> findChatHistory(String userId, String friendId);
 
-   public void saveMsg(ChatMsgVo chatMsgVo);
+   /**
+    * 保存消息记录
+    * @param chatMsgVo
+    */
+   void saveMsg(ChatMsgVo chatMsgVo);
+
+   /**
+    * 退出
+    */
+   void logout();
+
+   /**
+    *  创建群
+    * @param userId
+    * @param groupName
+    * @param userName
+    * @return
+    */
+   JsonResult createGroup(String userId,String userName, String groupName);
+
+   List<ChatGroupVo> findGroups(String userId);
+
+   List<ChatGroupMessage> findGroupChatMsgHistory(String groupName);
 
 }
