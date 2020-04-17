@@ -47,9 +47,7 @@ layui.use(["element","form","layer","okMock"], function () {
                     var blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
                     chunks = [];
                     var audioURL = window.URL.createObjectURL(blob);
-                    console.log($("body").find(".audio-player").html())
                     $("body").find(".audio-player").attr("src",audioURL);
-                    console.log("audioURL="+audioURL)
                     //player.src = audioURL;
                 };
             },

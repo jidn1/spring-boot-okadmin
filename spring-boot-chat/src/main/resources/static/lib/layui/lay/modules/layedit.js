@@ -157,6 +157,18 @@
                     content: document.getElementById("mikeDiv").innerHTML,
                     zIndex: layer.zIndex,
                 });
+            },
+
+            //自定义 开启视频
+            video: function (a) {
+                layer.open({
+                    title: "视频",
+                    type: 2,
+                    area: ["80%", "80%"],
+                    content: "video.html",
+                    zIndex: layer.zIndex,
+                });
+                sendVideoPing();
             }
             , code: function (e) {
                 k.call(o, function (i) {
@@ -273,7 +285,8 @@
         image: '<i class="layui-icon layedit-tool-image" title="图片" layedit-event="image">&#xe64a;<input type="file" name="file"></i>',
         code: '<i class="layui-icon layedit-tool-code" title="插入代码" layedit-event="code">&#xe64e;</i>',
         help: '<i class="layui-icon layedit-tool-help" title="帮助" layedit-event="help">&#xe607;</i>',
-        mike: '<i class="layui-icon layedit-tool-mike" title="录音" layedit-event="mike">&#xe6dc;</i>'
+        mike: '<i class="layui-icon layedit-tool-mike" title="录音" layedit-event="mike">&#xe6dc;</i>',
+        video: '<i class="layui-icon layedit-tool-video" title="视频" layedit-event="video">&#xe6ed;</i>'
     }, w = new c;
     t(n, w)
 });

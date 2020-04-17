@@ -74,17 +74,4 @@ public interface ChatUserService {
     */
    void logout();
 
-   /**
-    *  创建群
-    * @param userId
-    * @param groupName
-    * @param userName
-    * @return
-    */
-   JsonResult createGroup(String userId,String userName, String groupName);
-
-   List<ChatGroupVo> findGroups(String userId);
-
-   List<ChatGroupMessage> findGroupChatMsgHistory(String groupName);
-
 }

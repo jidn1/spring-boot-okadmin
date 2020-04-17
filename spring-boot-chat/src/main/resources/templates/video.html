@@ -1,44 +1,132 @@
 <!DOCTYPE html>
-<html >
+<html lang="en">
 <head>
-    <script type='text/javascript' src='https://cdn.scaledrone.com/scaledrone.min.js'></script>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <style>
-        body {
-            display: flex;
-            height: 100vh;
-            margin: 0;
-            align-items: center;
-            justify-content: center;
-            padding: 0 50px;
-            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        video {
-            max-width: calc(50% - 100px);
-            margin: 0 50px;
-            box-sizing: border-box;
-            border-radius: 2px;
-            padding: 0;
-            box-shadow: rgba(156, 172, 172, 0.2) 0px 2px 2px, rgba(156, 172, 172, 0.2) 0px 4px 4px, rgba(156, 172, 172, 0.2) 0px 8px 8px, rgba(156, 172, 172, 0.2) 0px 16px 16px, rgba(156, 172, 172, 0.2) 0px 32px 32px, rgba(156, 172, 172, 0.2) 0px 64px 64px;
-        }
-        .copy {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            color: rgba(0, 0, 0, 0.5);
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../css/video.css"/>
 </head>
 <body>
-<div class="copy">Send your URL to a friend to start a video call</div>
-<video id="localVideo" autoplay ></video>
-<button onclick="startVideo()">开启视频通话</button>
+<div class="container">
+    <div class="video-box">
+        <video id="remote-video"></video>
+        <video id="local-video" muted></video>
+        <!--<button class="start-button" onclick="startLive()">开始</button>-->
+    </div>
+    <div class="logger"></div>
+</div>
+<script>
 
-<video id="remoteVideo" autoplay></video>
-<script src="../lib/jquery/jquery.min.js"></script>|
-<script src="../../js/script.js"></script>|
+
+    const message = {
+        el: document.querySelector('.logger'),
+        log (msg) {
+            this.el.innerHTML += `<span>${new Date().toLocaleTimeString()}：${msg}</span><br/>`;
+        },
+        error (msg) {
+            this.el.innerHTML += `<span class="error">${new Date().toLocaleTimeString()}：${msg}</span><br/>`;
+        }
+    };
+
+    const target = "offer";
+    const localVideo = document.querySelector('#local-video');
+    const remoteVideo = document.querySelector('#remote-video');
+
+
+
+    localVideo.onloadeddata = () => {
+        message.log('播放本地视频');
+        localVideo.play();
+    }
+    remoteVideo.onloadeddata = () => {
+        message.log('播放对方视频');
+        remoteVideo.play();
+    }
+
+
+    message.log('信令通道（WebSocket）创建中......');
+    const socket = new WebSocket('ws://localhost:6002/chatSocket');
+    socket.onopen = () => {
+        message.log('信令通道创建成功！');
+        target === 'offer'
+    }
+    socket.onerror = () => message.error('信令通道创建失败！');
+    socket.onmessage = e => {
+        const { type, sdp, iceCandidate } = JSON.parse(e.data)
+        if (type === 'answer') {
+            peer.setRemoteDescription(new RTCSessionDescription({ type, sdp }));
+        } else if (type === 'answer_ice') {
+            peer.addIceCandidate(iceCandidate);
+        } else if (type === 'offer') {
+            startLive(new RTCSessionDescription({ type, sdp }));
+        } else if (type === 'offer_ice') {
+            peer.addIceCandidate(iceCandidate);
+        }
+    };
+
+    const PeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    !PeerConnection && message.error('浏览器不支持WebRTC！');
+    const peer = new PeerConnection();
+
+    peer.ontrack = e => {
+        if (e && e.streams) {
+            message.log('收到对方音频/视频流数据...');
+            remoteVideo.srcObject = e.streams[0];
+        }
+    };
+
+    peer.onicecandidate = e => {
+        if (e.candidate) {
+            message.log('搜集并发送候选人');
+            socket.send(JSON.stringify({
+                type: `${target}_ice`,
+                iceCandidate: e.candidate
+            }));
+        } else {
+            message.log('候选人收集完成！');
+        }
+    };
+
+    async function startLive (offerSdp) {
+        target === 'offer' ;
+        let stream;
+        try {
+            message.log('尝试调取本地摄像头/麦克风');
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            message.log('摄像头/麦克风获取成功！');
+            localVideo.srcObject = stream;
+        } catch {
+            message.error('摄像头/麦克风获取失败！');
+            return;
+        }
+
+        message.log(`------ WebRTC ${target === 'offer' ? '发起方' : '接收方'}流程开始 ------`);
+        message.log('将媒体轨道添加到轨道集');
+        stream.getTracks().forEach(track => {
+            peer.addTrack(track, stream);
+        });
+
+        if (!offerSdp) {
+            message.log('创建本地SDP');
+            const offer = await peer.createOffer();
+            await peer.setLocalDescription(offer);
+
+            message.log(`传输发起方本地SDP`);
+            socket.send(JSON.stringify(offer));
+        } else {
+            message.log('接收到发送方SDP');
+            await peer.setRemoteDescription(offerSdp);
+
+            message.log('创建接收方（应答）SDP');
+            const answer = await peer.createAnswer();
+            message.log(`传输接收方（应答）SDP`);
+            socket.send(JSON.stringify(answer));
+            await peer.setLocalDescription(answer);
+        }
+    }
+
+    startLive();
+</script>
 </body>
 </html>

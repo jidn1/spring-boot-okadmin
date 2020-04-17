@@ -62,6 +62,8 @@ public class ChatHandler extends TextWebSocketHandler {
             }else if (SocketCmd.CHATTING.getKey().equals(chatMsgVo.getCmd())) {
                 session.sendMessage(new TextMessage(JSONObject.toJSONString(chatMsgVo)));
                 sendToUser(chatMsgVo);
+            }else if (SocketCmd.CHAT_VIDEO.getKey().equals(chatMsgVo.getCmd())) {
+                sendToUserVideoCall(chatMsgVo);
             }else if(SocketCmd.OUT_CHAT.getKey().equals(chatMsgVo.getCmd())){
                 subOnlineCount();
             }
@@ -109,6 +111,18 @@ public class ChatHandler extends TextWebSocketHandler {
                 webSocketSet.get(toUserId).sendMessage(new TextMessage(JSONObject.toJSONString(chatMsg)));
             }else{
                 webSocketSet.get(fromUserId).sendMessage(new TextMessage("当前用户不在线"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void sendToUserVideoCall(ChatMsgVo chatMsg) {
+        String toUserId = chatMsg.getToUserId();
+        try {
+            if (webSocketSet.get(toUserId) != null) {
+                webSocketSet.get(toUserId).sendMessage(new TextMessage("video"));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html >
 <head>
     <meta charset="UTF-8">
     <title>聊天室</title>
@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+
+
 </head>
 <body>
 <div class="layui-container" style="margin-top:10px;">
@@ -23,17 +25,14 @@
                             <i class="layui-icon layui-icon-dialogue" style="font-size: 20px;"></i>&nbsp;聊天
                         </li>
                         <li>
-                            <i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;群聊
+                            <i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;聊天大厅
                         </li>
                         <li>
                             <i class="layui-icon layui-icon-search" style="font-size: 20px;"></i>&nbsp;加好友
                         </li>
-                        <li>
-                            <i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;创建群聊
-                        </li>
-                        <li>
-                            <i class="layui-icon layui-icon-video" style="font-size: 20px;"></i>&nbsp;视频通话
-                        </li>
+                        <!--<li>-->
+                            <!--<i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;创建群聊-->
+                        <!--</li>-->
                     </ul>
                     <div class="layui-tab-content" style="padding:0px;">
 
@@ -113,9 +112,11 @@
                             </div>
                         </div>
 
-
                         <div class="layui-tab-item" >
-                            <div th:include="group::group"></div>
+                            <!--<iframe src="group.html" frameborder="0" class="layadmin-iframe" style="height:679px; width: 941px;"></iframe>-->
+                            <div>
+                                <p style="margin-top: 37px; text-align:center;">待开发</p>
+                            </div>
                         </div>
 
                         <div class="layui-tab-item" id="userinfo">
@@ -148,23 +149,18 @@
                             </div>
                         </div>
 
-                        <div class="layui-tab-item">
-                            <div class="layui-form-item" style="margin-right:40px;margin-top: 9px">
-                                <label class="layui-form-label">群账号(只支持英文字母长度18位)</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="groupName" autocomplete="off" placeholder="请输入群账号" lay-verify="required"  style="width: 70%;height: 38px;">
-                                    <button class="layui-btn layui-btn-primary" id="createGroup" >创建</button>
-                                </div>
-                            </div>
-                            <div>
-                                <p style="margin-top: 37px;">只能创建1个群聊</p>
-                            </div>
-                        </div>
-
-
-                        <div class="layui-tab-item">
-                           <!-- <iframe src="video.html" frameborder="0" class="layadmin-iframe" style="height: 500px;width: 900px;"></iframe>-->
-                        </div>
+                        <!--<div class="layui-tab-item">-->
+                            <!--&lt;!&ndash;<div class="layui-form-item" style="margin-right:40px;margin-top: 9px">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label class="layui-form-label">群账号</label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="layui-input-block">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<input type="text" name="groupName" autocomplete="off" placeholder="请输入群账号" lay-verify="required"  style="width: 70%;height: 38px;">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<button class="layui-btn layui-btn-primary" id="createGroup" >创建</button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div>-->
+                                <!--<p style="margin-top: 37px; text-align:center;">待开发</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
 
                     </div>
@@ -185,7 +181,7 @@
 
 <script src="../../lib/layui/layui.js"></script>
 <script src="../../lib/layui/vue.js"></script>
-<script src="../../js/recorder.js"></script>
+<script src="../../js/voice.js"></script>
 <script>
     layui.config({base:'/js/modules/'}).use(['chats'],function () {
         let chats = layui.chats;

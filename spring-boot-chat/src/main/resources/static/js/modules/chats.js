@@ -18,18 +18,20 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             });
             //创建一个编辑器
             editIndex = layedit.build('LAY_demo_editor', {
-                tool: ['face', //删除线
-                    '|', //分割线
+                tool: ['face', //表情
+                    '|',
                     'image',//图片
-                    '|', //分割线
+                    '|',
                     'mike',//录音
-                    '|', //分割线
+                    '|',
+                    'video',//录音
+                    '|',
                     'strong', //加粗
-                    '|', //分割线
+                    '|',
                     'italic', //斜体
-                    '|', //分割线
+                    '|',
                     'underline', //下划线
-                    '|', //分割线
+                    '|',
                 ],
                 height: 120 //设置编辑器高度
             });
@@ -153,6 +155,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             window.getlistnickname = this.getlistnickname;
             window.onbeforeunload = this.onbeforeunload;
             window.sendaudio = this.sendaudio;
+            window.sendVideoPing = this.sendVideoPing;
         },
         methods: {
             onopen: function (e) {
@@ -161,14 +164,19 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             },
             onmessage: function (e) {
                 if (e.data != "当前用户不在线") {
-                    var chatRecord = JSON.parse(e.data);
-                    that = this;
-                    that.listmessage.push({
-                        msgType: chatRecord.msgType,
-                        fromUserId: chatRecord.fromUserId,
-                        toUserId: chatRecord.toUserId,
-                        sendtext: chatRecord.sendtext
-                    });
+                    if(e.data == "video"){
+                        that = this;
+                        that.videoCall();
+                    } else {
+                        var chatRecord = JSON.parse(e.data);
+                        that = this;
+                        that.listmessage.push({
+                            msgType: chatRecord.msgType,
+                            fromUserId: chatRecord.fromUserId,
+                            toUserId: chatRecord.toUserId,
+                            sendtext: chatRecord.sendtext
+                        });
+                    }
                 } else {
                     that = this;
                     that.setMessageInnerHTML(e.data)
@@ -331,7 +339,29 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 });
                 document.getElementById("msg_end").scrollIntoView();
             },
+            videoCall:function(){
+                layer.confirm('对方请求视频通话?', function(index){
+                    layer.open({
+                        title: "视频",
+                        type: 2,
+                        area: ["90%", "90%"],
+                        content: "video.html",
+                        zIndex: layer.zIndex,
+                    });
+                    layer.close(index);
+                });
 
+            },
+            sendVideoPing:function(){
+                var object = new Object();
+                object["cmd"] = 'chat_video';
+                object["toUserId"] = this.friendUserId;
+                object["fromUserId"] = this.userId;
+                object["msgType"] = 0;
+                object["sendtext"] = "video";
+                var jsonData = JSON.stringify(object);
+                this.ws.send(jsonData);//websocket发送数据
+            },
 
             logout: function () {
                 $.ajax({

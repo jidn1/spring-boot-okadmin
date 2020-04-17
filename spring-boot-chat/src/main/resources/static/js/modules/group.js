@@ -4,10 +4,9 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
     let layeditGroup = layui.layedit;
     let $ = layui.jquery;
     let editIndexGroup;
-    var chats = {
+    var group = {
 
         init: function () {
-
 
             //设置上传图片接口
             layeditGroup.set({
@@ -21,18 +20,18 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
 
             //创建一个编辑器
             editIndexGroup = layeditGroup.build('LAY_demo_editorGroup', {
-                tool: ['face', //删除线
-                    '|', //分割线
+                tool: ['face', //表情
+                    '|',
                     'image',//图片
-                    '|', //分割线
+                    '|',
                     'mike',//录音
-                    '|', //分割线
+                    '|',
                     'strong', //加粗
-                    '|', //分割线
+                    '|',
                     'italic', //斜体
-                    '|', //分割线
+                    '|',
                     'underline', //下划线
-                    '|', //分割线
+                    '|',
                 ],
                 height: 120 //设置编辑器高度
             });
@@ -53,25 +52,6 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             };
 
 
-            $("#createGroup").click(function(){
-                var groupName = $("input[name='groupName']").val();
-                $.ajax({
-                    url: okMock.api.baseUrl + "chat/createGroup",
-                    type: "post",
-                    data: {groupName: groupName},
-                    dataType: "json", //回调
-                    success: function (data) {
-                        if (data.success) {
-                            layer.msg('创建成功！', {
-                                time: 1500,
-                                icon: 0,
-                                offset: '50px'
-                            });
-                        }
-                    }
-                });
-
-            })
 
 
         }
@@ -101,22 +81,21 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
         mounted: function () {
             this.getGroupList();
 
-            //连接WebSocket节点
-            this.ws = new WebSocket(okMock.api.socketGroupUrl+"?group="+this.groupName);
-            this.ws.onopen = this.onopen;
-            this.ws.onmessage = this.onmessage;
-            this.ws.onclose = this.onclose;
-            this.ws.onerror = this.onerror;
-
             window.activeuser = this.activeuser;
             window.appendmsg = this.appendmsg;
             window.onbeforeunload = this.onbeforeunload;
+            window.getGroupList = this.getGroupList;
         },
         methods: {
             socket:function(){
-
+                console.log("socket==")
+                //连接WebSocket节点
+                this.ws = new WebSocket(okMock.api.socketGroupUrl+"?group="+this.groupName);
+                this.ws.onopen = this.onopen;
+                this.ws.onmessage = this.onmessage;
+                this.ws.onclose = this.onclose;
+                this.ws.onerror = this.onerror;
             },
-
             onopen: function (e) {
                 var msg = JSON.stringify({cmd: 'enter_group_chat'});
                 this.ws.send(msg);
@@ -278,6 +257,9 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 });
                 document.getElementById("msg_endGroup").scrollIntoView();
             },
+
+
+
             logout: function () {
                 sessionStorage.removeItem("userId");
                 window.location = "/logout";

@@ -226,20 +226,6 @@ public class ChatUserServiceImpl implements ChatUserService {
         }
     }
 
-    @Override
-    public JsonResult createGroup(String userId, String userName, String groupName) {
-        return null;
-    }
-
-    @Override
-    public List<ChatGroupVo> findGroups(String userId) {
-        return null;
-    }
-
-    @Override
-    public List<ChatGroupMessage> findGroupChatMsgHistory(String groupName) {
-        return null;
-    }
 
 }
 

@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="group">
-
-
-
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+</head>
+<body>
 <div class="layui-tab-item layui-show" id="VueGroupChat" >
     <div style="width: 100%;">
         <div class="alluser" onmouseover="leftscrollGroup(1)" onmouseleave="leftscrollGroup(2)" id="leftscrollGroup">
@@ -95,13 +101,9 @@
         } else if (id == 2) {
             document.getElementById("leftscrollGroup").style.overflowY = "hidden";
             document.getElementById("leftscrollGroup").style.overflowX = "hidden";
-        } else if (id == 3) {
-            document.getElementById("msgcontentGroup").style.overflowY = "auto";
-            document.getElementById("msgcontentGroup").style.overflowX = "hidden";
-        } else if (id == 4) {
-            document.getElementById("msgcontentGroup").style.overflowY = "hidden";
-            document.getElementById("msgcontentGroup").style.overflowX = "hidden";
         }
     }
 </script>
+
+</body>
 </html>
