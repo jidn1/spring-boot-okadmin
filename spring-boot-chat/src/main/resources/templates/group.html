@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+</head>
+<body>
+<div class="layui-tab-item layui-show" id="VueGroupChat" >
+    <div style="width: 100%;">
+        <div class="alluser" onmouseover="leftscrollGroup(1)" onmouseleave="leftscrollGroup(2)" id="leftscrollGroup">
+            <div id="appLoadingGroup">
+                <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+            </div>
+            <ol id="leftcGroup" style="display: none;">
+                <li v-for="(item,index) in groupList" :key="index"
+                    @click="selectGroup(item,item.groupName)" :class="{'active':item.active,'unactive':!item.active,'leftnickename':true}">
+                    <p>
+                        <img :src=item.groupHeadUrl style="border-radius:50%;height:60px;">
+                        <span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}"></span>
+                        {{item.groupName}}
+                    </p>
+                </li>
+            </ol>
+        </div>
+        <div style="width:84%;float: left;height:626px;">
+            <div id="appLoading2Group" style="display: none;">
+                <div class="spinner">
+                    <div class="rect1"></div>
+                    <div class="rect2"></div>
+                    <div class="rect3"></div>
+                    <div class="rect4"></div>
+                    <div class="rect5"></div>
+                </div>
+            </div>
+            <div id="waitsGroup" style="text-align: center;margin-top:250px">
+                <h1>打开世界的另一扇窗</h1>
+                <span>主动一点，世界会更大。</span>
+            </div>
+            <div id="wordsGroup" style="display: none">
+                <div class="talk_show talkimg" id="msgContentGroup" onmouseover="leftscrollGroup(3)"
+                     onmouseleave="leftscrollGroup(4)">
+                    <div v-for="(msg,index) in listGroupMessage" :key="index">
+                        <div v-if="msg.fromUserId === userId">
+                            <div class="rtalk" :id="index" >
+                                <span v-html="msg.fromUserName"></span>
+                                <span v-html="msg.sendtext" @click="openimg(index)"></span>
+                            </div>
+                        </div>
+                        <div v-if="msg.fromUserId != userId">
+                            <div class="ltalk" :id="index" >
+                                <span v-html="msg.fromUserName"></span>
+                                <span v-html="msg.sendtext" @click="openimg(index)"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="msg_endGroup" style="height:0px; overflow:hidden"></div>
+
+                </div>
+                <div style="background-color:white;height:200px;">
+                    <div class="layui-form-item layui-form-text" style="margin:0 auto;">
+                        <div class="layui-input-block" style="margin: 0 auto;">
+                                                    <textarea class="layui-textarea layui-hide" name="content"
+                                                              lay-verify="content" id="LAY_demo_editorGroup"></textarea>
+                        </div>
+                    </div>
+                    <button class="layui-btn layui-btn-sm" data-type="reload"
+                            style="float: right;position: relative;" @click="sendGroup">发送
+                    </button>
+
+                    <button class="layui-btn layui-btn-sm" data-type="reload"
+                            style="float: right;position: relative;" @click="logout">退出
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../lib/layui/layui.js"></script>
+<script src="../../lib/layui/vue.js"></script>
+<script src="../../js/recorder.js"></script>
+<script>
+    layui.config({base:'/js/modules/'}).use(['group'],function () {
+        let group = layui.group;
+        group.init();
+    });
+
+    function leftscrollGroup(id) {
+        if (id == 1) {
+            document.getElementById("leftscrollGroup").style.overflowY = "auto";
+            document.getElementById("leftscrollGroup").style.overflowX = "hidden";
+        } else if (id == 2) {
+            document.getElementById("leftscrollGroup").style.overflowY = "hidden";
+            document.getElementById("leftscrollGroup").style.overflowX = "hidden";
+        }
+    }
+</script>
+
+</body>
+</html>

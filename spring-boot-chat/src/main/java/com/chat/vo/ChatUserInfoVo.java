@@ -65,6 +65,7 @@ public class ChatUserInfoVo implements Serializable {
 
     private String salt;
 
+    private String groupName;
 
     @Override
     public String toString() {

@@ -6,6 +6,7 @@ layui.define([], function (exprots) {
             baseUrl : "http://localhost:6002/",
             fileUrl : "http://hry-exchange-public.oss-cn-beijing.aliyuncs.com/",
             socketUrl : "ws://localhost:6002/chatSocket",
+            socketGroupUrl : "ws://localhost:6002/chatGroupSocket",
         },
 
 

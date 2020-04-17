@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+
+
 </head>
 <body>
 <div class="layui-container" style="margin-top:10px;">
@@ -23,14 +25,14 @@
                             <i class="layui-icon layui-icon-dialogue" style="font-size: 20px;"></i>&nbsp;聊天
                         </li>
                         <li>
-                            <i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;群聊
+                            <i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;聊天大厅
                         </li>
                         <li>
                             <i class="layui-icon layui-icon-search" style="font-size: 20px;"></i>&nbsp;加好友
                         </li>
-                        <li>
-                            <i class="layui-icon layui-icon-video" style="font-size: 20px;"></i>&nbsp;视频通话
-                        </li>
+                        <!--<li>-->
+                            <!--<i class="layui-icon layui-icon-group" style="font-size: 20px;"></i>&nbsp;创建群聊-->
+                        <!--</li>-->
                     </ul>
                     <div class="layui-tab-content" style="padding:0px;">
 
@@ -110,85 +112,11 @@
                             </div>
                         </div>
 
-
-                        <div class="layui-tab-item">
-
-                            <!--<div class="layui-tab-item layui-show" id="VueGroupChat">-->
-                                <!--<div style="width: 100%;">-->
-                                    <!--<div class="alluser" onmouseover="leftscrollGroup(1)" onmouseleave="leftscrollGroup(2)" id="leftscrollGroup">-->
-                                        <!--<div id="appLoadingGroup">-->
-                                            <!--<div class="spinner">-->
-                                                <!--<div class="rect1"></div>-->
-                                                <!--<div class="rect2"></div>-->
-                                                <!--<div class="rect3"></div>-->
-                                                <!--<div class="rect4"></div>-->
-                                                <!--<div class="rect5"></div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<ol id="leftcGroup" style="display: none;">-->
-                                            <!--<li v-for="(item,index) in listnickname" :key="index"-->
-                                                <!--@click="selectStyle(item,item.userId)" :class="{'active':item.active,'unactive':!item.active,'leftnickename':true}">-->
-                                                <!--<p>-->
-                                                    <!--<img :src=item.avatarImg style="border-radius:50%;height:60px;">-->
-                                                    <!--<span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}"></span>-->
-                                                    <!--{{item.nickName}}-->
-                                                <!--</p>-->
-                                            <!--</li>-->
-                                        <!--</ol>-->
-                                    <!--</div>-->
-                                    <!--<div style="width:84%;float: left;height:626px;">-->
-                                        <!--<div id="appLoading2Group" style="display: none;">-->
-                                            <!--<div class="spinner">-->
-                                                <!--<div class="rect1"></div>-->
-                                                <!--<div class="rect2"></div>-->
-                                                <!--<div class="rect3"></div>-->
-                                                <!--<div class="rect4"></div>-->
-                                                <!--<div class="rect5"></div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div id="waitsGroup" style="text-align: center;margin-top:250px">-->
-                                            <!--<h1>打开世界的另一扇窗</h1>-->
-                                            <!--<span>主动一点，世界会更大。</span>-->
-                                        <!--</div>-->
-                                        <!--<div id="wordsGroup" style="display: none">-->
-                                            <!--<div class="talk_show talkimg" id="msgcontentGroup" onmouseover="leftscrollGroup(3)"-->
-                                                 <!--onmouseleave="leftscroll(4)">-->
-                                                <!--<div v-for="(msg,index) in listmessage" :key="index">-->
-                                                    <!--<div v-if="msg.fromUserId === userId">-->
-                                                        <!--<div class="rtalk" :id="index" >-->
-                                                            <!--<span v-html="msg.sendtext" @click="openimg(index)"></span>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                    <!--<div v-if="msg.fromUserId != userId">-->
-                                                        <!--<div class="ltalk" :id="index" >-->
-                                                            <!--<span v-html="msg.sendtext" @click="openimg(index)"></span>-->
-                                                        <!--</div>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<div id="msg_endGroup" style="height:0px; overflow:hidden"></div>-->
-
-                                            <!--</div>-->
-                                            <!--<div style="background-color:white;height:200px;">-->
-                                                <!--<div class="layui-form-item layui-form-text" style="margin:0 auto;">-->
-                                                    <!--<div class="layui-input-block" style="margin: 0 auto;">-->
-                                                    <!--<textarea class="layui-textarea layui-hide" name="content"-->
-                                                              <!--lay-verify="content" id="LAY_demo_editorGroup"></textarea>-->
-                                                    <!--</div>-->
-                                                <!--</div>-->
-                                                <!--<button class="layui-btn layui-btn-sm" data-type="reload"-->
-                                                        <!--style="float: right;position: relative;" @click="send">发送-->
-                                                <!--</button>-->
-
-                                                <!--<button class="layui-btn layui-btn-sm" data-type="reload"-->
-                                                        <!--style="float: right;position: relative;" @click="logout">退出-->
-                                                <!--</button>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                            <!--</div>-->
-
-
+                        <div class="layui-tab-item" >
+                            <!--<iframe src="group.html" frameborder="0" class="layadmin-iframe" style="height:679px; width: 941px;"></iframe>-->
+                            <div>
+                                <p style="margin-top: 37px; text-align:center;">待开发</p>
+                            </div>
                         </div>
 
                         <div class="layui-tab-item" id="userinfo">
@@ -221,10 +149,18 @@
                             </div>
                         </div>
 
-
-                        <div class="layui-tab-item">
-                           <!-- <iframe src="video.html" frameborder="0" class="layadmin-iframe" style="height: 500px;width: 900px;"></iframe>-->
-                        </div>
+                        <!--<div class="layui-tab-item">-->
+                            <!--&lt;!&ndash;<div class="layui-form-item" style="margin-right:40px;margin-top: 9px">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label class="layui-form-label">群账号</label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="layui-input-block">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<input type="text" name="groupName" autocomplete="off" placeholder="请输入群账号" lay-verify="required"  style="width: 70%;height: 38px;">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<button class="layui-btn layui-btn-primary" id="createGroup" >创建</button>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--<div>-->
+                                <!--<p style="margin-top: 37px; text-align:center;">待开发</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
 
 
                     </div>
@@ -245,7 +181,7 @@
 
 <script src="../../lib/layui/layui.js"></script>
 <script src="../../lib/layui/vue.js"></script>
-<script src="../../js/recorder.js"></script>
+<script src="../../js/voice.js"></script>
 <script>
     layui.config({base:'/js/modules/'}).use(['chats'],function () {
         let chats = layui.chats;
@@ -269,21 +205,6 @@
         }
     }
 
-    function leftscrollGroup(id) {
-        if (id == 1) {
-            document.getElementById("leftscrollGroup").style.overflowY = "auto";
-            document.getElementById("leftscrollGroup").style.overflowX = "hidden";
-        } else if (id == 2) {
-            document.getElementById("leftscrollGroup").style.overflowY = "hidden";
-            document.getElementById("leftscrollGroup").style.overflowX = "hidden";
-        } else if (id == 3) {
-            document.getElementById("msgcontentGroup").style.overflowY = "auto";
-            document.getElementById("msgcontentGroup").style.overflowX = "hidden";
-        } else if (id == 4) {
-            document.getElementById("msgcontentGroup").style.overflowY = "hidden";
-            document.getElementById("msgcontentGroup").style.overflowX = "hidden";
-        }
-    }
 
 
 

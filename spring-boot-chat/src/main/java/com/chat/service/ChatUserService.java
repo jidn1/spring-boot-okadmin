@@ -5,6 +5,7 @@ package com.chat.service;
 import com.chat.model.ChatMessage;
 import com.chat.model.ChatUser;
 import com.chat.vo.ChatFriendVo;
+import com.chat.vo.ChatGroupVo;
 import com.chat.vo.ChatMsgVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.utils.JsonResult;
@@ -61,6 +62,15 @@ public interface ChatUserService {
     */
    List<ChatMessage> findChatHistory(String userId, String friendId);
 
-   public void saveMsg(ChatMsgVo chatMsgVo);
+   /**
+    * 保存消息记录
+    * @param chatMsgVo
+    */
+   void saveMsg(ChatMsgVo chatMsgVo);
+
+   /**
+    * 退出
+    */
+   void logout();
 
 }

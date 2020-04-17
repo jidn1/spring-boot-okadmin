@@ -1,6 +1,8 @@
 package com.chat.socket;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chat.enums.SocketCmd;
+import com.chat.vo.ChatGroupMsgVo;
 import com.chat.vo.ChatMsgVo;
 import com.common.queue.ChatQueue;
 import com.common.utils.EmojiFilter;
@@ -32,8 +34,9 @@ public class ChatHandler extends TextWebSocketHandler {
 
     private final static Logger logger = LoggerFactory.getLogger(ChatHandler.class);
 
-
     public static String UID = "userId";
+
+    public static String GROUP = "group";
 
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -44,11 +47,6 @@ public class ChatHandler extends TextWebSocketHandler {
      */
     private static ConcurrentHashMap<String, WebSocketSession> webSocketSet = new ConcurrentHashMap<String, WebSocketSession>();
 
-    /**
-     * 群聊
-     */
-    private static ConcurrentHashMap<String, HashMap<String,WebSocketSession>> chatSocketGroup = new ConcurrentHashMap<String, HashMap<String,WebSocketSession>>();
-
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -58,13 +56,15 @@ public class ChatHandler extends TextWebSocketHandler {
             ChatMsgVo chatMsgVo = JSONObject.parseObject(content, ChatMsgVo.class);
             String userId = session.getAttributes().get(UID).toString();
 
-            if("enter_chatting".equals(chatMsgVo.getCmd())) {
+            if(SocketCmd.CHAT_ENTER.getKey().equals(chatMsgVo.getCmd())) {
                 webSocketSet.put(userId, session);
                 addOnlineCount();
-            }else if ("chatting".equals(chatMsgVo.getCmd())) {
+            }else if (SocketCmd.CHATTING.getKey().equals(chatMsgVo.getCmd())) {
                 session.sendMessage(new TextMessage(JSONObject.toJSONString(chatMsgVo)));
                 sendToUser(chatMsgVo);
-            }else if("out_chatting".equals(chatMsgVo.getCmd())){
+            }else if (SocketCmd.CHAT_VIDEO.getKey().equals(chatMsgVo.getCmd())) {
+                sendToUserVideoCall(chatMsgVo);
+            }else if(SocketCmd.OUT_CHAT.getKey().equals(chatMsgVo.getCmd())){
                 subOnlineCount();
             }
 
@@ -87,11 +87,15 @@ public class ChatHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        String userId = session.getAttributes().get(UID).toString();
+        webSocketSet.remove(userId);
+        subOnlineCount();
     }
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         System.out.println("error");
+        subOnlineCount();
     }
 
     public void sendToUser(ChatMsgVo chatMsg) {
@@ -100,6 +104,7 @@ public class ChatHandler extends TextWebSocketHandler {
         String sendMessage = chatMsg.getSendtext();
         //过滤输入法输入的表情
         sendMessage= EmojiFilter.filterEmoji(sendMessage);
+        chatMsg.setSendtext(sendMessage);
         ChatQueue.produce(chatMsg);
         try {
             if (webSocketSet.get(toUserId) != null) {
@@ -113,6 +118,17 @@ public class ChatHandler extends TextWebSocketHandler {
     }
 
 
+    public void sendToUserVideoCall(ChatMsgVo chatMsg) {
+        String toUserId = chatMsg.getToUserId();
+        try {
+            if (webSocketSet.get(toUserId) != null) {
+                webSocketSet.get(toUserId).sendMessage(new TextMessage("video"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static synchronized int getOnlineCount() {
         return onlineCount;
@@ -121,6 +137,7 @@ public class ChatHandler extends TextWebSocketHandler {
 
     public static synchronized void addOnlineCount() {
         ChatHandler.onlineCount++;
+        logger.info("当前在线人数："+ChatHandler.onlineCount);
     }
 
 

@@ -83,29 +83,10 @@ public class LoginController {
     }
 
 
-    @RequestMapping("logout")
+    @RequestMapping("destroy")
     @ResponseBody
-    public JsonResult logout(HttpServletRequest request, HttpServletResponse response) {
-        try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
-            ChatUserInfoVo chatUser =(ChatUserInfoVo) SecurityUtils.getSubject().getSession().getAttribute(ConstantsRedisKey.SESSION_USER_INFO);
-            jedis.hdel(ConstantsRedisKey.CHAT_USER_LIST,chatUser.getUsername());
-            jedis.hdel(ConstantsRedisKey.CHAT_USER_FRIEND, chatUser.getUserid());
-
-            Criteria<ChatUserInfo, Long> criteria = new Criteria<>(ChatUserInfo.class);
-            criteria.addFilter("userId=", chatUser.getUserid());
-            criteria.deleteByExample();
-
-            Criteria<ChatUser, Long> criteria1 = new Criteria<>(ChatUser.class);
-            criteria1.addFilter("userId=", chatUser.getUserid());
-            criteria1.deleteByExample();
-
-            Criteria<ChatFriend, Long> userFriendCriteria = new Criteria<>(ChatFriend.class);
-            userFriendCriteria.addFilter("userId=", chatUser.getUserid());
-            userFriendCriteria.deleteByExample();
-            userFriendCriteria.addFilter("friendUserId=", chatUser.getUserid());
-            userFriendCriteria.deleteByExample();
-        } catch (Exception e){
-        }
+    public JsonResult destroy(HttpServletRequest request, HttpServletResponse response) {
+        chatUserService.logout();
         return new JsonResult().setSuccess(true);
     }
 

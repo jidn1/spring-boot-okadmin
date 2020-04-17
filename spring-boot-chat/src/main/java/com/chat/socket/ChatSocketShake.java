@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.util.StringUtils;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import redis.clients.jedis.Jedis;
@@ -21,7 +22,7 @@ import java.util.Map;
  * @Date: 2020/4/8 13:34
  * @Description:
  */
-public class    ChatSocketShake implements HandshakeInterceptor {
+public class ChatSocketShake implements HandshakeInterceptor {
 
     public static final Logger log = LoggerFactory.getLogger(ChatSocketShake.class);
 
@@ -34,8 +35,12 @@ public class    ChatSocketShake implements HandshakeInterceptor {
             HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
             try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
                 ChatUserInfoVo session = ChatUtils.getSession(jedis, httpServletRequest);
+                String groupName = httpServletRequest.getParameter(ChatUtils.GROUP_NAME);
                 if (null != session) {
-                    sessionMap.put(ChatHandler.UID,session.getUserid());
+                    sessionMap.put(ChatHandler.UID, session.getUserid());
+                    if (!StringUtils.isEmpty(groupName)) {
+                        sessionMap.put(ChatHandler.GROUP, session.getGroupName());
+                    }
                     return true;
                 }
             }

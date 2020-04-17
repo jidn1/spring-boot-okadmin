@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.chat.model.ChatMessage;
 import com.chat.service.ChatUserService;
 import com.chat.vo.ChatFriendVo;
+import com.chat.vo.ChatGroupVo;
 import com.chat.vo.ChatUserInfoVo;
 import com.common.constants.ConstantsRedisKey;
 import com.common.utils.ChatUtils;
@@ -150,6 +151,7 @@ public class ChatController {
         }
         return new JsonResult().setSuccess(true).setData(resUrl);
     }
+
 
 
 }
