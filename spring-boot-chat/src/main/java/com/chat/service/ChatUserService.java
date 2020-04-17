@@ -2,7 +2,6 @@ package com.chat.service;
 
 
 
-import com.chat.model.ChatGroupMessage;
 import com.chat.model.ChatMessage;
 import com.chat.model.ChatUser;
 import com.chat.vo.ChatFriendVo;
