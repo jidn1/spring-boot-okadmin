@@ -2,6 +2,7 @@ package com.mvc.base.dao;
 
 import tk.mybatis.mapper.common.BaseMapper;
 import tk.mybatis.mapper.common.Mapper;
+import com.auth.AuthCheckUtil;
 
 /**
  * @Copyright © 正经吉

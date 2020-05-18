@@ -3,6 +3,7 @@ package com.mvc.base.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import com.auth.AuthCheckUtil;
 
 /**
  * @Copyright © 正经吉

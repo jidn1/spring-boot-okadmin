@@ -1,8 +1,8 @@
 package com.quartz;
 
-import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -11,60 +11,147 @@ import java.util.Date;
  * @Date: 2019/12/17 14:41
  * @Description:
  */
-@Data
 public class ScheduleJob implements Serializable {
 
-    public static final String STATUS_RUNNING = "1";
-    public static final String STATUS_NOT_RUNNING = "0";
-    public static final String CONCURRENT_IS = "1";
-    public static final String CONCURRENT_NOT = "0";
+    private static final long serialVersionUID = 1L;
 
-    private Long jobId;
+    private Integer id;
 
-    private Date createTime;
-
-    private Date updateTime;
     /**
      * 任务名称
      */
     private String jobName;
-    /**
-     * 任务分组
-     */
-    private String jobGroup;
-    /**
-     * 任务状态 是否启动任务
-     */
-    private String jobStatus;
+
     /**
      * cron表达式
      */
     private String cronExpression;
+
     /**
-     * 描述
+     * 服务名称
      */
-    private String description;
+    private String beanName;
+
     /**
-     * 任务执行时调用哪个类的方法 包名+类名
-     */
-    private String beanClass;
-    /**
-     * 任务是否有状态
-     */
-    private String isConcurrent;
-    /**
-     * spring bean
-     */
-    private String springId;
-    /**
-     * 任务调用的方法名
+     * 方法名称
      */
     private String methodName;
 
     /**
-     * 方法参数
+     * 状态 1.启动 2.暂停
      */
-    private Object[] methodArgs;
+    private int status;
 
-    private String scheduleTime;
+    /**
+     * 是否删除 0.否 1.是
+     */
+    private Boolean deleteFlag;
+
+    /**
+     * 创建人id
+     */
+    private Integer creatorId;
+
+    /**
+     * 创建人
+     */
+    private String creatorName;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createdTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public String getCronExpression() {
+        return cronExpression;
+    }
+
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
+
+    public String getBeanName() {
+        return beanName;
+    }
+
+    public void setBeanName(String beanName) {
+        this.beanName = beanName;
+    }
+
+    public String getMethodName() {
+        return methodName;
+    }
+
+    public void setMethodName(String methodName) {
+        this.methodName = methodName;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Boolean getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(LocalDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(LocalDateTime updatedTime) {
+        this.updatedTime = updatedTime;
+    }
 }
