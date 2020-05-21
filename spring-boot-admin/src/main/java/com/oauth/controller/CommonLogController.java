@@ -53,7 +53,6 @@ public class CommonLogController{
 
 	@RequestMapping("/remove")
 	@ResponseBody
-	@com.annotation.CommonLog(name = "删除日志")
 	public JsonResult remove(String idsStr) {
 		Criteria<CommonLog,Integer> criteria = new Criteria<>(CommonLog.class);
         String[] idss = idsStr.split(",");

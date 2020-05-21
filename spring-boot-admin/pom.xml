@@ -18,6 +18,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -44,15 +48,12 @@
             <version>0.0.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.projectlombok</groupId>
-                    <artifactId>lombok</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
+
 
         <!-- base-utils -->
         <dependency>
@@ -121,12 +122,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-undertow</artifactId>
+        <groupId>com.alibaba</groupId>
+        <artifactId>fastjson</artifactId>
+        <version>1.2.7</version>
         </dependency>
 
-    </dependencies>
 
+    </dependencies>
 
 
 

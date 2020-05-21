@@ -1,6 +1,5 @@
 package com.oauth.controller;
 
-import com.annotation.CommonLog;
 import com.common.constants.ConstantsRedisKey;
 import com.common.model.JsonResult;
 import com.github.pagehelper.PageInfo;
@@ -10,7 +9,6 @@ import com.oauth.model.SystemMenu;
 import com.oauth.model.SystemUser;
 import com.oauth.service.SystemMenuService;
 import com.oauth.service.SystemUserService;
-import com.redis.BaseRedis;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;

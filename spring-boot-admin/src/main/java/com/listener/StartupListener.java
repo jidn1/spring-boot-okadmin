@@ -32,7 +32,6 @@ public class StartupListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         app = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
         SpringUtil.setApplication(app);
-
         ConfigService configService = (ConfigService)app.getBean("configService");
         configService.initRedisConfig();
 

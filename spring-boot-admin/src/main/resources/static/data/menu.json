@@ -117,6 +117,24 @@
         "href": "/oauth/commonloglist.html",
         "icon": "&#xe62e;",
         "spread": false
+      },
+      {
+        "title": "菜单管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "角色管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "权限管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
       }
     ]
   },
