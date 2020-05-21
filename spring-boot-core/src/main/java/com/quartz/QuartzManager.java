@@ -1,7 +1,7 @@
 package com.quartz;
 
-import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
+import spring.org.quartz.*;
+import spring.org.quartz.impl.StdSchedulerFactory;
 import org.springframework.context.annotation.Configuration;
 
 /**

@@ -1,9 +1,9 @@
 package com.quartz;
 
 import com.util.SpringUtil;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import spring.org.quartz.Job;
+import spring.org.quartz.JobExecutionContext;
+import spring.org.quartz.JobExecutionException;
 import java.lang.reflect.Method;
 
 /**
