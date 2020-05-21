@@ -24,4 +24,7 @@ public class SpringBootChatApplication {
         LOGGER.info("Project started successfully==========http://localhost:6002/index");
     }
 
+
+
+
 }

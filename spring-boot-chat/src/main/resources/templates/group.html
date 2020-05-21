@@ -11,27 +11,7 @@
 <body>
 <div class="layui-tab-item layui-show" id="VueGroupChat" >
     <div style="width: 100%;">
-        <div class="alluser" onmouseover="leftscrollGroup(1)" onmouseleave="leftscrollGroup(2)" id="leftscrollGroup">
-            <div id="appLoadingGroup">
-                <div class="spinner">
-                    <div class="rect1"></div>
-                    <div class="rect2"></div>
-                    <div class="rect3"></div>
-                    <div class="rect4"></div>
-                    <div class="rect5"></div>
-                </div>
-            </div>
-            <ol id="leftcGroup" style="display: none;">
-                <li v-for="(item,index) in groupList" :key="index"
-                    @click="selectGroup(item,item.groupName)" :class="{'active':item.active,'unactive':!item.active,'leftnickename':true}">
-                    <p>
-                        <img :src=item.groupHeadUrl style="border-radius:50%;height:60px;">
-                        <span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}"></span>
-                        {{item.groupName}}
-                    </p>
-                </li>
-            </ol>
-        </div>
+
         <div style="width:84%;float: left;height:626px;">
             <div id="appLoading2Group" style="display: none;">
                 <div class="spinner">

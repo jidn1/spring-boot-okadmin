@@ -81,21 +81,18 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
         mounted: function () {
             this.getGroupList();
 
+            this.ws = new WebSocket(okMock.api.socketGroupUrl+"?group="+this.groupName);
+            this.ws.onopen = this.onopen;
+            this.ws.onmessage = this.onmessage;
+            this.ws.onclose = this.onclose;
+            this.ws.onerror = this.onerror;
+
             window.activeuser = this.activeuser;
             window.appendmsg = this.appendmsg;
             window.onbeforeunload = this.onbeforeunload;
             window.getGroupList = this.getGroupList;
         },
         methods: {
-            socket:function(){
-                console.log("socket==")
-                //连接WebSocket节点
-                this.ws = new WebSocket(okMock.api.socketGroupUrl+"?group="+this.groupName);
-                this.ws.onopen = this.onopen;
-                this.ws.onmessage = this.onmessage;
-                this.ws.onclose = this.onclose;
-                this.ws.onerror = this.onerror;
-            },
             onopen: function (e) {
                 var msg = JSON.stringify({cmd: 'enter_group_chat'});
                 this.ws.send(msg);
@@ -157,7 +154,6 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 });
                 this.getGroupMessageList(groupName);
                 this.groupName = groupName;
-                this.socket();
             },
 
             /*获取群聊*/

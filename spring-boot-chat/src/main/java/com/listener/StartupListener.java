@@ -28,7 +28,6 @@ public class StartupListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         app = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-        SpringUtil.setApplication(app);
 
 //        ChatUserService chatUserService = (ChatUserService)app.getBean("chatUserService");
 //        chatUserService.initChatUserRedis();
