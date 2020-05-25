@@ -43,7 +43,7 @@
 
         <!-- base-core -->
         <dependency>
-            <groupId>com</groupId>
+            <groupId>com.github.zjjtv</groupId>
             <artifactId>spring-boot-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <exclusions>
