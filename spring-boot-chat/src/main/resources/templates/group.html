@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/lib/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/css/talk.css}" />
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/css/infostyle.css}"/>
 </head>
 <body>
 <div class="layui-tab-item layui-show" id="VueGroupChat" >
@@ -65,9 +65,10 @@
         </div>
     </div>
 </div>
-<script src="../../lib/layui/layui.js"></script>
-<script src="../../lib/layui/vue.js"></script>
-<script src="../../js/recorder.js"></script>
+<script th:src="@{/static/lib/layui/layui.js}"></script>
+<script th:src="@{/static/lib/layui/vue.js}"></script>
+<script th:src="@{/static/js/recorder.js}"></script>
+<script th:src="@{/static/js/modules/group.js}"></script>
 <script>
     layui.config({base:'/js/modules/'}).use(['group'],function () {
         let group = layui.group;

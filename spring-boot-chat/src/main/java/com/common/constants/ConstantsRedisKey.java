@@ -35,7 +35,7 @@ public class ConstantsRedisKey {
     /**
      * 注册用户默认头像
      */
-    public static final String DEFAULT_AVATAR = "/img/defaultImg.jpg";
+    public static final String DEFAULT_AVATAR = "/defaultImg.jpg";
 
     /**
      * 注册用户默认签名

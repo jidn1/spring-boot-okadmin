@@ -48,6 +48,18 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping("chats")
+    public String chats(HttpServletRequest request) {
+        return "chats";
+    }
+
+    @RequestMapping("video")
+    public String video(HttpServletRequest request) {
+        String type = request.getParameter("type");
+        request.setAttribute("type",type);
+        return "video";
+    }
+
 
     @RequestMapping("/loginService")
     @ResponseBody

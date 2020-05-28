@@ -17,6 +17,7 @@ public enum SocketCmd {
     CHAT_GROUP_ENTER("enter_group_chat","进入群聊"),
     CHAT_GROUP("chat_group","发送群聊"),
     CHAT_VIDEO("chat_video","视频通话请求"),
+    CHAT_VIDEO_ON("chat_video_online","视频通话流"),
 
 
 

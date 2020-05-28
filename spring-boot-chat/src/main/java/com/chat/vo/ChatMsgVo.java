@@ -32,6 +32,12 @@ public class ChatMsgVo implements Serializable {
 
     private Integer msgStatus;
 
+    private String sdp;
+
+    private String type;
+
+    private IceCandidate iceCandidate;
+
     private Date created = new Date();
 
     private Date modified = new Date();

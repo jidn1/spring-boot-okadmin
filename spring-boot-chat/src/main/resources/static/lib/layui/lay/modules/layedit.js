@@ -165,7 +165,7 @@
                     title: "视频",
                     type: 2,
                     area: ["80%", "80%"],
-                    content: "video.html",
+                    content: "/chat/video?type=offer",
                     zIndex: layer.zIndex,
                 });
                 sendVideoPing();

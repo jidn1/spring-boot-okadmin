@@ -12,6 +12,7 @@ import com.common.utils.PasswordHelper;
 import com.db.Criteria;
 import com.redis.BaseRedis;
 import com.common.utils.UUIDUtil;
+import com.util.PropertiesUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
             ChatUserInfo chatUserInfo = new ChatUserInfo();
             chatUserInfo.setUserid(userId);
             chatUserInfo.setNickName(ChatUtils.getNickName());
-            chatUserInfo.setAvatarImg(ConstantsRedisKey.DEFAULT_AVATAR);
+            chatUserInfo.setAvatarImg(PropertiesUtils.APP.getProperty("app.imgShowUrl")+ConstantsRedisKey.DEFAULT_AVATAR);
             chatUserInfo.setExpirationTime(DateUtils.calcAddDigitalDaysLater(1));
             chatUserInfo.setGender(2);
             chatUserInfo.setIfdelete(0);
@@ -118,7 +119,7 @@ public class ChatUserRedisServiceImpl implements ChatUserService {
                 friendVoList1 = JSONObject.parseArray(friendStr1, ChatFriendVo.class);
             }
             for (ChatFriendVo f : friendVoList) {
-                if (f.getFriendUserId().equals(friendId)) {
+                if (f.getUserId().equals(friendId)) {
                     flag = false;
                     break;
                 }

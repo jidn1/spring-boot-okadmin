@@ -232,3 +232,5 @@ if (!Object.assign) {
         }), a)
     }, e.layui = new n
 }(window);
+
+var ctx = "/chat"

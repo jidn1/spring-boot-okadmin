@@ -21,7 +21,7 @@ public class SpringBootChatApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBootChatApplication.class, args);
-        LOGGER.info("Project started successfully==========http://localhost:6002/index");
+        LOGGER.info("Project started successfully==========http://localhost:6001/chat");
     }
 
 

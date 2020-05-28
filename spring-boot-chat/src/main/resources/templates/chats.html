@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<html >
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>聊天室</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
-
-
+    <link rel="stylesheet" type="text/css"   th:href="@{/static/lib/layui/css/layui.css}" />
+    <link rel="stylesheet" type="text/css"   th:href="@{/static/css/talk.css}" />
+    <link rel="stylesheet" type="text/css"   th:href="@{/static/css/infostyle.css}"/>
+    <link rel="stylesheet" type="text/css"   th:href="@{/static/css/video.css}"/>
 </head>
 <body>
 <div class="layui-container" style="margin-top:10px;">
@@ -113,10 +110,10 @@
                         </div>
 
                         <div class="layui-tab-item" >
-                            <iframe src="group.html" frameborder="0" class="layadmin-iframe" style="height:679px; width: 941px;"></iframe>
-                            <!--<div>-->
-                                <!--<p style="margin-top: 37px; text-align:center;">待开发</p>-->
-                            <!--</div>-->
+                            <!--<iframe src="group.html" frameborder="0" class="layadmin-iframe" style="height:679px; width: 941px;"></iframe>-->
+                            <div>
+                                <p style="margin-top: 37px; text-align:center;">待开发</p>
+                            </div>
                         </div>
 
                         <div class="layui-tab-item" id="userinfo">
@@ -165,11 +162,11 @@
     <button class="layui-btn layui-btn-sm record-btn layui-btn-radius" style="margin-bottom: 30px">开始录音</button>
 </div>
 
-<script src="../../lib/layui/layui.js"></script>
-<script src="../../lib/layui/vue.js"></script>
-<script src="../../js/voice.js"></script>
+<script th:src="@{/static/lib/layui/layui.js}"></script>
+<script th:src="@{/static/lib/layui/vue.js}"></script>
+<script th:src="@{/static/js/voice.js}"></script>
 <script>
-    layui.config({base:'/js/modules/'}).use(['chats'],function () {
+    layui.config({base:ctx+'/static/js/modules/'}).use(['chats'],function () {
         let chats = layui.chats;
         chats.init();
     });
@@ -190,10 +187,6 @@
             document.getElementById("msgcontent").style.overflowX = "hidden";
         }
     }
-
-
-
-
 
 </script>
 </body>
