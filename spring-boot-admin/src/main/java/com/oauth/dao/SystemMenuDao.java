@@ -3,8 +3,10 @@ package com.oauth.dao;
 import com.mvc.base.dao.BaseDao;
 import com.oauth.model.SystemMenu;
 import com.oauth.vo.MenuDataVo;
+import com.oauth.vo.MenuTree;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -14,6 +16,7 @@ import java.util.List;
  */
 public interface SystemMenuDao extends  BaseDao<SystemMenu, Integer> {
 
+    List<SystemMenu> findPageBySql(Map<String,Object> paraMap);
     /**
      * 查询权限菜单
      * @param roleId
@@ -23,4 +26,9 @@ public interface SystemMenuDao extends  BaseDao<SystemMenu, Integer> {
 
 
     public List<MenuDataVo> findAllRoleMenuList();
+
+
+    List<SystemMenu> findAllOne();
+
+    List<MenuTree> findAllByPkey(String pkey);
 }

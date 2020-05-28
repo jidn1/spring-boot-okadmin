@@ -8,11 +8,12 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
     let $ = layui.jquery;
     okLoading.close($);
 
+
     var systemMenu = {
 
         list : function(){
 
-            okUtils.ajax(okMock.api.baseUrl + "systemMenu/list", "post", null, true).done(function (response) {
+            okUtils.ajax(okMock.api.baseUrl + "systemMenu/tree", "post", null, true).done(function (response) {
                 tree.render({
                     elem: '#permissionTree',
                     data: response.data,
@@ -21,48 +22,38 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
                     isJump: true,
                     click: function (obj) {
                         var data = obj.data;
-                        layer.msg('状态：' + obj.state + '<br>节点数据：' + JSON.stringify(data));
+                        initPermissionTable(data.mkey);
+
                     }
                 });
-
-                initPermissionTable();
             }).fail(function (error) {
                 console.log(error)
             });
 
-
-            let _table = table.render({
-                elem: '#tableId',
-                url: okMock.api.baseUrl + "systemMenu/list",
-                limit: 20,
-                page: true,
-                toolbar: true,
-                toolbar: "#toolbarTpl",
-                size: "sm",
-                cols: [[
-                    {type: "checkbox", fixed: "left"},
-                    {field: "id", title: "id", width: 100},
-                    {field: "name", title: "菜单名字", width: 100},
-                    {field: "resourceType", title: "类型  button 按钮 menu 菜单", width: 100},
-                    {field: "url", title: "路径", width: 100},
-                    {field: "icon", title: "图标", width: 100},
-                    {field: "mkey", title: "mkey", width: 100},
-                    {field: "pkey", title: "父菜单", width: 100},
-                    {title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
-                ]],
-                done: function (res, curr, count) {
-                    //console.info(res, curr, count);
-                }
-            });
-
-
-            form.on("submit(search)", function (data) {
-                userTable.reload({
-                    where: data.field,
-                    page: {curr: 1}
+            function initPermissionTable(key) {
+                let _table = table.render({
+                    elem: '#tableId',
+                    url: okMock.api.baseUrl + "systemMenu/list",
+                    limit: 20,
+                    page: true,
+                    toolbar: true,
+                    toolbar: "#toolbarTpl",
+                    size: "sm",
+                    where:{"mkey":key},
+                    cols: [[
+                        {type: "checkbox", fixed: "left"},
+                        {field: "name", title: "名称", width: 224},
+                        {field: "resourceType", title: "类型", width: 93, templet: "#resourceType"},
+                        {field: "url", title: "路径", width: 395},
+                        {field: "icon", title: "图标", width: 100,templet: "#icon"},
+                        {title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
+                    ]],
+                    done: function (res, curr, count) {
+                        //console.info(res, curr, count);
+                    }
                 });
-                return false;
-            });
+                $("input[name='parentKey']").val(key);
+            }
 
             table.on("toolbar(tableFilter)", function (obj) {
                 let data = obj.data;
@@ -103,9 +94,7 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
             }
 
             function add() {
-                okLayer.open("添加", "systemmenuadd.html", "90%", "90%", null, function () {
-                    _table.reload();
-                })
+                okLayer.open("添加", "systemmenuadd.html", "90%", "90%", null, null)
             }
 
             function edit(data) {
@@ -132,7 +121,9 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
 
 
         add : function () {
-
+            var parentKey = $("input[name='parentKey']").value;
+            console.log("parentKey"+parentKey)
+            $("input[name='pkey']").val(parentKey);
             form.on("submit(add)", function (data) {
                 okUtils.ajax(okMock.api.baseUrl + "systemMenu/save", "post", data.field, true).done(function (response) {
                     okLayer.greenTickMsg("添加成功", function () {
@@ -143,6 +134,44 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
                 });
                 return false;
             });
+
+            $("input[name='icon']").click(function () {
+                layer.open({
+                    type: 1,
+                    title :"图标",
+                    area: ['95%',  "80%"],
+                    content: $("#selectIcon_div"),
+                    closeBtn : 1,
+                    maxmin: true,
+                    shadeClose : false,
+                    success: function(layero, index){
+                        $("#selectIcon_div").empty();
+                        $.ajax({
+                            type : 'get',
+                            url : 'icon.html',
+                            dataType : "html",
+                            success : function(data) {
+                                //1，渲染弹出面板
+                                $("#selectIcon_div").append($(data));
+                                $("ul li").on("click",function(){
+                                    $("input[name='icon']").val($(this).find('.code-name').text());
+                                    layer.closeAll();
+                                    $("#selectIcon_div").css("display","none");
+                                    $("#selectIcon_div").empty();
+                                })
+                            },
+                            error : function() {
+                                layer.closeAll();
+                            }
+                        });
+                    },
+                    cancel : function(){
+                        $("#selectIcon_div").addClass("hide")
+                    }
+                });
+
+            })
+
         },
 
 
@@ -159,8 +188,48 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
                 });
                 return false;
             });
+
+
+            $("input[name='icon']").click(function () {
+                layer.open({
+                    type: 1,
+                    title :"图标",
+                    area: ['95%',  "80%"],
+                    content: $("#selectIcon_div"),
+                    closeBtn : 1,
+                    maxmin: true,
+                    shadeClose : false,
+                    success: function(layero, index){
+                        $("#selectIcon_div").empty();
+                        $.ajax({
+                            type : 'get',
+                            url : 'icon.html',
+                            dataType : "html",
+                            success : function(data) {
+                                //1，渲染弹出面板
+                                $("#selectIcon_div").append($(data));
+                                $("ul li").on("click",function(){
+                                    $("input[name='icon']").val($(this).find('.code-name').text());
+                                    layer.closeAll();
+                                    $("#selectIcon_div").attr("style","display:none");
+                                    $("#selectIcon_div").empty();
+                                })
+                            },
+                            error : function() {
+                                layer.closeAll();
+                            }
+                        });
+                    },
+                    cancel : function(){
+                        $("#selectIcon_div").addClass("hide")
+                    }
+                });
+
+            })
         }
     };
 
     exprots("systemMenu", systemMenu);
 })
+
+pkey = "";

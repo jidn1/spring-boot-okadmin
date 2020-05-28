@@ -5,6 +5,7 @@ import com.common.model.PageResult;
 import com.db.Criteria;
 import com.oauth.model.SystemMenu;
 import com.oauth.service.SystemMenuService;
+import com.oauth.vo.MenuTree;
 import com.util.HttpServletRequestUtils;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,13 @@ public class SystemMenuController {
 		return systemMenuService.findPageBySql(params);
 	}
 
+
+	@RequestMapping("/tree")
+	@ResponseBody
+	public JsonResult tree(HttpServletRequest request) {
+        List<MenuTree> tree = systemMenuService.tree();
+        return new JsonResult().setSuccess(true).setData(tree);
+	}
 
     @RequestMapping("/save")
     @ResponseBody

@@ -1,10 +1,14 @@
 package com.test;
 
+
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.File;
 import java.io.DataInputStream;
 import java.net.URL;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * @Copyright © 正经吉
@@ -34,4 +38,6 @@ public class Image {
         dis.close();
         fos.close();
     }
+
+
 }
