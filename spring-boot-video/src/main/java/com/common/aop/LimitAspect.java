@@ -1,7 +1,6 @@
 package com.common.aop;
 
 import com.common.utils.IpUtils;
-import com.exception.CusException;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -63,10 +62,10 @@ public class LimitAspect {
             if(flag){
                 obj = joinPoint.proceed();
             }else{
-                throw new CusException("小同志，你访问的太频繁了");
+                throw new RuntimeException("小同志，你访问的太频繁了");
             }
         } catch (Throwable e) {
-            throw new CusException("小同志，你访问的太频繁了");
+            throw new RuntimeException("小同志，你访问的太频繁了");
         }
         return obj;
     }

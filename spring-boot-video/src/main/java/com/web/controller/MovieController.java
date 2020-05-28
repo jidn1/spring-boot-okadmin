@@ -4,13 +4,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import com.common.aop.ServiceLimit;
-import com.util.HttpServletRequestUtils;
-import com.common.model.JsonResult;
+import com.common.utils.HttpServletRequestUtils;
 import com.common.model.PageResult;
-import io.swagger.annotations.Api;
-import com.db.Criteria;
 import org.springframework.web.bind.annotation.*;
-import com.web.model.Movie;
 import com.web.service.MovieService;
 import java.util.Map;
 
@@ -20,7 +16,6 @@ import java.util.Map;
  * @version:     V1.0
  * @Date:        2020-01-02 13:40:48
  */
-@Api(value = "")
 @RestController
 @RequestMapping("/movie")
 public class MovieController{

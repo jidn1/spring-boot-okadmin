@@ -6,11 +6,9 @@ import com.common.aop.ServiceLimit;
 import com.common.constants.ConstantsRedisKey;
 import com.common.model.JsonResult;
 import com.common.model.PageResult;
+import com.common.utils.HttpServletRequestUtils;
 import com.redis.BaseRedis;
-import com.util.HttpServletRequestUtils;
 import com.web.service.PornHubService;
-import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +25,6 @@ import java.util.Map;
  * @Date: 2020/1/2 19:11
  * @Description:
  */
-@Api(value = "")
 @RestController
 @RequestMapping("/pornHub")
 public class PornHubController {

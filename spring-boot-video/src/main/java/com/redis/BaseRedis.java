@@ -1,6 +1,6 @@
 package com.redis;
 
-import com.util.SpringUtil;
+import com.common.utils.SpringUtil;
 import redis.clients.jedis.JedisPool;
 
 /**
