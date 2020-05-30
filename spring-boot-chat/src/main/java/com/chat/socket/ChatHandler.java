@@ -66,6 +66,8 @@ public class ChatHandler extends TextWebSocketHandler {
                 sendToUserVideoCall(chatMsgVo);
             }else if(SocketCmd.OUT_CHAT.getKey().equals(chatMsgVo.getCmd())){
                 subOnlineCount();
+            }else if(SocketCmd.CHAT_VIDEO_ON.getKey().equals(chatMsgVo.getCmd())){
+                sendToUserVideo(chatMsgVo);
             }
 
         }
@@ -123,6 +125,18 @@ public class ChatHandler extends TextWebSocketHandler {
         try {
             if (webSocketSet.get(toUserId) != null) {
                 webSocketSet.get(toUserId).sendMessage(new TextMessage("video"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendToUserVideo(ChatMsgVo chatMsg) {
+        String toUserId = chatMsg.getToUserId();
+        try {
+            System.out.println(JSONObject.toJSONString(chatMsg));
+            if (webSocketSet.get(toUserId) != null) {
+                webSocketSet.get(toUserId).sendMessage(new TextMessage(JSONObject.toJSONString(chatMsg)));
             }
         } catch (IOException e) {
             e.printStackTrace();

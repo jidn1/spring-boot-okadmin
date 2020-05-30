@@ -15,6 +15,7 @@ import com.oauth.service.SystemMenuService;
 import javax.annotation.Resource;
 
 import com.oauth.vo.MenuDataVo;
+import com.oauth.vo.MenuTree;
 import com.util.PageFactory;
 import com.util.properties.PropertiesUtils;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,26 @@ public class SystemMenuServiceImpl implements SystemMenuService {
         Map<String,Object> paraMap = new HashMap<>(3);
         Criteria<SystemMenu,Integer> criteria = new Criteria<>(SystemMenu.class);
         Page<SystemMenu> page = PageFactory.getPage(param);
-        criteria.findAll();
-        return new PageResult(page,page.getTotal(), page.getPages(), page.getPageSize());
+        String moviceName = param.get("moviceName");
+        String director = param.get("director");
+        String mainCharacter = param.get("mainCharacter");
+        String mkey = param.get("mkey");
+
+        if(!StringUtils.isEmpty(moviceName)){
+            paraMap.put("moviceName","%"+moviceName+"%");
+        }
+        if(!StringUtils.isEmpty(director)){
+            paraMap.put("director","%"+director+"%");
+        }
+        if(!StringUtils.isEmpty(mainCharacter)){
+            paraMap.put("mainCharacter","%"+mainCharacter+"%");
+        }
+        if(!StringUtils.isEmpty(mkey)){
+            paraMap.put("mkey",mkey);
+        }
+
+        List<SystemMenu> list = systemMenuDao.findPageBySql(paraMap);
+        return new PageResult(list,page.getTotal(), page.getPages(), page.getPageSize());
     }
 
     @Override
@@ -162,5 +181,26 @@ public class SystemMenuServiceImpl implements SystemMenuService {
             e.printStackTrace();
         }
         return menus;
+    }
+
+
+    @Override
+    public List<MenuTree> tree(){
+        List<MenuTree> tree = new ArrayList<>();
+        List<SystemMenu> allOne = systemMenuDao.findAllOne();
+        allOne.forEach(SystemMenu::getName);
+        if(allOne != null && allOne.size() > 0){
+            for(SystemMenu s : allOne){
+                MenuTree t = new MenuTree();
+                t.setTitle(s.getName());
+                t.setSpread(false);
+                t.setMkey(s.getMkey());
+                List<MenuTree> children = systemMenuDao.findAllByPkey(s.getMkey());
+                t.setChildren(children);
+                tree.add(t);
+            }
+        }
+
+        return tree;
     }
 }

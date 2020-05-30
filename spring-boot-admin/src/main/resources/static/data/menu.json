@@ -95,6 +95,33 @@
     "spread": false,
     "children": [
       {
+        "title": "菜单管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "角色管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
+      },
+      {
+        "title": "权限管理",
+        "href": "/oauth/systemmenulist.html",
+        "icon": "&#xe62e;",
+        "spread": false
+      }
+    ]
+  },
+  {
+    "title": "网站管理",
+    "href": "",
+    "fontFamily": "ok-icon",
+    "icon": "&#xe68a;",
+    "spread": false,
+    "children": [
+      {
         "title": "网站设置",
         "href": "/oauth/setup.html",
         "icon": "&#xe62e;",

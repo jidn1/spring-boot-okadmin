@@ -6,17 +6,12 @@ import com.common.utils.Page;
 import com.redis.BaseRedis;
 import com.web.model.Movie;
 import com.web.service.MovieService;
-import com.db.Criteria;
-
-import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import com.common.model.PageResult;
-import com.util.PageFactory;
 import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

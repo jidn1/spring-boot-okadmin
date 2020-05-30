@@ -5,7 +5,6 @@ import com.common.constants.ConstantsRedisKey;
 import com.common.model.PageResult;
 import com.common.utils.Page;
 import com.redis.BaseRedis;
-import com.web.model.Movie;
 import com.web.model.PornHub;
 import com.web.service.PornHubService;
 import org.springframework.stereotype.Service;

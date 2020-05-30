@@ -1,6 +1,5 @@
 package com.oauth.controller;
 
-import com.annotation.CommonLog;
 import com.common.constants.ConstantsRedisKey;
 import com.common.model.JsonResult;
 import com.oauth.model.SystemMenu;
@@ -70,7 +69,6 @@ public class SystemUserController {
 
     @RequestMapping("/setPassword")
     @ResponseBody
-    @CommonLog(name = "修改管理员密码")
     public JsonResult setPassword(HttpServletRequest request) {
         String oldPwd = request.getParameter("oldPwd");
         String newPwd = request.getParameter("newPwd");

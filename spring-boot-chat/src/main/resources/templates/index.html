@@ -40,7 +40,7 @@
                 data.field.username = data.field.username;
                 okUtils.ajax(okMock.api.baseUrl + "register", "post", data.field, true).done(function (response) {
                     okLayer.greenTickMsg(response.msg, function () {
-                        window.location = "/login";
+                        window.location = okMock.api.baseUrl + "login";
                     })
                 }).fail(function (error) {
                     console.log(error)

@@ -2,8 +2,6 @@ package com.common.model;
 
 import com.alibaba.fastjson.JSON;
 import com.common.utils.Crypto;
-import com.github.pagehelper.Page;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,28 +17,20 @@ import java.util.List;
 public class PageResult implements Serializable {
 
 
-    @ApiModelProperty(value = "错误编码")
     private Integer code = 0;
 
-    @ApiModelProperty(value = "返回信息")
     private String msg = "查询成功";
 
-    @ApiModelProperty(value = "返回对象")
     private List data = null;
 
-    @ApiModelProperty(value = "加密对象")
     private String Obj;
 
-    @ApiModelProperty(value = "总条数")
     private Long count;
 
-    @ApiModelProperty(value = "当前页")
     private Integer page;
 
-    @ApiModelProperty(value = "每页显示条数")
     private Integer pageSize;
 
-    @ApiModelProperty(value = "每页显示条数")
     private boolean success = false;
 
     public PageResult(List list, Long total, int page, int pageSize){

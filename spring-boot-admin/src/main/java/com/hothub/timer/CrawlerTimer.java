@@ -1,17 +1,12 @@
 package com.hothub.timer;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.common.utils.HttpRequest;
-import com.hothub.enums.HotType;
 import com.hothub.model.TopHot;
-import com.quartz.QuartzJob;
 import com.quartz.QuartzManager;
 import com.quartz.ScheduleJob;
-import com.util.properties.PropertiesUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,36 +25,44 @@ public class CrawlerTimer {
     public static void initCnBlogTimer(){
         QuartzManager.removeJob("initCnBlogJob");
         ScheduleJob initCnBlogJob = new ScheduleJob();
-        initCnBlogJob.setSpringId("topHotService");
+        initCnBlogJob.setJobName("initCnBlogJob");
+        initCnBlogJob.setBeanName("topHotService");
         initCnBlogJob.setMethodName("crawlerCnBlog");
-        QuartzManager.addJob("initCnBlogJob", initCnBlogJob, QuartzJob.class, "5 0/5 * * * ?");
+        initCnBlogJob.setCronExpression("5 0/5 * * * ?");
+        QuartzManager.addJob(initCnBlogJob);
         logger.info("================crawler CnBlog Job start");
     }
 
     public static void initBaiDuTimer(){
         QuartzManager.removeJob("initBaiDuJob");
         ScheduleJob initBaiDuJob = new ScheduleJob();
-        initBaiDuJob.setSpringId("topHotService");
+        initBaiDuJob.setJobName("initBaiDuJob");
+        initBaiDuJob.setBeanName("topHotService");
         initBaiDuJob.setMethodName("crawlerBaiDu");
-        QuartzManager.addJob("initBaiDuJob", initBaiDuJob, QuartzJob.class, "10 0/5 * * * ?");
+        initBaiDuJob.setCronExpression("10 0/5 * * * ?");
+        QuartzManager.addJob(initBaiDuJob);
         logger.info("================crawler BaiDu Job start");
     }
 
     public static void initZhiHuTimer(){
         QuartzManager.removeJob("initZhiHuJob");
         ScheduleJob initZhiHuJob = new ScheduleJob();
-        initZhiHuJob.setSpringId("topHotService");
+        initZhiHuJob.setJobName("initZhiHuJob");
+        initZhiHuJob.setBeanName("topHotService");
         initZhiHuJob.setMethodName("crawlerZhiHu");
-        QuartzManager.addJob("initZhiHuJob", initZhiHuJob, QuartzJob.class, "15 0/5 * * * ?");
+        initZhiHuJob.setCronExpression("15 0/5 * * * ?");
+        QuartzManager.addJob(initZhiHuJob);
         logger.info("================crawler ZhiHu Job start");
     }
 
     public static void initBbsTimer(){
         QuartzManager.removeJob("initBbsJob");
         ScheduleJob initBbsJob = new ScheduleJob();
-        initBbsJob.setSpringId("topHotService");
+        initBbsJob.setJobName("initBbsJob");
+        initBbsJob.setBeanName("topHotService");
         initBbsJob.setMethodName("crawlerBbs");
-        QuartzManager.addJob("initBbsJob", initBbsJob, QuartzJob.class, "20 0/5 * * * ?");
+        initBbsJob.setCronExpression("20 0/5 * * * ?");
+        QuartzManager.addJob(initBbsJob);
         logger.info("================crawler Bbs Job start");
     }
 

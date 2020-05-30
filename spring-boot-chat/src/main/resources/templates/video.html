@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title></title>
-    <link rel="stylesheet" type="text/css" href="../../css/video.css"/>
+    <link rel="stylesheet" type="text/css"   href="/chat/static/css/video.css"/>
 </head>
 <body>
 <div class="container">
+    <input type="hidden" id="type" th:value="${type}">
     <div class="video-box">
         <video id="remote-video"></video>
         <video id="local-video" muted></video>
@@ -16,7 +17,8 @@
     </div>
     <div class="logger"></div>
 </div>
-<script src="../../lib/layui/layui.js"></script>
-<script src="../../js/modules/video.js"></script>
+<script src="/chat/static/lib/layui/layui.js"></script>
+<script src="/chat/static/js/modules/video.js"></script>
+
 </body>
 </html>

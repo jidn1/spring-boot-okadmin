@@ -22,9 +22,13 @@
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">类型  button 按钮 menu 菜单</label>
+                    <label class="layui-form-label">类型</label>
                     <div class="layui-input-block">
-                        <input type="text" name="resourceType" autocomplete="off" class="layui-input" lay-verify="required">
+                        <select class="layui-input" name="resourceType" lay-verify="required">
+                            <option value="menu">菜单</option>
+                            <option value="button">按钮</option>
+                        </select>
+                        <!--<input type="text" name="resourceType" autocomplete="off" class="layui-input" lay-verify="required">-->
                     </div>
                 </div>
 
@@ -80,3 +84,7 @@
 </script>
 </body>
 </html>
+<!-- 图标选择弹窗 -->
+<div  id="selectIcon_div" >
+
+</div>

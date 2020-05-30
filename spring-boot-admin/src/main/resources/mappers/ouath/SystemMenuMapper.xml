@@ -28,4 +28,34 @@
         FROM
             fh_system_menu m
     </select>
+
+
+
+    <select id="findPageBySql" resultType="com.oauth.model.SystemMenu" parameterType="java.util.HashMap">
+        SELECT
+        *
+        FROM
+        fh_system_menu
+        <where>
+            <if test="mkey != null and mkey != ''">
+                and pkey = #{mkey}
+            </if>
+        </where>
+        ORDER BY id ASC
+    </select>
+
+
+
+    <select id="findAllOne" resultType="com.oauth.model.SystemMenu">
+        SELECT * FROM fh_system_menu where pkey is null
+    </select>
+
+
+    <select id="findAllByPkey" resultType="com.oauth.vo.MenuTree">
+        SELECT
+         name as title,
+         true,
+         mkey
+         FROM fh_system_menu where pkey = #{pkey}
+    </select>
 </mapper>

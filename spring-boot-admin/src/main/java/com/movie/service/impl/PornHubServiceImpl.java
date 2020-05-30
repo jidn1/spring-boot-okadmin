@@ -52,8 +52,8 @@ public class PornHubServiceImpl implements PornHubService{
         Map<String,Object> paraMap = new HashMap<>(3);
         Criteria<PornHub,Integer> criteria = new Criteria<>(PornHub.class);
         Page<PornHub> page = PageFactory.getPage(param);
-        criteria.findAll();
-        return new PageResult(page,page.getTotal(), page.getPages(), page.getPageSize());
+        List<PornHub> all = criteria.findAll();
+        return new PageResult(all,page.getTotal(), page.getPages(), page.getPageSize());
     }
 
     @Transactional(rollbackFor = {RuntimeException.class, CusException.class})

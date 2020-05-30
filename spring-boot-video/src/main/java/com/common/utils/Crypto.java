@@ -1,7 +1,7 @@
 package com.common.utils;
 
-import com.alibaba.druid.util.StringUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.StringUtils;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.Cipher;

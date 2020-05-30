@@ -2,6 +2,7 @@
 server:
   port: 6002
   path: http://localhost:6002/
+  context-path: /chat
   session:
     timeout: 7200
 
@@ -17,7 +18,7 @@ spring:
   profiles:
     active: test
   application:
-    name: okadmin
+    name: okchat
   resources:
     static-locations: classpath:/static/,classpath:/templates/
   datasource:

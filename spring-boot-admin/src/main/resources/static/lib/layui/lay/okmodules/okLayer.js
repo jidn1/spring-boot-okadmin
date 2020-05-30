@@ -111,7 +111,12 @@ layui.define(["layer"], function (exports) {
                 // 随机动画
                 return Math.floor(Math.random() * animArray.length);
             }
-        }
+        },
+
+        dialogClose:function() {
+            var index = top.layer.getFrameIndex(window.name); // 先得到当前iframe层的索引
+            top.layer.close(index); // 再执行关闭
+        },
     }
 
     exports("okLayer", okLayer);

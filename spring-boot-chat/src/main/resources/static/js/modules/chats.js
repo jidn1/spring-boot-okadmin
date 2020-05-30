@@ -62,7 +62,8 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
         el: '#userinfo',
         data() {
             return {
-                userinfo: Object
+                userinfo: Object,
+                pathImg: "",
             }
         },
         mounted: function () {
@@ -156,6 +157,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
             window.onbeforeunload = this.onbeforeunload;
             window.sendaudio = this.sendaudio;
             window.sendVideoPing = this.sendVideoPing;
+            window.getFriendUserId = this.getFriendUserId;
         },
         methods: {
             onopen: function (e) {
@@ -345,7 +347,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                         title: "视频",
                         type: 2,
                         area: ["90%", "90%"],
-                        content: "video.html",
+                        content: "/chat/video?type=answer",
                         zIndex: layer.zIndex,
                     });
                     layer.close(index);
@@ -363,6 +365,10 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                 this.ws.send(jsonData);//websocket发送数据
             },
 
+            getFriendUserId:function(){
+                return this.friendUserId;
+            },
+
             logout: function () {
                 $.ajax({
                     type: 'post',
@@ -371,7 +377,7 @@ layui.define(["element", "jquery", "form", "layer", "okUtils", "okMock", "okUplo
                     success: function (data) {
                         if (data.success) {
                             sessionStorage.removeItem("userId");
-                            window.location = "/logout";
+                            window.location = okMock.api.baseUrl + "login";
                         }
                     }
                 })

@@ -1,37 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" type="text/css" href="../../lib/layui/css/layui.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/talk.css"/>
-    <link rel="stylesheet" type="text/css" href="../../css/infostyle.css"/>
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/lib/layui/css/layui.css}"/>
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/css/talk.css}" />
+    <link rel="stylesheet" type="text/css"  th:href="@{/static/css/infostyle.css}"/>
 </head>
 <body>
 <div class="layui-tab-item layui-show" id="VueGroupChat" >
     <div style="width: 100%;">
-        <div class="alluser" onmouseover="leftscrollGroup(1)" onmouseleave="leftscrollGroup(2)" id="leftscrollGroup">
-            <div id="appLoadingGroup">
-                <div class="spinner">
-                    <div class="rect1"></div>
-                    <div class="rect2"></div>
-                    <div class="rect3"></div>
-                    <div class="rect4"></div>
-                    <div class="rect5"></div>
-                </div>
-            </div>
-            <ol id="leftcGroup" style="display: none;">
-                <li v-for="(item,index) in groupList" :key="index"
-                    @click="selectGroup(item,item.groupName)" :class="{'active':item.active,'unactive':!item.active,'leftnickename':true}">
-                    <p>
-                        <img :src=item.groupHeadUrl style="border-radius:50%;height:60px;">
-                        <span :class="{'layui-badge-dot':item.newnote,'':!item.newnote,'newnoteid':true}"></span>
-                        {{item.groupName}}
-                    </p>
-                </li>
-            </ol>
-        </div>
+
         <div style="width:84%;float: left;height:626px;">
             <div id="appLoading2Group" style="display: none;">
                 <div class="spinner">
@@ -85,9 +65,10 @@
         </div>
     </div>
 </div>
-<script src="../../lib/layui/layui.js"></script>
-<script src="../../lib/layui/vue.js"></script>
-<script src="../../js/recorder.js"></script>
+<script th:src="@{/static/lib/layui/layui.js}"></script>
+<script th:src="@{/static/lib/layui/vue.js}"></script>
+<script th:src="@{/static/js/recorder.js}"></script>
+<script th:src="@{/static/js/modules/group.js}"></script>
 <script>
     layui.config({base:'/js/modules/'}).use(['group'],function () {
         let group = layui.group;

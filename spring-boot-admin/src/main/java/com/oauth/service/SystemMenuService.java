@@ -5,6 +5,7 @@ import com.common.model.PageResult;
 import com.oauth.model.SystemMenu;
 import com.oauth.model.SystemUser;
 import com.oauth.vo.MenuDataVo;
+import com.oauth.vo.MenuTree;
 
 import java.util.List;
 import java.util.Map;
@@ -25,4 +26,6 @@ public interface SystemMenuService {
     public Set<String> findPermissions(String username);
 
     public List<MenuDataVo> findUserList(SystemUser userInfo);
+
+    List<MenuTree> tree();
 }

@@ -1,7 +1,7 @@
 #server配置信息
 server:
   port: 6003
-  path: http://172.17.86.236:6003/
+  path: http://localhost:6003/
   context-path: /video
 
 
@@ -17,41 +17,6 @@ spring:
     active: test
   application:
     name: video
-  datasource:
-    driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://rm-2zeu5801plyolgg697o.mysql.rds.aliyuncs.com:3306/hurong_web
-    type: com.alibaba.druid.pool.DruidDataSource
-    username: root
-    password: Credit_2016Admin
-    # 初始化大小，最小，最大
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    # 配置获取连接等待超时的时间
-    maxWait: 60000
-    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-    timeBetweenEvictionRunsMillis: 60000
-    # 配置一个连接在池中最小生存的时间，单位是毫秒
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    maxPoolPreparedStatementPerConnectionSize: 20
-    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-    filters: stat,wall
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
-    # 合并多个DruidDataSource的监控数据
-    useGlobalDataSourceStat: true
-  #thymeleaf
-  thymeleaf:
-    prefix: classpath:/templates/
-    check-template-location: true
-    suffix: .html
-    encoding: UTF-8
-    mode: LEGACYHTML5
-    cache: false
 
 
 

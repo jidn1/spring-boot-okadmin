@@ -2,11 +2,10 @@
 layui.define([], function (exprots) {
     let okMock = {
         api: {
-            //172.16.10.245 39.96.203.150
-            baseUrl : "http://localhost:6002/",
+            baseUrl : "http://localhost:6001/chat/",
             fileUrl : "http://hry-exchange-public.oss-cn-beijing.aliyuncs.com/",
-            socketUrl : "ws://localhost:6002/chatSocket",
-            socketGroupUrl : "ws://localhost:6002/chatGroupSocket",
+            socketUrl : "ws://localhost:6001/chat/chatSocket",
+            socketGroupUrl : "ws://localhost:6001/chatGroupSocket",
         },
 
 

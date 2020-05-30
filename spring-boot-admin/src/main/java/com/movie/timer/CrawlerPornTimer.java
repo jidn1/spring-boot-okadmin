@@ -20,9 +20,11 @@ public class CrawlerPornTimer {
     public static void initPornTimer(){
         QuartzManager.removeJob("crawlerPornJob");
         ScheduleJob crawlerPornJob = new ScheduleJob();
-        crawlerPornJob.setSpringId("pornHubService");
+        crawlerPornJob.setJobName("crawlerPornJob");
+        crawlerPornJob.setBeanName("pornHubService");
         crawlerPornJob.setMethodName("crawlerPorn");
-        QuartzManager.addJob("crawlerPorn", crawlerPornJob, QuartzJob.class, "10 0/5 * * * ?");
+        crawlerPornJob.setCronExpression("10 0/5 * * * ?");
+        QuartzManager.addJob(crawlerPornJob);
         logger.info("================crawler Porn Job start");
     }
 }

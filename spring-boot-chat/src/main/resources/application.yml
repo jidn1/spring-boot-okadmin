@@ -1,7 +1,8 @@
 #server配置信息
 server:
-  port: 6002
-  path: http://localhost:6002/
+  port: 6001
+  path: http://localhost:6001/
+  context-path: /chat
   session:
     timeout: 7200
 
@@ -17,7 +18,7 @@ spring:
   profiles:
     active: test
   application:
-    name: okadmin
+    name: chat
   resources:
     static-locations: classpath:/static/,classpath:/templates/
   datasource:
@@ -55,7 +56,6 @@ spring:
     encoding: UTF-8
     mode: LEGACYHTML5
     cache: false
-
   http:
     multipart:
       max-file-size: 1000Mb

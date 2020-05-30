@@ -1,8 +1,6 @@
 package com.common.model;
 
-import com.alibaba.fastjson.JSON;
 import com.common.utils.Crypto;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,25 +14,18 @@ import java.io.Serializable;
 @Data
 public class JsonResult implements Serializable {
 
-    @ApiModelProperty(value = "是否成功")
     private Boolean success = false;
 
-    @ApiModelProperty(value = "返回信息")
     private String msg = "";
 
-    @ApiModelProperty(value = "返回对象")
     private String obj = null;
 
-    @ApiModelProperty(value = "返回对象")
     private Object data = null;
 
-    @ApiModelProperty(value = "错误编码")
     private String code = "";
 
-    @ApiModelProperty(value = "版本号")
     private String version = "7.0";
 
-    @ApiModelProperty(value = "版本号")
     private Integer count;
 
     public Boolean getSuccess() {
