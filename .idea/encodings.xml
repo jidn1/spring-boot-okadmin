@@ -2,10 +2,19 @@
 <project version="4">
   <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/spring-boot-admin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-admin/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-admin/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-blog/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-blog/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-chat/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-core/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-plugin" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-utils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-utils/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-video" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/spring-boot-video/src/main/java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

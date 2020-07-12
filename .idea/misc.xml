@@ -15,6 +15,8 @@
         <option value="$PROJECT_DIR$/spring-boot-plugin/pom.xml" />
         <option value="$PROJECT_DIR$/spring-boot-utils/pom.xml" />
         <option value="$PROJECT_DIR$/spring-boot-video/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-chat/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-boot-blog/pom.xml" />
       </list>
     </option>
   </component>

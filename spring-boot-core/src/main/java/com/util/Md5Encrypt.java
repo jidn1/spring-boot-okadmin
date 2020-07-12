@@ -50,6 +50,7 @@ public class Md5Encrypt {
         return md5Str;
     }
 
+
     public static char[] encodeHex(byte[] data) {
 
         int l = data.length;
@@ -117,7 +118,7 @@ public class Md5Encrypt {
 
     public static void main(String[] args) {
        // System.out.println(GetMD5Code("54:E1:AD:A5:D0:A9, 172.16.10.245"));
-        System.out.println(md5("54:E1:AD:A5:D0:A9, 172.16.10.199, BkrUg0j1"));
+        System.out.println(md5("88:E9:FE:52:E3:31, 192.168.1.101, BkrUg0j1"));
 
         //Md5Encrypt.md5(localMac + "," + oauthIp + "," +salt);60:14:B3:B7:7F:23
     }
