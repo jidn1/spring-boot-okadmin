@@ -2,6 +2,8 @@ package com.auth;
 
 import com.util.Md5Encrypt;
 import com.util.PropertiesUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
@@ -18,6 +20,8 @@ import java.util.Enumeration;
  * @Description:
  */
 public class AuthCheckUtil {
+
+    private static Logger logger = LoggerFactory.getLogger(AuthCheckUtil.class);
 
     /**
      * 加盐
@@ -72,26 +76,26 @@ public class AuthCheckUtil {
 
 
     public static void success() {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("\n");
         stringBuilder.append("**********************************************").append("\n");
         stringBuilder.append("***************WWW.ZJJTV.TOP******************").append("\n");
         stringBuilder.append("【success=true】【Successful authorization【Authorized】】").append("\n");
         stringBuilder.append("********©2018-2022 All Rights Reserved********").append("\n");
         stringBuilder.append("**********************************************").append("\n");
 
-        System.out.println("" + stringBuilder.toString());
+        logger.info("" + stringBuilder.toString());
     }
 
 
     public static void fail() {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("\n");
         stringBuilder.append("**********************************************").append("\n");
         stringBuilder.append("***************WWW.ZJJTV.TOP******************").append("\n");
         stringBuilder.append("【success=false】【Failure authorization【Unauthorized】】").append("\n");
         stringBuilder.append("********©2018-2022 All Rights Reserved********").append("\n");
         stringBuilder.append("**********************************************").append("\n");
 
-        System.out.println("" + stringBuilder.toString());
+        logger.info("" + stringBuilder.toString());
     }
 
 
