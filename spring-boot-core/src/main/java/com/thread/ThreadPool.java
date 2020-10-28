@@ -16,7 +16,7 @@ public class ThreadPool {
 
     private static final Integer POOL_MIN = 3;
 
-    private static final Integer POOL_SIZE = 500;
+    private static final Integer POOL_SIZE = 8;
 
     private static ThreadPoolExecutor threadPool;
 
