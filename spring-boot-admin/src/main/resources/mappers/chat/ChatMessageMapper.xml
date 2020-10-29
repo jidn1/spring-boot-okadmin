@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.chatroom.dao.ChatMessageDao">
 
+
+    <select id="findPageBySql" resultType="com.chatroom.model.ChatMessage" parameterType="java.util.HashMap">
+        SELECT
+        cm.id,
+        fcu.username AS fromUserId,
+        tcu.userName AS toUserId,
+        cm.sendtext,
+        cm.msgStatus,
+        cm.created
+        FROM
+        fh_chat_message cm
+        LEFT JOIN fh_chat_user fcu ON cm.fromUserId = fcu.userId
+        LEFT JOIN fh_chat_user tcu ON cm.toUserId = tcu.userId
+        <where>
+
+        </where>
+        ORDER BY id desc
+    </select>
 </mapper>

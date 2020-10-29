@@ -21,11 +21,11 @@ layui.define(["element", "jquery", "table", "form",  "okLayer", "okUtils", "okMo
                 cols: [[
                     {type: "checkbox", fixed: "left"},
                     {field: "id", title: "id", width: 100},
-                    {field: "fromUserId", title: "发送人", width: 100},
-                    {field: "toUserId", title: "接收人", width: 100},
-                    {field: "sendtext", title: "内容 如果是图片 语音 保存的就是 连接", width: 100},
-                    {field: "msgType", title: "消息类型", width: 100},
-                    {field: "msgStatus", title: "消息状态 0 未读 1 已读", width: 100},
+                    {field: "fromUserId", title: "发送人", width: 200},
+                    {field: "toUserId", title: "接收人", width: 200},
+                    {field: "sendtext", title: "消息内容", width: 400},
+                    {field: "msgType", title: "消息类型", width: 100, templet: "#msgType"},
+                    {field: "msgStatus", title: "消息状态", width: 100, templet: "#msgStatus"},
                     {title: "操作", width: 100, align: "center", fixed: "right", templet: "#operationTpl"}
                 ]],
                 done: function (res, curr, count) {

@@ -127,7 +127,16 @@ public class PornHubServiceImpl implements PornHubService{
                 Process p = rt.exec(new String[]{"/bin/sh", "-c", "cd /; chmod +x "+filePath+";" + command});
 
             }else if(osName.toLowerCase().indexOf("mac") != -1){
+                String path = this.getClass().getClassLoader().getResource("").getPath();
+                String filePath = path + "/py/crawlerPorn.py";
+                System.out.println("--------------------------------- linux ---------------------------------");
+                String command = "." + filePath  ;
 
+                System.out.println("------------------------ 执行命令：" + command + " ------------------------");
+
+                //exec1("chmod +x " + filePath); // chmod 777
+                Runtime rt = Runtime.getRuntime();
+                Process p = rt.exec(new String[]{"/bin/sh", "-c", "cd /; chmod +x "+filePath+";" + command});
             }
 
         } catch (Exception e){

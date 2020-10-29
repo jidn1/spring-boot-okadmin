@@ -1,9 +1,12 @@
 package com.chatroom.service.impl;
 
+import com.chatroom.dao.ChatMessageDao;
 import com.chatroom.model.ChatMessage;
 import com.chatroom.service.ChatMessageService;
 import com.db.Criteria;
 import javax.annotation.Resource;
+
+import com.movie.model.Movie;
 import org.springframework.stereotype.Service;
 import com.common.model.PageResult;
 import com.util.PageFactory;
@@ -21,13 +24,15 @@ import java.util.Map;
 public class ChatMessageServiceImpl implements ChatMessageService{
 	
 
+    @Resource
+    private ChatMessageDao chatMessageDao;
+
     @Override
     public PageResult findPageBySql(Map<String,String> param) {
         Map<String,Object> paraMap = new HashMap<>(3);
-        Criteria<ChatMessage,Integer> criteria = new Criteria<>(ChatMessage.class);
         Page<ChatMessage> page = PageFactory.getPage(param);
-        criteria.findAll();
-        return new PageResult(page,page.getTotal(), page.getPages(), page.getPageSize());
+        List<ChatMessage> list = chatMessageDao.findPageBySql(paraMap);
+        return new PageResult(list,page.getTotal(), page.getPages(), page.getPageSize());
     }
 
 }

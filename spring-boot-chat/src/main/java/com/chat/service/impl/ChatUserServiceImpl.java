@@ -88,7 +88,6 @@ public class ChatUserServiceImpl implements ChatUserService {
             chatUserInfo.setSignature(ConstantsRedisKey.DEFAULT_SIGNATURE);
             userInfoCriteria.save(chatUserInfo);
             ChatUserInfoVo userInfoVo = ChatUtils.convertRedisVo(chatUser, chatUserInfo);
-            System.out.println("注册信息==" + JSONObject.toJSONString(userInfoVo));
             jedis.hset(ConstantsRedisKey.CHAT_USER_LIST, username, JSONObject.toJSONString(userInfoVo));
         } catch (Exception e) {
             e.printStackTrace();

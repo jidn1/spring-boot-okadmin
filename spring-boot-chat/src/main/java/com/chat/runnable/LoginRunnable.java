@@ -31,7 +31,7 @@ public class LoginRunnable implements Runnable {
 
     @Override
     public void run() {
-        if("mysql".equals(PropertiesUtils.APP.getProperty("app.service"))){
+        if("mysql".equals(PropertiesUtils.APP.getProperty("app.database"))){
             try (Jedis jedis = BaseRedis.JEDIS_POOL.getResource()) {
                 //初始化好友列表
                 List<ChatFriendVo> list = new ArrayList<>();
