@@ -2,29 +2,18 @@ package com.oauth.controller;
 
 import com.common.constants.ConstantsRedisKey;
 import com.common.model.JsonResult;
-import com.github.pagehelper.PageInfo;
-import com.movie.model.Movie;
-import com.movie.service.MovieService;
-import com.oauth.model.SystemMenu;
 import com.oauth.model.SystemUser;
-import com.oauth.service.SystemMenuService;
 import com.oauth.service.SystemUserService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import redis.clients.jedis.Jedis;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Copyright © 正经吉
